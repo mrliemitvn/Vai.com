@@ -1,0 +1,82 @@
+
+https://itunes.apple.com/us/app/vai.com-buon-cuoi-vai/id795056095?l=vi&ls=1&mt=8
+
+ ban iphone o day
+
+
+
+api co dang nhu nay nhe
+
+
+ http://xn--vi-sia.com/api/app/mobile/vai.com/content.php?key=vnvmcnjhbjch-mmqadtyiocdefb&cate=1&paged=1
+
+
+ga tracking #define NZ_GA_TRACKINGID @"UA-4462457-41"
+
+
+#define SEVER_URL @"http://xn--vi-sia.com/"
+#define CLIENT_KEY @"vnvmcnjhbjch-mmqadtyiocdefb"
+
+
+ #define YOUTUBE_BASE_URL @"http://www.youtube.com/embed/%@"
+
+
+
+api load config @"%@api/app/mobile/vai.com/config.php?key=%@",SEVER_URL,CLIENT_KEY
+
+
+ vua vao app load cai api nay
+ co dc cac catelog
+
+
+ http://xn--vi-sia.com/api/app/mobile/vai.com/config.php?key=vnvmcnjhbjch-mmqadtyiocdefb
+
+
+ ads key la googe adword
+
+
+ cung nam trong api o tren
+
+
+ ads: "a152bef79f598c2",
+
+
+ nghia la se dong cai catelog o menu ben trai
+ va key quang  cao
+ em hieu chu
+tu catelog do co id de load vao trang chinh
+
+
+
+id con content youtube nam trong the nay content: "[youtube]JP1Yv5ymjRw[/youtube]",
+ em nho trym [youtube] di nhe
+
+
+
+link anh thi nam trong the option
+
+ options: "img=http://xn--vi-sia.com/upload/xn--vi-sia.com/images/2014/1/2799.jpg;width=600;height=1043",
+?em cung phai tach ra nhe
+ cai api nay truoc la rss no doi sang json nen bi may cai nay
+ trong anh co chu ky mask o cuoi
+ do cao cua anh mask goc la
+#define DEFAULT_MARK_HEIGH 50
+#define DEFAULT_MARK_WIDTH 468
+ em tinh toan the nao de luc hien thi content dang doc thi an cai mask o duoi anh di nhe
+
+em lam sao an no di thoi
+
+
+ chi truong hop hien thi truot doc thoi nhe
+ truot ngang thi ke no
+
+cac ux thi giong hai vl ve xem anh , zoom anh
+
+ truot ngang .vvvv
+
+
+
+con 1 phan nua la add quang cao
+
+ nua la login facebook de like va lay thong tin cua nguoi dung gui len server
+con comment facebook va xem youtube thi goi webview
