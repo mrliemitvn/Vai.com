@@ -2,7 +2,14 @@
 <resources>
 
     <string name="app_name">Vai.com</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="msg_err_move_temporarily">Already sent</string>
+    <string name="msg_err_bad_request">Data sent to server incorrectly, please try again later.</string>
+    <string name="msg_err_invalid_token">Your account may be used by another person</string>
+    <string name="msg_err_forbidden">Forbidden. You have no right to access the resource</string>
+    <string name="msg_err_not_found">Not found</string>
+    <string name="msg_err_conflict">Conflict</string>
+    <string name="msg_err_server_error">There is an error from server</string>
+    <string name="msg_err_connecting_error">No network connectivity, please check your network and try again later.</string>
+    <string name="msg_err_data_error">Response data is not as expected</string>
 
 </resources>

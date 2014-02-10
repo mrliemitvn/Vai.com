@@ -1,0 +1,90 @@
+package org.vai.com.provider;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+/**
+ * This creates, updates, and opens the database. Opening is handled by the superclass, we handle the create & upgrade
+ * steps
+ */
+public class DbHelper extends SQLiteOpenHelper {
+
+	public final String TAG = DbHelper.class.getSimpleName();
+
+	public interface Tables {
+		public static final String CATEGORY = "category";
+	}
+
+	// Name of the database file
+	public static final String DATABASE_NAME = "vai.sqlite";
+	private static final int DATABASE_VERSION = 1;
+	public static final String ALTER_TABLE_SYNTAX = "ALTER TABLE ";
+	public static final String ADD_COLUMN_SYNTAX = " ADD COLUMN ";
+	public static final String TEXT_DATA = " TEXT";
+	public static final String INTEGER_DATA = " INTEGER";
+	public static final String REAL_DATA = " REAL";
+
+	public DbHelper(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		StringBuilder sqlBuilder = new StringBuilder();
+		String sql = null;
+
+		// Create CATEGORY table.
+		sqlBuilder = new StringBuilder();
+		sqlBuilder.append("CREATE TABLE IF NOT EXISTS " + Tables.CATEGORY + " (");
+		// sqlBuilder.append(Users._ID + " TEXT PRIMARY KEY, ");
+		// sqlBuilder.append(Users.CREATED_DATE + " TEXT, ");
+		// sqlBuilder.append(Users.TOTAL_MUTUAL_FRIENDS + " INTEGER,");
+		// sqlBuilder.append(Users._STATUS + " TEXT ");
+		sqlBuilder.append(")");
+		sql = sqlBuilder.toString();
+		db.execSQL(sql);
+	}
+
+	public static void deleteDatabase(Context context) {
+		context.deleteDatabase(DATABASE_NAME);
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// Upgrade database.
+		if (newVersion > oldVersion) {
+			db.beginTransaction();
+			for (int i = oldVersion; i < newVersion; ++i) {
+				int nextVersion = i + 1;
+				switch (nextVersion) {
+				case 2:
+					// Update database to version 2.
+					break;
+				default:
+					break;
+				}
+			}
+
+			db.setTransactionSuccessful();
+			db.endTransaction();
+		}
+	}
+
+	/**
+	 * Add new column to table.
+	 * 
+	 * @param db
+	 *            database.
+	 * @param table
+	 *            table name.
+	 * @param column
+	 *            column name.
+	 * @param dataType
+	 *            type of data.
+	 */
+	private void addColumn(SQLiteDatabase db, String table, String column, String dataType) {
+		String query = ALTER_TABLE_SYNTAX + table + ADD_COLUMN_SYNTAX + column + dataType;
+		db.execSQL(query);
+	}
+}
