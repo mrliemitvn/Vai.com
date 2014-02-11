@@ -1,6 +1,7 @@
 package org.vai.com.activity;
 
 import org.vai.com.R;
+import org.vai.com.fragment.HomeMenuFragment;
 import org.vai.com.fragment.SampleListFragment;
 
 import android.os.Bundle;
@@ -34,7 +35,7 @@ public class HomeActivity extends SlidingFragmentActivity {
 			getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		}
 		// Configure the SlidingMenu
-		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, new SampleListFragment()).commit();
+		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, new HomeMenuFragment()).commit();
 		SlidingMenu sm = getSlidingMenu();
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		sm.setShadowWidthRes(R.dimen.slidingmenu_shadow_width);
@@ -46,7 +47,7 @@ public class HomeActivity extends SlidingFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_home);
 
 		// Initialize content and menu.
 		init();

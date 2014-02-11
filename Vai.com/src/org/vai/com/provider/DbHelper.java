@@ -1,5 +1,7 @@
 package org.vai.com.provider;
 
+import org.vai.com.provider.DbContract.Category;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -37,10 +39,8 @@ public class DbHelper extends SQLiteOpenHelper {
 		// Create CATEGORY table.
 		sqlBuilder = new StringBuilder();
 		sqlBuilder.append("CREATE TABLE IF NOT EXISTS " + Tables.CATEGORY + " (");
-		// sqlBuilder.append(Users._ID + " TEXT PRIMARY KEY, ");
-		// sqlBuilder.append(Users.CREATED_DATE + " TEXT, ");
-		// sqlBuilder.append(Users.TOTAL_MUTUAL_FRIENDS + " INTEGER,");
-		// sqlBuilder.append(Users._STATUS + " TEXT ");
+		sqlBuilder.append(Category._ID + " TEXT PRIMARY KEY, ");
+		sqlBuilder.append(Category.NAME + " TEXT ");
 		sqlBuilder.append(")");
 		sql = sqlBuilder.toString();
 		db.execSQL(sql);

@@ -8,10 +8,19 @@
         android:minSdkVersion="10"
         android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
+        android:name="org.vai.com.VaiApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name="org.vai.com.MainActivity"
@@ -28,6 +37,17 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme" >
         </activity>
+
+        <!-- PROVIDER -->
+        <provider
+            android:name="org.vai.com.provider.DbProvider"
+            android:authorities="org.vai.com"
+            android:exported="false" >
+        </provider>
+        <!-- SERVICES -->
+        <service android:name="org.vai.com.service.Service1" />
+        <service android:name="org.vai.com.service.Service2" />
+        <service android:name="corg.vai.com.service.Service3" />
     </application>
 
 </manifest>

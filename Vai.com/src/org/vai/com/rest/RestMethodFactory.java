@@ -1,5 +1,6 @@
 package org.vai.com.rest;
 
+import org.vai.com.rest.home.GetCategoryRestMethod;
 import org.vai.com.utils.Consts;
 import org.vai.com.utils.Consts.UriConsts;
 
@@ -22,10 +23,9 @@ public class RestMethodFactory {
 	 */
 	private RestMethodFactory(Context context) {
 		mContext = context.getApplicationContext();
-		// step (1) register URi
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(UriConsts.AUTHORITY, Consts.UriConsts.PATH_VERIFICATION,
-				Consts.UriConsts.RESOURCE_TYPE_VERIFICATION);
+		uriMatcher.addURI(UriConsts.AUTHORITY, Consts.UriConsts.PATH_GET_CATEGORY_API,
+				Consts.UriConsts.RESOURCE_TYPE_GET_CATEGORY_API);
 	}
 
 	public static RestMethodFactory getInstance(Context context) {
@@ -48,12 +48,10 @@ public class RestMethodFactory {
 
 		AbstractRestMethod abstractRestMethod = null;
 		switch (uriMatcher.match(resourceUri)) {
-		case Consts.UriConsts.RESOURCE_TYPE_VERIFICATION:
-			// if (method == Method.POST) {
-			// abstractRestMethod = new PhoneVerificationRestMethod(mContext);
-			// } else if (method == Method.PUT) {
-			// abstractRestMethod = new VerifyCodeRestMethod(mContext);
-			// }
+		case Consts.UriConsts.RESOURCE_TYPE_GET_CATEGORY_API:
+			if (method == Method.GET) {
+				abstractRestMethod = new GetCategoryRestMethod(mContext);
+			}
 			break;
 		default:
 			break;
