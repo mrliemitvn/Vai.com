@@ -3,6 +3,12 @@ package org.vai.com.utils;
 import android.net.Uri;
 
 public class Consts {
+	
+	/* Json string */
+	public static final String JSON_ID = "id";
+	public static final String JSON_NAME = "name";
+	public static final String JSON_CATEGORY = "category";
+	
 	/* CONST URI */
 	public static final class UriConsts {
 		public static final String AUTHORITY = "com.cnc.ubox.uriauthority";
@@ -23,7 +29,8 @@ public class Consts {
 		/** Youtube thumbnail url */
 		public static final String YOUTUBE_VIDEO_THUMB_URL = "http://img.youtube.com/vi/{id}/0.jpg";
 
-		public static final String BASE_URL = "http://123.30.235.152/";
+		public static final String BASE_URL = "http://xn--vi-sia.com/";
+		public static final String CLIENT_KEY = "vnvmcnjhbjch-mmqadtyiocdefb";
 	}
 
 	// Callback upload progress

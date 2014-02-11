@@ -9,7 +9,5 @@ public interface BaseResource {
 
 	public ContentValues prepareContentValues();
 
-	public String getId();
-
 	public String getRestRequestStatus();
 }

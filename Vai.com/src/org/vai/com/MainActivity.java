@@ -1,13 +1,20 @@
 package org.vai.com;
 
-import android.app.Activity;
+import org.vai.com.activity.HomeActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 
-public class MainActivity extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+
+public class MainActivity extends SherlockActivity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		startActivity(new Intent(this, HomeActivity.class));
+		finish();
 	}
 }
