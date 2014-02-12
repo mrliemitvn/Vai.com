@@ -1,6 +1,7 @@
 package org.vai.com.provider;
 
 import org.vai.com.provider.DbContract.Category;
+import org.vai.com.provider.DbContract.Conference;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	public interface Tables {
 		public static final String CATEGORY = "category";
+		public static final String CONFERENCE = "conference";
 	}
 
 	// Name of the database file
@@ -41,6 +43,31 @@ public class DbHelper extends SQLiteOpenHelper {
 		sqlBuilder.append("CREATE TABLE IF NOT EXISTS " + Tables.CATEGORY + " (");
 		sqlBuilder.append(Category._ID + " TEXT PRIMARY KEY, ");
 		sqlBuilder.append(Category.NAME + " TEXT ");
+		sqlBuilder.append(")");
+		sql = sqlBuilder.toString();
+		db.execSQL(sql);
+
+		// Create CONFERENCE table.
+		sqlBuilder = new StringBuilder();
+		sqlBuilder.append("CREATE TABLE IF NOT EXISTS " + Tables.CONFERENCE + " (");
+		sqlBuilder.append(Conference._ID + " TEXT PRIMARY KEY, ");
+		sqlBuilder.append(Conference.POST_ID + " TEXT, ");
+		sqlBuilder.append(Conference.CATEGORY_ID + " TEXT, ");
+		sqlBuilder.append(Conference.TITLE + " TEXT, ");
+		sqlBuilder.append(Conference.TITLE_ASCII + " TEXT, ");
+		sqlBuilder.append(Conference.ALIAS + " TEXT, ");
+		sqlBuilder.append(Conference.INTRO + " TEXT, ");
+		sqlBuilder.append(Conference.VIDEO_ID + " TEXT, ");
+		sqlBuilder.append(Conference.IMAGE + " TEXT, ");
+		sqlBuilder.append(Conference._STATUS + " TEXT, ");
+		sqlBuilder.append(Conference.AUTHOR + " INTEGER, ");
+		sqlBuilder.append(Conference.IMAGE_WIDTH + " INTEGER, ");
+		sqlBuilder.append(Conference.IMAGE_HEIGHT + " INTEGER, ");
+		sqlBuilder.append(Conference.TIME_CREATED + " INTEGER, ");
+		sqlBuilder.append(Conference.TIME_MODIFIED + " INTEGER, ");
+		sqlBuilder.append(Conference.VIEWED + " INTEGER, ");
+		sqlBuilder.append(Conference.LIKE + " INTEGER, ");
+		sqlBuilder.append(Conference.COMMENT + " INTEGER ");
 		sqlBuilder.append(")");
 		sql = sqlBuilder.toString();
 		db.execSQL(sql);

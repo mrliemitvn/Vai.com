@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/common_margin_small" >
+
+    <TextView
+        android:id="@+id/tvNoData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/msg_info_no_data_result"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_medium"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/pbLoadingData"
+        android:layout_width="@dimen/progressbar_width_height_medium"
+        android:layout_height="@dimen/progressbar_width_height_medium"
+        android:layout_gravity="center_horizontal" />
+
+</FrameLayout>

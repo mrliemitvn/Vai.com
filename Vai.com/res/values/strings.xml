@@ -11,6 +11,8 @@
     <string name="msg_err_server_error">There is an error from server</string>
     <string name="msg_err_connecting_error">No network connectivity, please check your network and try again later.</string>
     <string name="msg_err_data_error">Response data is not as expected</string>
+    <string name="msg_err_something_wrong">Something went wrong. Please try again!</string>
+    <string name="msg_info_no_data_result">No data result</string>
     <string name="empty"></string>
 
 </resources>

@@ -44,6 +44,8 @@ public class MainActivity extends SherlockActivity {
 				showMessageBar(getResources().getString(R.string.msg_err_bad_request));
 			} else if (requestCode == RestMethodResult.ERROR_CODE_NETWORK_ISSUE) {
 				showMessageBar(getResources().getString(R.string.msg_err_connecting_error));
+			} else {
+				showMessageBar(getResources().getString(R.string.msg_err_something_wrong));
 			}
 		}
 

@@ -5,6 +5,7 @@ import org.vai.com.adapter.HomeMenuAdapter;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.provider.DbContract.Category;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -30,6 +31,9 @@ public class HomeMenuFragment extends SherlockFragment implements LoaderCallback
 	}
 
 	private void setAdapter() {
+		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View headerListMenu = inflater.inflate(R.layout.layout_header_list_home_menu, null, false);
+		mListView.addHeaderView(headerListMenu);
 		mAdapter = new HomeMenuAdapter(getActivity(), null, this);
 		mListView.setAdapter(mAdapter);
 	}

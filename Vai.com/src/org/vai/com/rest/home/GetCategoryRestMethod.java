@@ -1,6 +1,5 @@
 package org.vai.com.rest.home;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.vai.com.resource.home.ListCategoryResource;
 import org.vai.com.rest.AbstractRestMethod;
