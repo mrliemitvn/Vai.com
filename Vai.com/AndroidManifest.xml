@@ -47,7 +47,7 @@
         <!-- SERVICES -->
         <service android:name="org.vai.com.service.Service1" />
         <service android:name="org.vai.com.service.Service2" />
-        <service android:name="corg.vai.com.service.Service3" />
+        <service android:name="org.vai.com.service.Service3" />
     </application>
 
 </manifest>

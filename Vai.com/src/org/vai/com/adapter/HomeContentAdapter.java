@@ -53,6 +53,7 @@ public class HomeContentAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
 			viewHolder.tvLike = (TextView) convertView.findViewById(R.id.tvLike);
 			viewHolder.tvComment = (TextView) convertView.findViewById(R.id.tvComment);
+			viewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 			viewHolder.imgContent = (ImageView) convertView.findViewById(R.id.imgContent);
 			viewHolder.imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
 			viewHolder.imgShare = (ImageView) convertView.findViewById(R.id.imgShare);

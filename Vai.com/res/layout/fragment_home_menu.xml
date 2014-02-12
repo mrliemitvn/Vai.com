@@ -3,10 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <include
+        android:id="@+id/layoutMenu"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abs__action_bar_default_height"
+        layout="@layout/layout_header_list_home_menu" />
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/layoutMenu"
         android:drawSelectorOnTop="true"
         android:headerDividersEnabled="false" />
 

@@ -1,7 +1,6 @@
 package org.vai.com.adapter;
 
 import org.vai.com.R;
-import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.resource.home.CategoryResource;
 
 import android.content.Context;
@@ -15,12 +14,10 @@ import android.widget.TextView;
 public class HomeMenuAdapter extends CursorAdapter {
 
 	private LayoutInflater mLayoutInflater;
-	private IAdapterCallBack mAdapterCallBack;
 
-	public HomeMenuAdapter(Context context, Cursor cursor, IAdapterCallBack adapterCallBack) {
+	public HomeMenuAdapter(Context context, Cursor cursor) {
 		super(context, cursor, true);
 		mLayoutInflater = LayoutInflater.from(context);
-		mAdapterCallBack = adapterCallBack;
 	}
 
 	@Override

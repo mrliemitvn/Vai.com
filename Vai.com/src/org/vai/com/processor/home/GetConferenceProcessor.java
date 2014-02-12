@@ -16,6 +16,7 @@ import org.vai.com.utils.Consts.UriConsts;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 public class GetConferenceProcessor extends BaseProcessor<ListConferenceResource> {
 
@@ -60,6 +61,7 @@ public class GetConferenceProcessor extends BaseProcessor<ListConferenceResource
 			ContentValues[] values = new ContentValues[listConference.size()];
 			for (int i = 0; i < listConference.size(); i++) {
 				ConferenceResource conference = listConference.get(i);
+				if (TextUtils.isEmpty(conference.categoryId)) conference.categoryId = category;
 				ContentValues valuesConference = conference.prepareContentValues();
 				where = new StringBuilder().append(Conference._ID).append("='").append(conference.id).append("' and ")
 						.append(Conference.CATEGORY_ID).append("='").append(conference.categoryId).append("'")

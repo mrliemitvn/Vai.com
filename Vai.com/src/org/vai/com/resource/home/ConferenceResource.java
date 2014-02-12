@@ -15,7 +15,7 @@ import android.database.Cursor;
 public class ConferenceResource implements BaseResource, Resource {
 
 	private static final String strPatternVideoId = "\\[youtube\\](.*?)\\[/youtube\\]";
-	private static final String strPatternImageInfo = "img=(.*?);width=(.*?);height=(.*?)";
+	private static final String strPatternImageInfo = "img=(.*?);width=(.*?);height=(.*?);";
 
 	public String id;
 	public String postId;
@@ -69,7 +69,7 @@ public class ConferenceResource implements BaseResource, Resource {
 					}
 				}
 				if (!json.isNull(Consts.JSON_OPTIONS)) {
-					String imgInfo = json.getString(Consts.JSON_OPTIONS);
+					String imgInfo = json.getString(Consts.JSON_OPTIONS) + ";";
 					Pattern pattern = Pattern.compile(strPatternImageInfo, Pattern.CASE_INSENSITIVE);
 					Matcher matcher = pattern.matcher(imgInfo);
 					while (matcher.find()) {
