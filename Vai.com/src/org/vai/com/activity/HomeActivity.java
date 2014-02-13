@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -70,8 +71,17 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 
+		getSupportActionBar().setIcon(R.drawable.main_menu_icon);
+
 		// Initialize content and menu.
 		init();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(Menu.NONE, android.R.id.button1, Menu.NONE, R.string.refresh).setIcon(R.drawable.icon_refesh)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -79,6 +89,10 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			toggle();
+			break;
+		case android.R.id.button1:
+			if (mContentFragment != null) mContentFragment.callApiGetConference(1);
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

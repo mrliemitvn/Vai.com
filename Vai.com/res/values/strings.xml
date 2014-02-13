@@ -16,5 +16,6 @@
     <string name="empty"></string>
     <string name="menu_options">Options</string>
     <string name="menu_more">More</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

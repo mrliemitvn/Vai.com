@@ -86,10 +86,9 @@ public class HomeContentFragment extends BaseFragment implements IAdapterCallBac
 
 	private void getDataFromDb() {
 		if (getActivity() == null) return;
-		String order = new StringBuilder().append(Conference.TIME_CREATED).append(" ASC").toString();
 		String where = new StringBuilder().append(Conference.CATEGORY_ID).append("='").append(mCategoryId).append("'")
 				.toString();
-		Cursor cursor = getActivity().getContentResolver().query(Conference.CONTENT_URI, null, where, null, order);
+		Cursor cursor = getActivity().getContentResolver().query(Conference.CONTENT_URI, null, where, null, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			mListConference.clear();
 			do {

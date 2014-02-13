@@ -100,8 +100,7 @@ public class HomeMenuFragment extends SherlockFragment implements LoaderCallback
 	public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
 		switch (id) {
 		case LOADER_CATEGORY:
-			String order = new StringBuilder().append(Category._ID).append(" ASC").toString();
-			return new CursorLoader(getActivity(), Category.CONTENT_URI, null, null, null, order);
+			return new CursorLoader(getActivity(), Category.CONTENT_URI, null, null, null, null);
 		default:
 			return null;
 		}

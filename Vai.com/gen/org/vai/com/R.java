@@ -801,14 +801,15 @@ containing a value of this type.
         public static final int abs__bright_foreground_disabled_holo_light=0x7f070005;
         public static final int abs__bright_foreground_holo_dark=0x7f070002;
         public static final int abs__bright_foreground_holo_light=0x7f070003;
-        public static final int abs__primary_text_disable_only_holo_dark=0x7f07000a;
-        public static final int abs__primary_text_disable_only_holo_light=0x7f07000b;
-        public static final int abs__primary_text_holo_dark=0x7f07000c;
-        public static final int abs__primary_text_holo_light=0x7f07000d;
-        public static final int black=0x7f070007;
-        public static final int common_background=0x7f070008;
-        public static final int image_loading=0x7f070009;
-        public static final int white=0x7f070006;
+        public static final int abs__primary_text_disable_only_holo_dark=0x7f07000b;
+        public static final int abs__primary_text_disable_only_holo_light=0x7f07000c;
+        public static final int abs__primary_text_holo_dark=0x7f07000d;
+        public static final int abs__primary_text_holo_light=0x7f07000e;
+        public static final int black=0x7f070008;
+        public static final int common_background=0x7f070009;
+        public static final int image_loading=0x7f07000a;
+        public static final int transparent=0x7f070006;
+        public static final int white=0x7f070007;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1040,22 +1041,24 @@ containing a value of this type.
         public static final int abs__textfield_searchview_right_holo_light=0x7f02006e;
         public static final int abs__toast_frame=0x7f02006f;
         public static final int background_holo_dark=0x7f020070;
-        public static final int first_screen_icon=0x7f020071;
-        public static final int home_as_up=0x7f020072;
+        public static final int bg_actionbar=0x7f020071;
+        public static final int first_screen_icon=0x7f020072;
         public static final int ic_launcher=0x7f020073;
-        public static final int icon_comment=0x7f020074;
-        public static final int icon_refesh=0x7f020075;
-        public static final int icon_save=0x7f020076;
-        public static final int icon_share=0x7f020077;
-        public static final int like=0x7f020078;
-        public static final int main_menu_icon=0x7f020079;
-        public static final int message_bar_click=0x7f02007a;
-        public static final int new_home_as_up=0x7f02007b;
-        public static final int notlike=0x7f02007c;
-        public static final int photo_icon=0x7f02007d;
-        public static final int playbtn=0x7f02007e;
-        public static final int shadow=0x7f02007f;
-        public static final int video_icon=0x7f020080;
+        public static final int icon_back=0x7f020074;
+        public static final int icon_comment=0x7f020075;
+        public static final int icon_refesh=0x7f020076;
+        public static final int icon_save=0x7f020077;
+        public static final int icon_share=0x7f020078;
+        public static final int like=0x7f020079;
+        public static final int main_menu_icon=0x7f02007a;
+        public static final int menu_refresh=0x7f02007b;
+        public static final int message_bar_click=0x7f02007c;
+        public static final int new_home_as_up=0x7f02007d;
+        public static final int notlike=0x7f02007e;
+        public static final int photo_icon=0x7f02007f;
+        public static final int playbtn=0x7f020080;
+        public static final int shadow=0x7f020081;
+        public static final int video_icon=0x7f020082;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f050025;
@@ -1238,6 +1241,7 @@ containing a value of this type.
         public static final int msg_err_server_error=0x7f0a0014;
         public static final int msg_err_something_wrong=0x7f0a0017;
         public static final int msg_info_no_data_result=0x7f0a0018;
+        public static final int refresh=0x7f0a001c;
     }
     public static final class style {
         /** 
@@ -1252,10 +1256,10 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f0b005a;
+        public static final int AppBaseTheme=0x7f0b005c;
         /**  Application theme. 
          */
-        public static final int AppTheme=0x7f0b0059;
+        public static final int AppTheme=0x7f0b005b;
         public static final int Sherlock___TextAppearance_Small=0x7f0b0046;
         public static final int Sherlock___Theme=0x7f0b0051;
         public static final int Sherlock___Theme_DarkActionBar=0x7f0b0053;
@@ -1298,6 +1302,8 @@ containing a value of this type.
         public static final int Theme_Sherlock_Light_DarkActionBar=0x7f0b0056;
         public static final int Theme_Sherlock_Light_NoActionBar=0x7f0b0058;
         public static final int Theme_Sherlock_NoActionBar=0x7f0b0057;
+        public static final int VaiActionBarButtonStyle=0x7f0b005a;
+        public static final int VaiActionBarStyle=0x7f0b0059;
         public static final int Widget=0x7f0b0000;
         public static final int Widget_Sherlock_ActionBar=0x7f0b0002;
         public static final int Widget_Sherlock_ActionBar_Solid=0x7f0b0003;

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_background"
-    android:padding="@dimen/common_margin_small" >
+    android:padding="@dimen/common_margin_medium" >
 
     <TextView
         android:id="@+id/tvName"
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvName"
-        android:textColor="@color/black"
+        android:textColor="@android:color/background_dark"
         android:textSize="@dimen/textsize_small" />
 
 </RelativeLayout>

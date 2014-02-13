@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 public class MoreActivity extends SherlockFragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -30,6 +31,9 @@ public class MoreActivity extends SherlockFragmentActivity implements LoaderCall
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_more);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setIcon(R.drawable.icon_back);
 
 		// Init cursor loader.
 		getSupportLoaderManager().initLoader(LOADER_MORE_WEB, null, this);
@@ -54,6 +58,15 @@ public class MoreActivity extends SherlockFragmentActivity implements LoaderCall
 				}
 			}
 		});
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

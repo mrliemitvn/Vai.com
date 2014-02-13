@@ -1,10 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
 
-    <item
-        android:left="0dp"
-        android:right="5dp">
-        <bitmap android:src="@drawable/home_as_up" />
-    </item>
+    <stroke
+        android:width="0dp"
+        android:color="@color/transparent" />
 
-</layer-list>
+    <size
+        android:height="@dimen/abs__action_bar_default_height"
+        android:width="@dimen/common_margin_small" />
+
+    <gradient
+        android:angle="225"
+        android:endColor="@color/transparent"
+        android:startColor="@color/transparent" />
+
+    <corners
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp"
+        android:topLeftRadius="0dp"
+        android:topRightRadius="0dp" />
+
+</shape>
