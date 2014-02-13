@@ -35,6 +35,9 @@ public class Consts {
 	public static final String JSON_LIKE = "like";
 	public static final String JSON_COMMENT = "comment";
 	public static final String JSON_PAGE = "page";
+	public static final String JSON_MOREWEB = "moreweb";
+	public static final String JSON_ADS = "ads";
+	public static final String JSON_FBAPPID = "fbappid";
 
 	/* Place holder string */
 	public static final String CATEGORY_PLACE_HOLDER = "{category}";

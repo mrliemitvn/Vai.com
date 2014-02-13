@@ -1,7 +1,7 @@
 package org.vai.com.rest.home;
 
 import org.json.JSONObject;
-import org.vai.com.resource.home.ListCategoryResource;
+import org.vai.com.resource.menu.ListCategoryResource;
 import org.vai.com.rest.AbstractRestMethod;
 import org.vai.com.rest.Request;
 import org.vai.com.rest.RestMethodFactory.Method;

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_margin_medium"
+        android:background="@color/common_background" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/tvOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/abs__item_background_holo_light"
+            android:padding="@dimen/common_margin_medium"
+            android:text="@string/menu_options"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_medium" />
+
+        <View
+            android:id="@+id/viewDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_divider_height"
+            android:layout_below="@id/tvOptions"
+            android:background="@color/common_background" />
+
+        <TextView
+            android:id="@+id/tvMore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewDivider"
+            android:background="@drawable/abs__item_background_holo_light"
+            android:padding="@dimen/common_margin_medium"
+            android:text="@string/menu_more"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_medium" />
+    </RelativeLayout>
+
+</LinearLayout>

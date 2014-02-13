@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import org.vai.com.provider.DbContract.Category;
 import org.vai.com.provider.DbContract.Conference;
+import org.vai.com.provider.DbContract.MoreWeb;
 import org.vai.com.provider.DbHelper.Tables;
 import org.vai.com.utils.Logger;
 
@@ -29,6 +30,7 @@ public class DbProvider extends ContentProvider {
 
 	private static final int CATEGORY = 0;
 	private static final int CONFERENCE = 1;
+	private static final int MORE_WEB = 2;
 
 	/**
 	 * Build and return a {@link UriMatcher} that catches all {@link Uri} variations supported by this
@@ -40,6 +42,7 @@ public class DbProvider extends ContentProvider {
 		/** Uri for category. */
 		matcher.addURI(authority, DbContract.PATH_CATEGORY, CATEGORY);
 		matcher.addURI(authority, DbContract.PATH_CONFERENCE, CONFERENCE);
+		matcher.addURI(authority, DbContract.PATH_MORE_WEB, MORE_WEB);
 		return matcher;
 	}
 
@@ -58,6 +61,8 @@ public class DbProvider extends ContentProvider {
 			return Category.CONTENT_TYPE;
 		case CONFERENCE:
 			return Conference.CONTENT_TYPE;
+		case MORE_WEB:
+			return MoreWeb.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -79,6 +84,10 @@ public class DbProvider extends ContentProvider {
 			builder.setTables(Tables.CONFERENCE);
 			return builder;
 		}
+		case MORE_WEB: {
+			builder.setTables(Tables.MORE_WEB);
+			return builder;
+		}
 		default: {
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -98,6 +107,10 @@ public class DbProvider extends ContentProvider {
 		}
 		case CONFERENCE: {
 			builder.setTables(Tables.CONFERENCE);
+			return builder;
+		}
+		case MORE_WEB: {
+			builder.setTables(Tables.MORE_WEB);
 			return builder;
 		}
 		// case FRIEND: {
@@ -174,6 +187,13 @@ public class DbProvider extends ContentProvider {
 			Logger.debug(TAG, "Insert to uri: " + newUri.toString());
 			return newUri;
 		}
+		case MORE_WEB: {
+			long id = db.insertWithOnConflict(Tables.MORE_WEB, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+			// Notify any watchers of the change
+			Uri newUri = ContentUris.withAppendedId(uri, id);
+			Logger.debug(TAG, "Insert to uri: " + newUri.toString());
+			return newUri;
+		}
 		default: {
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -204,6 +224,15 @@ public class DbProvider extends ContentProvider {
 						long id = db.insertWithOnConflict(Tables.CONFERENCE, null, valuesConference,
 								SQLiteDatabase.CONFLICT_REPLACE);
 						Logger.debug(TAG, "bulkInsert database CONFERENCE " + id);
+					}
+				}
+				break;
+			case MORE_WEB:
+				for (ContentValues valuesMoreWeb : contentValues) {
+					if (valuesMoreWeb != null && valuesMoreWeb.size() > 0) {
+						long id = db.insertWithOnConflict(Tables.MORE_WEB, null, valuesMoreWeb,
+								SQLiteDatabase.CONFLICT_REPLACE);
+						Logger.debug(TAG, "bulkInsert database MORE_WEB " + id);
 					}
 				}
 				break;

@@ -8,12 +8,7 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        android:dividerHeight="@dimen/common_margin_medium"
         android:drawSelectorOnTop="true"
-        android:headerDividersEnabled="false"
-        android:paddingLeft="@dimen/common_margin_small"
-        android:paddingRight="@dimen/common_margin_small" >
-    </ListView>
+        android:headerDividersEnabled="false" />
 
 </FrameLayout>

@@ -14,5 +14,7 @@
     <string name="msg_err_something_wrong">Something went wrong. Please try again!</string>
     <string name="msg_info_no_data_result">No data result</string>
     <string name="empty"></string>
+    <string name="menu_options">Options</string>
+    <string name="menu_more">More</string>
 
 </resources>

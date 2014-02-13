@@ -1,7 +1,7 @@
 package org.vai.com.adapter;
 
 import org.vai.com.R;
-import org.vai.com.resource.menu.CategoryResource;
+import org.vai.com.resource.menu.MoreWebResource;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class HomeMenuAdapter extends CursorAdapter {
+public class MoreWebAdapter extends CursorAdapter {
 
 	private LayoutInflater mLayoutInflater;
 
-	public HomeMenuAdapter(Context context, Cursor cursor) {
+	public MoreWebAdapter(Context context, Cursor cursor) {
 		super(context, cursor, true);
 		mLayoutInflater = LayoutInflater.from(context);
 	}
@@ -24,20 +24,23 @@ public class HomeMenuAdapter extends CursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 
-		CategoryResource categoryResource = new CategoryResource(cursor);
-		viewHolder.tvCategory.setText(categoryResource.name);
+		MoreWebResource moreWeb = new MoreWebResource(cursor);
+		viewHolder.tvName.setText(moreWeb.name);
+		viewHolder.tvLink.setText(moreWeb.link);
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View convertView = mLayoutInflater.inflate(R.layout.item_list_home_menu, parent, false);
+		View convertView = mLayoutInflater.inflate(R.layout.item_list_more_web, parent, false);
 		ViewHolder viewHolder = new ViewHolder();
-		viewHolder.tvCategory = (TextView) convertView.findViewById(R.id.tvCategory);
+		viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvName);
+		viewHolder.tvLink = (TextView) convertView.findViewById(R.id.tvLink);
 		convertView.setTag(viewHolder);
 		return convertView;
 	}
 
 	private class ViewHolder {
-		TextView tvCategory;
+		TextView tvName;
+		TextView tvLink;
 	}
 }

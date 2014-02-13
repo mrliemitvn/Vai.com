@@ -42,6 +42,7 @@ public class DbContract {
 	 */
 	static final String PATH_CATEGORY = "category";
 	static final String PATH_CONFERENCE = "conference";
+	static final String PATH_MORE_WEB = "more_web";
 
 	public static class Category implements ResourceTable {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CATEGORY).build();
@@ -87,5 +88,15 @@ public class DbContract {
 		public static final String LIKE = "like";
 		/** comment */
 		public static final String COMMENT = "comment";
+	}
+
+	public static class MoreWeb implements ResourceTable {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MORE_WEB).build();
+		public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.vai.more_web";
+		public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.vai.more_web";
+		/** Web name */
+		public static final String NAME = "name";
+		/** Web link */
+		public static final String LINK = "link";
 	}
 }

@@ -1,12 +1,16 @@
 package org.vai.com.fragment;
 
 import org.vai.com.R;
+import org.vai.com.activity.MoreActivity;
+import org.vai.com.activity.OptionsActivity;
 import org.vai.com.adapter.HomeMenuAdapter;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.provider.DbContract.Category;
-import org.vai.com.resource.home.CategoryResource;
+import org.vai.com.resource.menu.CategoryResource;
 import org.vai.com.utils.Consts;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -14,20 +18,24 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class HomeMenuFragment extends SherlockFragment implements LoaderCallbacks<Cursor> {
+public class HomeMenuFragment extends SherlockFragment implements LoaderCallbacks<Cursor>, OnClickListener {
 
 	private static final int LOADER_CATEGORY = 1;
 
 	private View mParentView;
 	private ListView mListView;
 	private HomeMenuAdapter mAdapter;
+	private TextView mTvOptions;
+	private TextView mTvMore;
 
 	private IAdapterCallBack mAdapterCallBack;
 
@@ -47,6 +55,16 @@ public class HomeMenuFragment extends SherlockFragment implements LoaderCallback
 				}
 			}
 		});
+	}
+
+	private void setFooterList() {
+		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View viewFooterOptions = inflater.inflate(R.layout.layout_options_menu, null, true);
+		mTvOptions = (TextView) viewFooterOptions.findViewById(R.id.tvOptions);
+		mTvMore = (TextView) viewFooterOptions.findViewById(R.id.tvMore);
+		mTvOptions.setOnClickListener(this);
+		mTvMore.setOnClickListener(this);
+		mListView.addFooterView(viewFooterOptions);
 	}
 
 	private void setAdapter() {
@@ -73,6 +91,7 @@ public class HomeMenuFragment extends SherlockFragment implements LoaderCallback
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		setFooterList();
 		setAdapter();
 		initLoaderCursor();
 	}
@@ -104,5 +123,14 @@ public class HomeMenuFragment extends SherlockFragment implements LoaderCallback
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		mAdapter.swapCursor(null);
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v == mTvOptions) {
+			startActivity(new Intent(getActivity(), OptionsActivity.class));
+		} else if (v == mTvMore) {
+			startActivity(new Intent(getActivity(), MoreActivity.class));
+		}
 	}
 }

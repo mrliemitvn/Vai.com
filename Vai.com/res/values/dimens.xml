@@ -6,6 +6,7 @@
     <dimen name="common_margin_medium">10dp</dimen>
     <dimen name="common_margin_large">15dp</dimen>
     <dimen name="common_divider_height">0.5dp</dimen>
+    <dimen name="textsize_small">14sp</dimen>
     <dimen name="textsize_medium">16sp</dimen>
     <dimen name="textsize_large">18sp</dimen>
     <dimen name="progressbar_width_height_medium">35dp</dimen>

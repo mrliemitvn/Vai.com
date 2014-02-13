@@ -912,18 +912,19 @@ containing a value of this type.
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f08001a;
+        public static final int activity_horizontal_margin=0x7f08001b;
         public static final int common_divider_height=0x7f080014;
         public static final int common_margin_large=0x7f080013;
         public static final int common_margin_medium=0x7f080012;
         public static final int common_margin_small=0x7f080011;
-        public static final int default_mask_height=0x7f080018;
-        public static final int divider_below_mask_magin_top=0x7f080019;
-        public static final int progressbar_width_height_medium=0x7f080017;
+        public static final int default_mask_height=0x7f080019;
+        public static final int divider_below_mask_magin_top=0x7f08001a;
+        public static final int progressbar_width_height_medium=0x7f080018;
         public static final int slidingmenu_offset=0x7f08000f;
         public static final int slidingmenu_shadow_width=0x7f080010;
-        public static final int textsize_large=0x7f080016;
-        public static final int textsize_medium=0x7f080015;
+        public static final int textsize_large=0x7f080017;
+        public static final int textsize_medium=0x7f080016;
+        public static final int textsize_small=0x7f080015;
     }
     public static final class drawable {
         public static final int abs__ab_bottom_solid_dark_holo=0x7f020000;
@@ -1107,27 +1108,31 @@ containing a value of this type.
         public static final int layoutMenu=0x7f05003a;
         public static final int left=0x7f050010;
         public static final int listMode=0x7f050002;
-        public static final int listView=0x7f050039;
+        public static final int listView=0x7f050038;
         public static final int mainContent=0x7f050037;
         public static final int margin=0x7f050012;
-        public static final int menu_frame=0x7f050047;
+        public static final int menu_frame=0x7f05004b;
         public static final int normal=0x7f050001;
-        public static final int pbLoadingData=0x7f050046;
+        public static final int pbLoadingData=0x7f050048;
         public static final int right=0x7f050011;
         public static final int rlContent=0x7f05003d;
-        public static final int row_icon=0x7f050048;
-        public static final int row_title=0x7f050049;
+        public static final int row_icon=0x7f05004c;
+        public static final int row_title=0x7f05004d;
         public static final int selected_view=0x7f050014;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
-        public static final int slidingmenumain=0x7f05004a;
+        public static final int slidingmenumain=0x7f05004e;
         public static final int tabMode=0x7f050003;
         public static final int tvCategory=0x7f050044;
         public static final int tvComment=0x7f050041;
         public static final int tvLike=0x7f050040;
-        public static final int tvMessageBar=0x7f050038;
-        public static final int tvNoData=0x7f050045;
+        public static final int tvLink=0x7f050046;
+        public static final int tvMessageBar=0x7f050039;
+        public static final int tvMore=0x7f05004a;
+        public static final int tvName=0x7f050045;
+        public static final int tvNoData=0x7f050047;
+        public static final int tvOptions=0x7f050049;
         public static final int tvTitle=0x7f05003c;
         public static final int useLogo=0x7f050004;
         public static final int viewDivider=0x7f05003f;
@@ -1160,19 +1165,23 @@ containing a value of this type.
         public static final int abs__simple_dropdown_hint=0x7f030014;
         public static final int activity_home=0x7f030015;
         public static final int activity_main=0x7f030016;
-        public static final int common_message_bar=0x7f030017;
-        public static final int fragment_home_content=0x7f030018;
-        public static final int fragment_home_menu=0x7f030019;
-        public static final int item_list_conference=0x7f03001a;
-        public static final int item_list_home_menu=0x7f03001b;
-        public static final int layout_header_list_home_menu=0x7f03001c;
-        public static final int layout_list_loading=0x7f03001d;
-        public static final int list=0x7f03001e;
-        public static final int menu_frame=0x7f03001f;
-        public static final int row=0x7f030020;
-        public static final int sherlock_spinner_dropdown_item=0x7f030021;
-        public static final int sherlock_spinner_item=0x7f030022;
-        public static final int slidingmenumain=0x7f030023;
+        public static final int activity_more=0x7f030017;
+        public static final int activity_options=0x7f030018;
+        public static final int common_message_bar=0x7f030019;
+        public static final int fragment_home_content=0x7f03001a;
+        public static final int fragment_home_menu=0x7f03001b;
+        public static final int item_list_conference=0x7f03001c;
+        public static final int item_list_home_menu=0x7f03001d;
+        public static final int item_list_more_web=0x7f03001e;
+        public static final int layout_header_list_home_menu=0x7f03001f;
+        public static final int layout_list_loading=0x7f030020;
+        public static final int layout_options_menu=0x7f030021;
+        public static final int list=0x7f030022;
+        public static final int menu_frame=0x7f030023;
+        public static final int row=0x7f030024;
+        public static final int sherlock_spinner_dropdown_item=0x7f030025;
+        public static final int sherlock_spinner_item=0x7f030026;
+        public static final int slidingmenumain=0x7f030027;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1216,6 +1225,8 @@ containing a value of this type.
         public static final int abs__shareactionprovider_share_with_application=0x7f0a0007;
         public static final int app_name=0x7f0a000d;
         public static final int empty=0x7f0a0019;
+        public static final int menu_more=0x7f0a001b;
+        public static final int menu_options=0x7f0a001a;
         public static final int msg_err_bad_request=0x7f0a000f;
         public static final int msg_err_conflict=0x7f0a0013;
         public static final int msg_err_connecting_error=0x7f0a0015;

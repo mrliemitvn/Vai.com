@@ -1,4 +1,4 @@
-package org.vai.com.resource.home;
+package org.vai.com.resource.menu;
 
 import org.json.JSONObject;
 import org.vai.com.provider.DbContract.Category;

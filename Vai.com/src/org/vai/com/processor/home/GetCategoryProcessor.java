@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import org.vai.com.processor.BaseProcessor;
 import org.vai.com.provider.DbContract.Category;
-import org.vai.com.resource.home.CategoryResource;
-import org.vai.com.resource.home.ListCategoryResource;
+import org.vai.com.provider.DbContract.MoreWeb;
+import org.vai.com.resource.menu.CategoryResource;
+import org.vai.com.resource.menu.ListCategoryResource;
+import org.vai.com.resource.menu.MoreWebResource;
 import org.vai.com.rest.RestMethod;
 import org.vai.com.rest.RestMethodFactory;
 import org.vai.com.rest.RestMethodFactory.Method;
@@ -47,7 +49,18 @@ public class GetCategoryProcessor extends BaseProcessor<ListCategoryResource> {
 				valuesCategory[i] = categoryResource.prepareContentValues();
 			}
 
+			// Delete all more web before.
+			mContext.getContentResolver().delete(MoreWeb.CONTENT_URI, null, null);
+
+			ArrayList<MoreWebResource> listMoreWebResources = mResult.getResource().getListMoreWebResources();
+			ContentValues[] valuesMoreWeb = new ContentValues[listMoreWebResources.size()];
+			for (int i = 0; i < listMoreWebResources.size(); i++) {
+				MoreWebResource moreWebResource = listMoreWebResources.get(i);
+				valuesMoreWeb[i] = moreWebResource.prepareContentValues();
+			}
+
 			mContext.getContentResolver().bulkInsert(Category.CONTENT_URI, valuesCategory);
+			mContext.getContentResolver().bulkInsert(MoreWeb.CONTENT_URI, valuesMoreWeb);
 		}
 	}
 }

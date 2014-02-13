@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 public class SharePrefs {
 
 	public static final String DEFAULT_BLANK = "";
+	public static final String ADS_ID = "ads_id";
+	public static final String FACEBOOK_APP_ID = "facebook_app_id";
 
 	private static SharePrefs instance = new SharePrefs();
 	private SharedPreferences sharedPreferences;
@@ -48,5 +50,21 @@ public class SharePrefs {
 
 	public boolean get(String key, boolean _default) {
 		return sharedPreferences.getBoolean(key, _default);
+	}
+
+	public void saveAdsId(String adsId) {
+		save(ADS_ID, adsId);
+	}
+
+	public String getAdsId() {
+		return get(ADS_ID, DEFAULT_BLANK);
+	}
+
+	public void saveFacebookAppId(String facebookAppId) {
+		save(FACEBOOK_APP_ID, facebookAppId);
+	}
+
+	public String getFacebookAppId() {
+		return get(FACEBOOK_APP_ID, DEFAULT_BLANK);
 	}
 }

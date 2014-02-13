@@ -2,6 +2,7 @@ package org.vai.com.provider;
 
 import org.vai.com.provider.DbContract.Category;
 import org.vai.com.provider.DbContract.Conference;
+import org.vai.com.provider.DbContract.MoreWeb;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +19,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	public interface Tables {
 		public static final String CATEGORY = "category";
 		public static final String CONFERENCE = "conference";
+		public static final String MORE_WEB = "more_web";
 	}
 
 	// Name of the database file
@@ -68,6 +70,16 @@ public class DbHelper extends SQLiteOpenHelper {
 		sqlBuilder.append(Conference.VIEWED + " INTEGER, ");
 		sqlBuilder.append(Conference.LIKE + " INTEGER, ");
 		sqlBuilder.append(Conference.COMMENT + " INTEGER ");
+		sqlBuilder.append(")");
+		sql = sqlBuilder.toString();
+		db.execSQL(sql);
+
+		// Create MORE_WEB table.
+		sqlBuilder = new StringBuilder();
+		sqlBuilder.append("CREATE TABLE IF NOT EXISTS " + Tables.MORE_WEB + " (");
+		sqlBuilder.append(MoreWeb._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, ");
+		sqlBuilder.append(MoreWeb.NAME + " TEXT, ");
+		sqlBuilder.append(MoreWeb.LINK + " TEXT ");
 		sqlBuilder.append(")");
 		sql = sqlBuilder.toString();
 		db.execSQL(sql);
