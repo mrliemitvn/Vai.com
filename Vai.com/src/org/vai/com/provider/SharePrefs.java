@@ -9,6 +9,9 @@ public class SharePrefs {
 	public static final String DEFAULT_BLANK = "";
 	public static final String ADS_ID = "ads_id";
 	public static final String FACEBOOK_APP_ID = "facebook_app_id";
+	public static final String SHOWING_CONTENT_OPTION = "show_content_option";
+	public static final int VERTICAL_SHOWING_CONTENT = 0;
+	public static final int HORIZONTAL_SHOWING_CONTENT = 1;
 
 	private static SharePrefs instance = new SharePrefs();
 	private SharedPreferences sharedPreferences;
@@ -66,5 +69,13 @@ public class SharePrefs {
 
 	public String getFacebookAppId() {
 		return get(FACEBOOK_APP_ID, DEFAULT_BLANK);
+	}
+
+	public void setShowingContentOption(int option) {
+		save(SHOWING_CONTENT_OPTION, option);
+	}
+
+	public int getShowingContentOption() {
+		return get(SHOWING_CONTENT_OPTION, VERTICAL_SHOWING_CONTENT);
 	}
 }

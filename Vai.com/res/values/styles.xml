@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="VaiActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="VaiActionBarStyle" parent="Widget.Sherlock.Light.ActionBar">
         <item name="android:background">@drawable/bg_actionbar</item>
 
         <!-- Support library compatibility -->
         <item name="background">@drawable/bg_actionbar</item>
     </style>
 
-    <style name="VaiActionBarButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton">
+    <style name="VaiActionBarButtonStyle" parent="Widget.Sherlock.Light.ActionBar">
         <item name="android:minWidth">@dimen/abs__action_bar_default_height</item>
+        <item name="android:minHeight">@dimen/abs__action_bar_default_height</item>
         <item name="android:paddingRight">@dimen/common_margin_small</item>
         <item name="android:gravity">right</item>
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@drawable/abs__item_background_holo_dark</item>
     </style>
 
     <!-- Application theme. -->

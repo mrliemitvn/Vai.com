@@ -2,9 +2,12 @@ package org.vai.com.activity;
 
 import org.vai.com.R;
 import org.vai.com.appinterface.IAdapterCallBack;
-import org.vai.com.fragment.HomeContentFragment;
+import org.vai.com.fragment.HomeFragment;
+import org.vai.com.fragment.HomeHorizontalFragment;
 import org.vai.com.fragment.HomeMenuFragment;
+import org.vai.com.fragment.HomeVerticalFragment;
 import org.vai.com.provider.DbContract.Category;
+import org.vai.com.provider.SharePrefs;
 import org.vai.com.utils.Consts;
 
 import android.database.Cursor;
@@ -18,27 +21,26 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class HomeActivity extends SlidingFragmentActivity implements IAdapterCallBack {
 
+	private SharePrefs mSharePrefs = SharePrefs.getInstance();
 	private HomeMenuFragment mMenuFragment;
-	private HomeContentFragment mContentFragment;
+	private HomeFragment mContentFragment;
+
+	private String mCategoryId = "";
 
 	/**
-	 * Initialize content and menu.
+	 * Initialize category id and menu.
 	 */
 	private void init() {
-		// Add content.
-		mContentFragment = new HomeContentFragment();
-		String order = new StringBuilder().append(Category._ID).append(" ASC").toString();
-		Cursor cursor = getContentResolver().query(Category.CONTENT_URI, null, null, null, order);
-		String categoryId = "0";
+		// Get category id.
+		Cursor cursor = getContentResolver().query(Category.CONTENT_URI, null, null, null, null);
+		mCategoryId = "0";
 		if (cursor != null && cursor.moveToFirst()) {
 			int idIndex = cursor.getColumnIndex(Category._ID);
-			if (idIndex > -1) categoryId = cursor.getString(idIndex);
+			if (idIndex > -1) mCategoryId = cursor.getString(idIndex);
 			int nameIndex = cursor.getColumnIndex(Category.NAME);
 			if (nameIndex > -1) getSupportActionBar().setTitle(cursor.getString(nameIndex));
 		}
 		if (cursor != null) cursor.close();
-		mContentFragment.setCategoryId(categoryId);
-		getSupportFragmentManager().beginTransaction().replace(R.id.mainContent, mContentFragment).commit();
 
 		// check if the content frame contains the menu frame
 		if (findViewById(R.id.menu_frame) == null) {
@@ -78,6 +80,19 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		// Add content.
+		if (mSharePrefs.getShowingContentOption() == SharePrefs.HORIZONTAL_SHOWING_CONTENT) {
+			mContentFragment = new HomeHorizontalFragment();
+		} else {
+			mContentFragment = new HomeVerticalFragment();
+		}
+		mContentFragment.setCategoryId(mCategoryId);
+		getSupportFragmentManager().beginTransaction().replace(R.id.mainContent, mContentFragment).commit();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, android.R.id.button1, Menu.NONE, R.string.refresh).setIcon(R.drawable.icon_refesh)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -99,11 +114,11 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 
 	@Override
 	public void adapterCallBack(Bundle bundle) {
-		String categoryId = bundle.getString(Consts.JSON_CATEGORY_ID);
+		mCategoryId = bundle.getString(Consts.JSON_CATEGORY_ID);
 		String categoryName = bundle.getString(Consts.JSON_NAME);
 		getSupportActionBar().setTitle(categoryName);
 		toggle();
-		mContentFragment.setCategoryId(categoryId);
+		mContentFragment.setCategoryId(mCategoryId);
 		mContentFragment.callApiGetConference(1);
 	}
 }

@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -19,11 +20,12 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class HomeContentAdapter extends ArrayAdapter<ConferenceResource> {
+public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
 	private IAdapterCallBack mAdapterCallBack;
+	private OnClickListener mOnClickListener;
 	private ArrayList<ConferenceResource> mListConference = new ArrayList<ConferenceResource>();
 	private int mContentWidth;
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
@@ -31,7 +33,7 @@ public class HomeContentAdapter extends ArrayAdapter<ConferenceResource> {
 			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
 			.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565).build();
 
-	public HomeContentAdapter(Context context, ArrayList<ConferenceResource> listConference,
+	public HomeVerticalAdapter(Context context, ArrayList<ConferenceResource> listConference,
 			IAdapterCallBack adapterCallBack) {
 		super(context, 0, listConference);
 		mContext = context;
@@ -42,6 +44,13 @@ public class HomeContentAdapter extends ArrayAdapter<ConferenceResource> {
 		// Calculate content width.
 		int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
 		mContentWidth = screenWidth - 4 * mContext.getResources().getDimensionPixelSize(R.dimen.common_margin_small);
+
+		mOnClickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO: Handler click event.
+			}
+		};
 	}
 
 	@Override
@@ -65,6 +74,7 @@ public class HomeContentAdapter extends ArrayAdapter<ConferenceResource> {
 
 		// Show content.
 		ConferenceResource conferenceResource = mListConference.get(position);
+		viewHolder.conference = conferenceResource;
 		viewHolder.tvTitle.setText(conferenceResource.title);
 		viewHolder.tvLike.setText(conferenceResource.like + "");
 		viewHolder.tvComment.setText(conferenceResource.comment + "");
@@ -83,6 +93,7 @@ public class HomeContentAdapter extends ArrayAdapter<ConferenceResource> {
 	}
 
 	private class ViewHolder {
+		ConferenceResource conference;
 		TextView tvTitle;
 		TextView tvLike;
 		TextView tvComment;
