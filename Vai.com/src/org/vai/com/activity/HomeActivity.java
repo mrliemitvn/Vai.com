@@ -82,7 +82,14 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// Add content.
+		// Set content.
+		int viewStyle = mSharePrefs.getShowingContentOption();
+		if (mContentFragment != null) {
+			if (viewStyle == SharePrefs.HORIZONTAL_SHOWING_CONTENT
+					&& mContentFragment.getClass().isAssignableFrom(HomeHorizontalFragment.class)) return;
+			if (viewStyle == SharePrefs.VERTICAL_SHOWING_CONTENT
+					&& mContentFragment.getClass().isAssignableFrom(HomeVerticalFragment.class)) return;
+		}
 		if (mSharePrefs.getShowingContentOption() == SharePrefs.HORIZONTAL_SHOWING_CONTENT) {
 			mContentFragment = new HomeHorizontalFragment();
 		} else {

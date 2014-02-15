@@ -18,4 +18,16 @@
     <string name="menu_more">More</string>
     <string name="refresh">Refresh</string>
 
+    <!-- Options screen -->
+    <string name="options_vai_description">Vãi App: Ai là thánh bá đạo nhất :)</string>
+    <string name="options_connect_facebook">CONNECT TO FACEBOOK</string>
+    <string name="options_login_facebook">Login Facebook</string>
+    <string name="options_login">Login</string>
+    <string name="options_title">OPTIONS</string>
+    <string name="options_clear_cache">Clear cache</string>
+    <string name="options_rate">Rate Vãi App on Google Play ^^</string>
+    <string name="options_view_style">View style</string>
+    <string name="options_horizontal_style">Horizontal</string>
+    <string name="options_vertical_style">Vertical</string>
+
 </resources>

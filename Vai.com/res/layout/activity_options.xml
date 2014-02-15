@@ -2,7 +2,136 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/common_background"
     android:orientation="vertical" >
-    
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abs__action_bar_default_height" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/common_margin_medium"
+        android:text="@string/options_vai_description"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_small" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_margin_medium"
+        android:text="@string/options_connect_facebook"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_medium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/common_margin_small" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/common_margin_small"
+            android:text="@string/options_login_facebook"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_small" />
+
+        <Button
+            android:id="@+id/btnLoginFacebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/common_margin_small"
+            android:text="@string/options_login"
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/textsize_small"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_margin_medium"
+        android:text="@string/options_title"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_medium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tvClearCache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/abs__item_background_holo_dark"
+            android:padding="@dimen/common_margin_medium"
+            android:text="@string/options_clear_cache"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_small" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_divider_height"
+            android:background="@color/common_background" />
+
+        <TextView
+            android:id="@+id/tvRateApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/abs__item_background_holo_dark"
+            android:padding="@dimen/common_margin_medium"
+            android:text="@string/options_rate"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_small" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_divider_height"
+            android:background="@color/common_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/common_margin_small" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/common_margin_small"
+                android:text="@string/options_view_style"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textsize_small" />
+
+            <CheckBox
+                android:id="@+id/cbHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/common_margin_small"
+                android:text="@string/options_horizontal_style"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textsize_small" />
+
+            <CheckBox
+                android:id="@+id/cbVertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/common_margin_small"
+                android:text="@string/options_vertical_style"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textsize_small" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
