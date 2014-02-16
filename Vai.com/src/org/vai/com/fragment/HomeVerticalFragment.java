@@ -7,10 +7,8 @@ import org.vai.com.adapter.HomeVerticalAdapter;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.provider.DbContract.Conference;
 import org.vai.com.resource.home.ConferenceResource;
-import org.vai.com.service.ServiceHelper;
 
 import android.content.Context;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,7 +29,8 @@ public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBa
 
 	private int mCurrentPage = 1;
 
-	private void setAdapterAndGetData() {
+	@Override
+	protected void setAdapterAndGetData() {
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mHeaderLoadingContent = inflater.inflate(R.layout.layout_list_loading, null, false);
 		mPbLoadingData = (ProgressBar) mHeaderLoadingContent.findViewById(R.id.pbLoadingData);
@@ -41,8 +40,7 @@ public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBa
 		mAdapter = new HomeVerticalAdapter(getActivity(), mListConference, this);
 		mListView.setAdapter(mAdapter);
 
-		getDataFromDb();
-		callApiGetConference(1);
+		super.setAdapterAndGetData();
 	}
 
 	@Override
@@ -94,29 +92,6 @@ public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBa
 		init();
 
 		return mParentView;
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		setAdapterAndGetData();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		IntentFilter filter = new IntentFilter(ServiceHelper.ACTION_REQUEST_RESULT);
-		getActivity().registerReceiver(mRequestReceiver, filter);
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		try {
-			getActivity().unregisterReceiver(mRequestReceiver);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override

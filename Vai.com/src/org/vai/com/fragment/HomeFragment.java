@@ -6,6 +6,7 @@ import org.vai.com.service.Actions;
 import org.vai.com.service.ServiceHelper;
 import org.vai.com.utils.Consts;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -55,6 +56,11 @@ public class HomeFragment extends BaseFragment {
 	protected void hideLoadingView() {
 	}
 
+	protected void setAdapterAndGetData() {
+		getDataFromDb();
+		callApiGetConference(1);
+	}
+
 	public void setCategoryId(String categoryId) {
 		mCategoryId = categoryId;
 	}
@@ -73,4 +79,26 @@ public class HomeFragment extends BaseFragment {
 		mRequestReceiver.setRequestId(mRequestId);
 	}
 
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		setAdapterAndGetData();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		IntentFilter filter = new IntentFilter(ServiceHelper.ACTION_REQUEST_RESULT);
+		getActivity().registerReceiver(mRequestReceiver, filter);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		try {
+			getActivity().unregisterReceiver(mRequestReceiver);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

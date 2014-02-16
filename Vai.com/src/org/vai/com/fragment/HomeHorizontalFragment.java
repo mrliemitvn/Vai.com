@@ -3,7 +3,10 @@ package org.vai.com.fragment;
 import java.util.ArrayList;
 
 import org.vai.com.R;
+import org.vai.com.provider.DbContract.Conference;
+import org.vai.com.resource.home.ConferenceResource;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,7 +23,8 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 public class HomeHorizontalFragment extends HomeFragment {
 
 	private ViewPager mViewPager;
-	private ColorPagerAdapter mAdapter;
+	private HomeHorizontalPagerAdapter mAdapter;
+	private ArrayList<SherlockFragment> mListFragments = new ArrayList<SherlockFragment>();
 
 	@Override
 	protected void init() {
@@ -28,18 +32,8 @@ public class HomeHorizontalFragment extends HomeFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		mParentView = inflater.inflate(R.layout.fragment_home_horizontal, container, false);
-
-		init();
-
-		return mParentView;
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		mAdapter = new ColorPagerAdapter(getFragmentManager());
+	protected void setAdapterAndGetData() {
+		mAdapter = new HomeHorizontalPagerAdapter(getFragmentManager(), mListFragments);
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
@@ -68,22 +62,45 @@ public class HomeHorizontalFragment extends HomeFragment {
 
 		mViewPager.setCurrentItem(0);
 		((SlidingFragmentActivity) getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		super.setAdapterAndGetData();
 	}
 
-	public class ColorPagerAdapter extends FragmentPagerAdapter {
+	@Override
+	protected void getDataFromDb() {
+		if (getActivity() == null) return;
+		String where = new StringBuilder().append(Conference.CATEGORY_ID).append("='").append(mCategoryId).append("'")
+				.toString();
+		Cursor cursor = getActivity().getContentResolver().query(Conference.CONTENT_URI, null, where, null, null);
+		if (cursor != null && cursor.moveToFirst()) {
+			mListFragments.clear();
+			do {
+				ConferenceResource conference = new ConferenceResource(cursor);
+				HomeContentHorizontalFragment fragment = new HomeContentHorizontalFragment();
+				fragment.setConference(conference);
+				mListFragments.add(fragment);
+			} while (cursor.moveToNext());
+
+			mAdapter.notifyDataSetChanged();
+		}
+		if (cursor != null) cursor.close();
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mParentView = inflater.inflate(R.layout.fragment_home_horizontal, container, false);
+
+		init();
+
+		return mParentView;
+	}
+
+	public class HomeHorizontalPagerAdapter extends FragmentPagerAdapter {
 
 		private ArrayList<SherlockFragment> mFragments;
 
-		private final int[] COLORS = new int[] { R.color.white, R.color.black };
-
-		public ColorPagerAdapter(FragmentManager fm) {
+		public HomeHorizontalPagerAdapter(FragmentManager fm, ArrayList<SherlockFragment> listFragments) {
 			super(fm);
-			mFragments = new ArrayList<SherlockFragment>();
-			for (int color : COLORS) {
-				ColorFragment fragment = new ColorFragment();
-				fragment.setColorRes(color);
-				mFragments.add(fragment);
-			}
+			mFragments = listFragments;
 		}
 
 		@Override

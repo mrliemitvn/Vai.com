@@ -3,29 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <!-- <FrameLayout -->
-        <!-- android:layout_width="match_parent" -->
-        <!-- android:layout_height="match_parent" > -->
-        <!-- </FrameLayout> -->
-
-        <ImageView
-            android:id="@+id/imgContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_margin_large"
-            android:contentDescription="@string/empty"
-            android:scaleType="centerCrop" />
-    </ScrollView>
-
     <LinearLayout
         android:id="@+id/llAction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
         android:baselineAligned="false"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -95,6 +78,33 @@
                 android:src="@drawable/icon_share" />
         </FrameLayout>
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llAction" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/imgContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/empty"
+                android:scaleType="centerCrop" />
+
+            <ProgressBar
+                android:id="@+id/pbLoadingImage"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="visible" />
+        </RelativeLayout>
+    </ScrollView>
 
     <TextView
         android:id="@+id/tvTitle"
