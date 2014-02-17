@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 import org.vai.com.R;
 import org.vai.com.activity.ImageViewDetailActivity;
+import org.vai.com.activity.YouTubePlayerActivity;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.resource.home.ConferenceResource;
 import org.vai.com.utils.Consts;
+import org.vai.com.utils.EmotionsUtils;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +31,6 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
-	private IAdapterCallBack mAdapterCallBack;
 	private OnClickListener mOnClickListener;
 	private ArrayList<ConferenceResource> mListConference = new ArrayList<ConferenceResource>();
 	private int mContentWidth;
@@ -41,7 +44,6 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		super(context, 0, listConference);
 		mContext = context;
 		mLayoutInflater = LayoutInflater.from(context);
-		mAdapterCallBack = adapterCallBack;
 		mListConference = listConference;
 
 		// Calculate content width.
@@ -55,8 +57,17 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 				ViewHolder viewHolder = (ViewHolder) v.getTag();
 				switch (id) {
 				case R.id.imgContent:
-					Intent intent = new Intent(mContext, ImageViewDetailActivity.class);
-					intent.putExtra(Consts.IMAGE_URL, viewHolder.conference.image);
+					Intent intent;
+					if (TextUtils.isEmpty(viewHolder.conference.videoId)) {
+						intent = new Intent(mContext, ImageViewDetailActivity.class);
+						intent.putExtra(Consts.IMAGE_URL, viewHolder.conference.image);
+					} else if (mContext.getPackageManager().getLaunchIntentForPackage(Consts.YOUTUBE_PACKAGE) != null) {
+						intent = new Intent(mContext, YouTubePlayerActivity.class);
+						intent.putExtra(YouTubePlayerActivity.EXTRA_VIDEO_ID, viewHolder.conference.videoId);
+					} else {
+						intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://"
+								+ viewHolder.conference.videoId));
+					}
 					mContext.startActivity(intent);
 					break;
 
@@ -73,11 +84,13 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		if (convertView == null) {
 			convertView = mLayoutInflater.inflate(R.layout.item_list_conference, null);
 			viewHolder = new ViewHolder();
+			viewHolder.emotionsUtils = new EmotionsUtils(mContext);
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
 			viewHolder.tvLike = (TextView) convertView.findViewById(R.id.tvLike);
 			viewHolder.tvComment = (TextView) convertView.findViewById(R.id.tvComment);
 			viewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 			viewHolder.imgContent = (ImageView) convertView.findViewById(R.id.imgContent);
+			viewHolder.imgPlayYoutube = (ImageView) convertView.findViewById(R.id.imgPlayYoutube);
 			viewHolder.imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
 			viewHolder.imgShare = (ImageView) convertView.findViewById(R.id.imgShare);
 
@@ -91,13 +104,16 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		// Show content.
 		ConferenceResource conferenceResource = mListConference.get(position);
 		viewHolder.conference = conferenceResource;
-		viewHolder.tvTitle.setText(conferenceResource.title);
+		viewHolder.emotionsUtils.setSpannableText(new SpannableStringBuilder(conferenceResource.title));
+		viewHolder.tvTitle.setText(viewHolder.emotionsUtils.getSmileText());
 		viewHolder.tvLike.setText(conferenceResource.like + "");
 		viewHolder.tvComment.setText(conferenceResource.comment + "");
 		if (!TextUtils.isEmpty(conferenceResource.videoId)) {
 			viewHolder.imgIcon.setImageResource(R.drawable.video_icon);
+			viewHolder.imgPlayYoutube.setVisibility(View.VISIBLE);
 		} else {
 			viewHolder.imgIcon.setImageResource(R.drawable.photo_icon);
+			viewHolder.imgPlayYoutube.setVisibility(View.GONE);
 		}
 		int imgHeight = mContentWidth;
 		if (conferenceResource.imgWidth > 0) {
@@ -110,11 +126,13 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 
 	private class ViewHolder {
 		ConferenceResource conference;
+		EmotionsUtils emotionsUtils;
 		TextView tvTitle;
 		TextView tvLike;
 		TextView tvComment;
 		ImageView imgIcon;
 		ImageView imgContent;
+		ImageView imgPlayYoutube;
 		ImageView imgDownload;
 		ImageView imgShare;
 	}

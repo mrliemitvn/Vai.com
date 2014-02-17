@@ -2,6 +2,11 @@
 <resources>
 
     <string name="app_name">Vai.com</string>
+    <!-- Google api key debug -->
+    <string name="common_google_map_api_key">AIzaSyAshwfRl4tYwcoRKm4fRRb1LzAvOsoFDO4</string>
+    <!-- Google api key release -->
+    <!-- <string name="common_google_map_api_key">AIzaSyBdh4XPUavbP-kTT7i02tBBv9vai7x9_oY</string> -->
+
     <string name="msg_err_move_temporarily">Already sent</string>
     <string name="msg_err_bad_request">Data sent to server incorrectly, please try again later.</string>
     <string name="msg_err_invalid_token">Your account may be used by another person</string>
@@ -29,5 +34,8 @@
     <string name="options_view_style">View style</string>
     <string name="options_horizontal_style">Horizontal</string>
     <string name="options_vertical_style">Vertical</string>
+
+    <!-- Youtube player -->
+    <string name="youtube_error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
 
 </resources>

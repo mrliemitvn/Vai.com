@@ -6,6 +6,8 @@ import org.vai.com.views.TouchImageView;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -29,5 +31,12 @@ public class ImageViewDetailActivity extends SherlockActivity {
 
 		urlImage = getIntent().getExtras().getString(Consts.IMAGE_URL);
 		imageLoader.displayImage(urlImage, mImgSaveImage, imgSquareOptions);
+
+		mImgSaveImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 }

@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Environment;
 
 public class Consts {
+	
+	public static final String YOUTUBE_PACKAGE = "com.google.android.youtube";
 
 	// Callback upload progress
 	public static final String EXTRA_UPLOAD_PROGRESS = "org.vai.com.rest.EXTRA_UPLOAD_PROGRESS";

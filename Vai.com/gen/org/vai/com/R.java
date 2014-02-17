@@ -1150,45 +1150,46 @@ containing a value of this type.
         public static final int homeAsUp=0x7f050006;
         public static final int imgContent=0x7f050045;
         public static final int imgDownload=0x7f050043;
-        public static final int imgIcon=0x7f05004a;
+        public static final int imgIcon=0x7f05004b;
+        public static final int imgPlayYoutube=0x7f050046;
         public static final int imgSaveImage=0x7f050038;
         public static final int imgShare=0x7f050044;
-        public static final int layoutMenu=0x7f050049;
+        public static final int layoutMenu=0x7f05004a;
         public static final int left=0x7f050010;
         public static final int listMode=0x7f050002;
         public static final int listView=0x7f050039;
         public static final int llAction=0x7f050040;
         public static final int mainContent=0x7f050037;
         public static final int margin=0x7f050012;
-        public static final int menu_frame=0x7f050054;
+        public static final int menu_frame=0x7f050055;
         public static final int normal=0x7f050001;
-        public static final int pbLoadingData=0x7f050051;
-        public static final int pbLoadingImage=0x7f050046;
+        public static final int pbLoadingData=0x7f050052;
+        public static final int pbLoadingImage=0x7f050047;
         public static final int right=0x7f050011;
-        public static final int rlContent=0x7f05004b;
-        public static final int row_icon=0x7f050055;
-        public static final int row_title=0x7f050056;
+        public static final int rlContent=0x7f05004c;
+        public static final int row_icon=0x7f050056;
+        public static final int row_title=0x7f050057;
         public static final int selected_view=0x7f050014;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
-        public static final int slidingmenumain=0x7f050057;
+        public static final int slidingmenumain=0x7f050058;
         public static final int tabMode=0x7f050003;
-        public static final int tvCategory=0x7f05004d;
+        public static final int tvCategory=0x7f05004e;
         public static final int tvClearCache=0x7f05003b;
         public static final int tvComment=0x7f050042;
         public static final int tvLike=0x7f050041;
-        public static final int tvLink=0x7f05004f;
+        public static final int tvLink=0x7f050050;
         public static final int tvMessageBar=0x7f05003f;
-        public static final int tvMore=0x7f050053;
-        public static final int tvName=0x7f05004e;
-        public static final int tvNoData=0x7f050050;
-        public static final int tvOptions=0x7f050052;
+        public static final int tvMore=0x7f050054;
+        public static final int tvName=0x7f05004f;
+        public static final int tvNoData=0x7f050051;
+        public static final int tvOptions=0x7f050053;
         public static final int tvRateApp=0x7f05003c;
-        public static final int tvTitle=0x7f050047;
+        public static final int tvTitle=0x7f050048;
         public static final int useLogo=0x7f050004;
-        public static final int viewDivider=0x7f05004c;
-        public static final int viewPager=0x7f050048;
+        public static final int viewDivider=0x7f05004d;
+        public static final int viewPager=0x7f050049;
         public static final int wrap_content=0x7f050000;
     }
     public static final class integer {
@@ -1280,33 +1281,42 @@ containing a value of this type.
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f0a0007;
         public static final int app_name=0x7f0a000d;
-        public static final int empty=0x7f0a0019;
-        public static final int menu_more=0x7f0a001b;
-        public static final int menu_options=0x7f0a001a;
-        public static final int msg_err_bad_request=0x7f0a000f;
-        public static final int msg_err_conflict=0x7f0a0013;
-        public static final int msg_err_connecting_error=0x7f0a0015;
-        public static final int msg_err_data_error=0x7f0a0016;
-        public static final int msg_err_forbidden=0x7f0a0011;
-        public static final int msg_err_invalid_token=0x7f0a0010;
-        public static final int msg_err_move_temporarily=0x7f0a000e;
-        public static final int msg_err_not_found=0x7f0a0012;
-        public static final int msg_err_server_error=0x7f0a0014;
-        public static final int msg_err_something_wrong=0x7f0a0017;
-        public static final int msg_info_no_data_result=0x7f0a0018;
-        public static final int options_clear_cache=0x7f0a0022;
-        public static final int options_connect_facebook=0x7f0a001e;
-        public static final int options_horizontal_style=0x7f0a0025;
-        public static final int options_login=0x7f0a0020;
-        public static final int options_login_facebook=0x7f0a001f;
-        public static final int options_rate=0x7f0a0023;
-        public static final int options_title=0x7f0a0021;
+        /**  Google api key debug 
+         */
+        public static final int common_google_map_api_key=0x7f0a000e;
+        public static final int empty=0x7f0a001a;
+        public static final int menu_more=0x7f0a001c;
+        public static final int menu_options=0x7f0a001b;
+        public static final int msg_err_bad_request=0x7f0a0010;
+        public static final int msg_err_conflict=0x7f0a0014;
+        public static final int msg_err_connecting_error=0x7f0a0016;
+        public static final int msg_err_data_error=0x7f0a0017;
+        public static final int msg_err_forbidden=0x7f0a0012;
+        public static final int msg_err_invalid_token=0x7f0a0011;
+        /**  Google api key release 
+ <string name="common_google_map_api_key">AIzaSyBdh4XPUavbP-kTT7i02tBBv9vai7x9_oY</string> 
+         */
+        public static final int msg_err_move_temporarily=0x7f0a000f;
+        public static final int msg_err_not_found=0x7f0a0013;
+        public static final int msg_err_server_error=0x7f0a0015;
+        public static final int msg_err_something_wrong=0x7f0a0018;
+        public static final int msg_info_no_data_result=0x7f0a0019;
+        public static final int options_clear_cache=0x7f0a0023;
+        public static final int options_connect_facebook=0x7f0a001f;
+        public static final int options_horizontal_style=0x7f0a0026;
+        public static final int options_login=0x7f0a0021;
+        public static final int options_login_facebook=0x7f0a0020;
+        public static final int options_rate=0x7f0a0024;
+        public static final int options_title=0x7f0a0022;
         /**  Options screen 
          */
-        public static final int options_vai_description=0x7f0a001d;
-        public static final int options_vertical_style=0x7f0a0026;
-        public static final int options_view_style=0x7f0a0024;
-        public static final int refresh=0x7f0a001c;
+        public static final int options_vai_description=0x7f0a001e;
+        public static final int options_vertical_style=0x7f0a0027;
+        public static final int options_view_style=0x7f0a0025;
+        public static final int refresh=0x7f0a001d;
+        /**  Youtube player 
+         */
+        public static final int youtube_error_player=0x7f0a0028;
     }
     public static final class style {
         /** 

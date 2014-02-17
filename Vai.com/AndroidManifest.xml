@@ -48,6 +48,12 @@
             android:name="org.vai.com.activity.MoreActivity"
             android:label="@string/menu_more" >
         </activity>
+        <activity
+            android:name="org.vai.com.activity.YouTubePlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
 
         <!-- PROVIDER -->
         <provider

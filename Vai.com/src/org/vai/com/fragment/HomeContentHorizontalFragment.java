@@ -1,12 +1,21 @@
 package org.vai.com.fragment;
 
 import org.vai.com.R;
+import org.vai.com.activity.YouTubePlayerActivity;
 import org.vai.com.resource.home.ConferenceResource;
+import org.vai.com.utils.Consts;
+import org.vai.com.utils.EmotionsUtils;
+import org.vai.com.utils.Logger;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -21,6 +30,7 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 
 	private View mParentView;
 	private ImageView mImgContent;
+	private ImageView mImgPlayYoutube;
 	private ImageView mImgDownload;
 	private ImageView mImgShare;
 	private TextView mTvTitle;
@@ -29,6 +39,7 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 	private ProgressBar mPbLoadingImage;
 
 	private ConferenceResource mConferenceResource;
+	private EmotionsUtils mEmotionsUtils;
 	private int mContentWidth;
 
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
@@ -41,6 +52,7 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 	 */
 	private void init() {
 		mImgContent = (ImageView) mParentView.findViewById(R.id.imgContent);
+		mImgPlayYoutube = (ImageView) mParentView.findViewById(R.id.imgPlayYoutube);
 		mImgDownload = (ImageView) mParentView.findViewById(R.id.imgDownload);
 		mImgShare = (ImageView) mParentView.findViewById(R.id.imgShare);
 		mTvTitle = (TextView) mParentView.findViewById(R.id.tvTitle);
@@ -65,9 +77,29 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		mTvTitle.setText(mConferenceResource.title);
+		mEmotionsUtils = new EmotionsUtils(getActivity());
+	}
+
+	public void updateData() {
+		if (mParentView == null) return;
+		mEmotionsUtils.setSpannableText(new SpannableStringBuilder(mConferenceResource.title));
+		mTvTitle.setText(mEmotionsUtils.getSmileText());
 		mTvLike.setText(mConferenceResource.like + "");
 		mTvComment.setText(mConferenceResource.comment + "");
+		mImgContent.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (TextUtils.isEmpty(mConferenceResource.videoId)) return;
+				Intent intent;
+				if (getActivity().getPackageManager().getLaunchIntentForPackage(Consts.YOUTUBE_PACKAGE) != null) {
+					intent = new Intent(getActivity(), YouTubePlayerActivity.class);
+					intent.putExtra(YouTubePlayerActivity.EXTRA_VIDEO_ID, mConferenceResource.videoId);
+				} else {
+					intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + mConferenceResource.videoId));
+				}
+				getActivity().startActivity(intent);
+			}
+		});
 		mContentWidth = getResources().getDisplayMetrics().widthPixels;
 		mImageLoader.loadImage(mConferenceResource.image, mSquareOptions, new ImageLoadingListener() {
 
@@ -78,6 +110,7 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 
 			@Override
 			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+				mPbLoadingImage.setVisibility(View.GONE);
 			}
 
 			@Override
@@ -89,14 +122,21 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 				mImgContent.getLayoutParams().height = imgHeight;
 				mImageLoader.displayImage(mConferenceResource.image, mImgContent, mSquareOptions);
 				mPbLoadingImage.setVisibility(View.GONE);
+				if (!TextUtils.isEmpty(mConferenceResource.videoId)) {
+					mImgPlayYoutube.setVisibility(View.VISIBLE);
+				} else {
+					mImgPlayYoutube.setVisibility(View.GONE);
+				}
 			}
 
 			@Override
 			public void onLoadingCancelled(String imageUri, View view) {
+				mPbLoadingImage.setVisibility(View.GONE);
 			}
 
 			@Override
 			public void onDownloadComplete(String downloadedFile, String url) {
+				Logger.debug("zzz", "test");
 			}
 		});
 	}

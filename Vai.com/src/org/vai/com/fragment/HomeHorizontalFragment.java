@@ -3,13 +3,13 @@ package org.vai.com.fragment;
 import java.util.ArrayList;
 
 import org.vai.com.R;
+import org.vai.com.adapter.SmartFragmentStatePagerAdapter;
 import org.vai.com.provider.DbContract.Conference;
 import org.vai.com.resource.home.ConferenceResource;
 
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
@@ -46,6 +46,7 @@ public class HomeHorizontalFragment extends HomeFragment {
 
 			@Override
 			public void onPageSelected(int position) {
+				((HomeContentHorizontalFragment) mListFragments.get(position)).updateData();
 				switch (position) {
 				case 0:
 					((SlidingFragmentActivity) getActivity()).getSlidingMenu().setTouchModeAbove(
@@ -81,6 +82,7 @@ public class HomeHorizontalFragment extends HomeFragment {
 			} while (cursor.moveToNext());
 
 			mAdapter.notifyDataSetChanged();
+			((HomeContentHorizontalFragment) mListFragments.get(mViewPager.getCurrentItem())).updateData();
 		}
 		if (cursor != null) cursor.close();
 	}
@@ -94,7 +96,7 @@ public class HomeHorizontalFragment extends HomeFragment {
 		return mParentView;
 	}
 
-	public class HomeHorizontalPagerAdapter extends FragmentPagerAdapter {
+	public class HomeHorizontalPagerAdapter extends SmartFragmentStatePagerAdapter {
 
 		private ArrayList<SherlockFragment> mFragments;
 
@@ -113,5 +115,9 @@ public class HomeHorizontalFragment extends HomeFragment {
 			return mFragments.get(position);
 		}
 
+		@Override
+		public int getItemPosition(Object object) {
+			return POSITION_NONE;
+		}
 	}
 }

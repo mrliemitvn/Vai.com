@@ -84,7 +84,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/llAction" >
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -92,18 +92,26 @@
                 android:id="@+id/imgContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:contentDescription="@string/empty"
                 android:scaleType="centerCrop" />
 
-            <ProgressBar
-                android:id="@+id/pbLoadingImage"
-                style="?android:attr/progressBarStyleSmall"
+            <ImageView
+                android:id="@+id/imgPlayYoutube"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="visible" />
-        </RelativeLayout>
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/playbtn"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/pbLoadingImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:visibility="gone" />
+        </FrameLayout>
     </ScrollView>
 
     <TextView
@@ -112,6 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/llAction"
         android:background="@color/title_background_overlay"
+        android:gravity="center"
         android:padding="@dimen/common_margin_small"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_medium" />
