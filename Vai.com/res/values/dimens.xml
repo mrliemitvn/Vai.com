@@ -11,6 +11,6 @@
     <dimen name="textsize_large">18sp</dimen>
     <dimen name="progressbar_width_height_medium">35dp</dimen>
     <dimen name="default_mask_height">50px</dimen>
-    <dimen name="divider_below_mask_magin_top">-45dp</dimen>
+    <dimen name="divider_below_mask_magin_top">-45px</dimen>
 
 </resources>

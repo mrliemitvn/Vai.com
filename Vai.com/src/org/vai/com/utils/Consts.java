@@ -14,6 +14,7 @@ public class Consts {
 	public static final String BASE_PATH = Environment.getExternalStorageDirectory().toString() + File.separator
 			+ "org.vai.com" + File.separator;
 	public static final String TEMP_PATH = BASE_PATH + "temp" + File.separator;
+	public static final String IMAGE_URL = "image_url";
 
 	/* Json string */
 	public static final String JSON_ID = "id";

@@ -3,10 +3,13 @@ package org.vai.com.adapter;
 import java.util.ArrayList;
 
 import org.vai.com.R;
+import org.vai.com.activity.ImageViewDetailActivity;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.resource.home.ConferenceResource;
+import org.vai.com.utils.Consts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -48,7 +51,18 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		mOnClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO: Handler click event.
+				int id = v.getId();
+				ViewHolder viewHolder = (ViewHolder) v.getTag();
+				switch (id) {
+				case R.id.imgContent:
+					Intent intent = new Intent(mContext, ImageViewDetailActivity.class);
+					intent.putExtra(Consts.IMAGE_URL, viewHolder.conference.image);
+					mContext.startActivity(intent);
+					break;
+
+				default:
+					break;
+				}
 			}
 		};
 	}
@@ -68,6 +82,8 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder.imgShare = (ImageView) convertView.findViewById(R.id.imgShare);
 
 			convertView.setTag(viewHolder);
+			viewHolder.imgContent.setTag(viewHolder);
+			viewHolder.imgContent.setOnClickListener(mOnClickListener);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
