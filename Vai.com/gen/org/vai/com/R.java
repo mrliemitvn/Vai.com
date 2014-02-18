@@ -1161,30 +1161,32 @@ containing a value of this type.
         public static final int llAction=0x7f050040;
         public static final int mainContent=0x7f050037;
         public static final int margin=0x7f050012;
-        public static final int menu_frame=0x7f050055;
+        public static final int menu_frame=0x7f050057;
         public static final int normal=0x7f050001;
         public static final int pbLoadingData=0x7f050052;
         public static final int pbLoadingImage=0x7f050048;
+        public static final int pbLoadingMore=0x7f050053;
         public static final int right=0x7f050011;
         public static final int rlContent=0x7f05004c;
-        public static final int row_icon=0x7f050056;
-        public static final int row_title=0x7f050057;
+        public static final int row_icon=0x7f050058;
+        public static final int row_title=0x7f050059;
         public static final int selected_view=0x7f050014;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
-        public static final int slidingmenumain=0x7f050058;
+        public static final int slidingmenumain=0x7f05005a;
         public static final int tabMode=0x7f050003;
         public static final int tvCategory=0x7f05004e;
         public static final int tvClearCache=0x7f05003b;
         public static final int tvComment=0x7f050042;
         public static final int tvLike=0x7f050041;
         public static final int tvLink=0x7f050050;
+        public static final int tvLoadingMore=0x7f050054;
         public static final int tvMessageBar=0x7f05003f;
-        public static final int tvMore=0x7f050054;
+        public static final int tvMore=0x7f050056;
         public static final int tvName=0x7f05004f;
         public static final int tvNoData=0x7f050051;
-        public static final int tvOptions=0x7f050053;
+        public static final int tvOptions=0x7f050055;
         public static final int tvRateApp=0x7f05003c;
         public static final int tvTitle=0x7f050047;
         public static final int useLogo=0x7f050004;
@@ -1232,13 +1234,14 @@ containing a value of this type.
         public static final int item_list_more_web=0x7f030021;
         public static final int layout_header_list_home_menu=0x7f030022;
         public static final int layout_list_loading=0x7f030023;
-        public static final int layout_options_menu=0x7f030024;
-        public static final int list=0x7f030025;
-        public static final int menu_frame=0x7f030026;
-        public static final int row=0x7f030027;
-        public static final int sherlock_spinner_dropdown_item=0x7f030028;
-        public static final int sherlock_spinner_item=0x7f030029;
-        public static final int slidingmenumain=0x7f03002a;
+        public static final int layout_load_more=0x7f030024;
+        public static final int layout_options_menu=0x7f030025;
+        public static final int list=0x7f030026;
+        public static final int menu_frame=0x7f030027;
+        public static final int row=0x7f030028;
+        public static final int sherlock_spinner_dropdown_item=0x7f030029;
+        public static final int sherlock_spinner_item=0x7f03002a;
+        public static final int slidingmenumain=0x7f03002b;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1285,6 +1288,7 @@ containing a value of this type.
          */
         public static final int common_google_map_api_key=0x7f0a000e;
         public static final int empty=0x7f0a001a;
+        public static final int loading_more=0x7f0a001e;
         public static final int menu_more=0x7f0a001c;
         public static final int menu_options=0x7f0a001b;
         public static final int msg_err_bad_request=0x7f0a0010;
@@ -1301,22 +1305,22 @@ containing a value of this type.
         public static final int msg_err_server_error=0x7f0a0015;
         public static final int msg_err_something_wrong=0x7f0a0018;
         public static final int msg_info_no_data_result=0x7f0a0019;
-        public static final int options_clear_cache=0x7f0a0023;
-        public static final int options_connect_facebook=0x7f0a001f;
-        public static final int options_horizontal_style=0x7f0a0026;
-        public static final int options_login=0x7f0a0021;
-        public static final int options_login_facebook=0x7f0a0020;
-        public static final int options_rate=0x7f0a0024;
-        public static final int options_title=0x7f0a0022;
+        public static final int options_clear_cache=0x7f0a0024;
+        public static final int options_connect_facebook=0x7f0a0020;
+        public static final int options_horizontal_style=0x7f0a0027;
+        public static final int options_login=0x7f0a0022;
+        public static final int options_login_facebook=0x7f0a0021;
+        public static final int options_rate=0x7f0a0025;
+        public static final int options_title=0x7f0a0023;
         /**  Options screen 
          */
-        public static final int options_vai_description=0x7f0a001e;
-        public static final int options_vertical_style=0x7f0a0027;
-        public static final int options_view_style=0x7f0a0025;
+        public static final int options_vai_description=0x7f0a001f;
+        public static final int options_vertical_style=0x7f0a0028;
+        public static final int options_view_style=0x7f0a0026;
         public static final int refresh=0x7f0a001d;
         /**  Youtube player 
          */
-        public static final int youtube_error_player=0x7f0a0028;
+        public static final int youtube_error_player=0x7f0a0029;
     }
     public static final class style {
         /** 

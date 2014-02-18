@@ -34,6 +34,7 @@
         </activity>
         <activity
             android:name="org.vai.com.activity.HomeActivity"
+            android:hardwareAccelerated="true"
             android:label="@string/app_name" >
         </activity>
         <activity

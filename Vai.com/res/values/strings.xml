@@ -22,6 +22,7 @@
     <string name="menu_options">Options</string>
     <string name="menu_more">More</string>
     <string name="refresh">Refresh</string>
+    <string name="loading_more">Loading more &#8230;</string>
 
     <!-- Options screen -->
     <string name="options_vai_description">Vãi App: Ai là thánh bá đạo nhất :)</string>

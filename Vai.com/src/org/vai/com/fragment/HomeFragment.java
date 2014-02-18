@@ -18,6 +18,7 @@ public class HomeFragment extends BaseFragment {
 
 	protected String mCategoryId;
 	protected boolean mIsLoaded = false;
+	protected boolean mIsLoading = false;
 	protected int mCurrentPage = 1;
 	protected int mTotalItems = 0;
 
@@ -43,6 +44,7 @@ public class HomeFragment extends BaseFragment {
 			mRequestId = null;
 			hideLoadingView();
 			mIsLoaded = true;
+			mIsLoading = false;
 		}
 	});
 
@@ -71,13 +73,14 @@ public class HomeFragment extends BaseFragment {
 	}
 
 	public void callApiGetConference(int page) {
-		if (getActivity() == null) return;
+		if (getActivity() == null || mIsLoading) return;
 		if (page <= 1) {
 			scrollToFirstItem();
 			mTotalItems = 0;
 		}
 		// Call api get category.
 		mIsLoaded = false;
+		mIsLoading = true;
 		mCurrentPage = page;
 		showLoadingView();
 		if (TextUtils.isEmpty(mCategoryId)) mCategoryId = "0";
