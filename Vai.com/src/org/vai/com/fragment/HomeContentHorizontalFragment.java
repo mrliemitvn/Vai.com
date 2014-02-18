@@ -27,6 +27,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 public class HomeContentHorizontalFragment extends BaseFragment {
+	private static final String TAG = HomeContentHorizontalFragment.class.getSimpleName();
 
 	private View mParentView;
 	private ImageView mImgContent;
@@ -82,6 +83,10 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 
 	public void updateData() {
 		if (mParentView == null) return;
+		if (mConferenceResource == null) {
+			mPbLoadingImage.setVisibility(View.VISIBLE);
+			return;
+		}
 		mEmotionsUtils.setSpannableText(new SpannableStringBuilder(mConferenceResource.title));
 		mTvTitle.setText(mEmotionsUtils.getSmileText());
 		mTvLike.setText(mConferenceResource.like + "");
@@ -136,7 +141,7 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 
 			@Override
 			public void onDownloadComplete(String downloadedFile, String url) {
-				Logger.debug("zzz", "test");
+				Logger.debug(TAG, "image url: " + url + " downloaded file path = " + downloadedFile);
 			}
 		});
 	}

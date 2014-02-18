@@ -18,6 +18,8 @@ public class HomeFragment extends BaseFragment {
 
 	protected String mCategoryId;
 	protected boolean mIsLoaded = false;
+	protected int mCurrentPage = 1;
+	protected int mTotalItems = 0;
 
 	protected Long mRequestId;
 	protected RestBroadcastReceiver mRequestReceiver = new RestBroadcastReceiver(TAG, new BroadcastReceiverCallback() {
@@ -56,6 +58,9 @@ public class HomeFragment extends BaseFragment {
 	protected void hideLoadingView() {
 	}
 
+	protected void scrollToFirstItem() {
+	}
+
 	protected void setAdapterAndGetData() {
 		getDataFromDb();
 		callApiGetConference(1);
@@ -67,8 +72,13 @@ public class HomeFragment extends BaseFragment {
 
 	public void callApiGetConference(int page) {
 		if (getActivity() == null) return;
+		if (page <= 1) {
+			scrollToFirstItem();
+			mTotalItems = 0;
+		}
 		// Call api get category.
 		mIsLoaded = false;
+		mCurrentPage = page;
 		showLoadingView();
 		if (TextUtils.isEmpty(mCategoryId)) mCategoryId = "0";
 		Bundle bundle = new Bundle();

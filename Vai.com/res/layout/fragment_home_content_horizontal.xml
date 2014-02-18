@@ -104,13 +104,6 @@
                 android:contentDescription="@string/empty"
                 android:src="@drawable/playbtn"
                 android:visibility="gone" />
-
-            <ProgressBar
-                android:id="@+id/pbLoadingImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:visibility="gone" />
         </FrameLayout>
     </ScrollView>
 
@@ -124,5 +117,12 @@
         android:padding="@dimen/common_margin_small"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_medium" />
+
+    <ProgressBar
+        android:id="@+id/pbLoadingImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

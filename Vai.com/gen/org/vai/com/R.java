@@ -1164,7 +1164,7 @@ containing a value of this type.
         public static final int menu_frame=0x7f050055;
         public static final int normal=0x7f050001;
         public static final int pbLoadingData=0x7f050052;
-        public static final int pbLoadingImage=0x7f050047;
+        public static final int pbLoadingImage=0x7f050048;
         public static final int right=0x7f050011;
         public static final int rlContent=0x7f05004c;
         public static final int row_icon=0x7f050056;
@@ -1186,7 +1186,7 @@ containing a value of this type.
         public static final int tvNoData=0x7f050051;
         public static final int tvOptions=0x7f050053;
         public static final int tvRateApp=0x7f05003c;
-        public static final int tvTitle=0x7f050048;
+        public static final int tvTitle=0x7f050047;
         public static final int useLogo=0x7f050004;
         public static final int viewDivider=0x7f05004d;
         public static final int viewPager=0x7f050049;

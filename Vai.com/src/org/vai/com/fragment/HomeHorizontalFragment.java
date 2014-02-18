@@ -3,6 +3,7 @@ package org.vai.com.fragment;
 import java.util.ArrayList;
 
 import org.vai.com.R;
+import org.vai.com.activity.HomeActivity;
 import org.vai.com.adapter.SmartFragmentStatePagerAdapter;
 import org.vai.com.provider.DbContract.Conference;
 import org.vai.com.resource.home.ConferenceResource;
@@ -57,6 +58,7 @@ public class HomeHorizontalFragment extends HomeFragment {
 							SlidingMenu.TOUCHMODE_MARGIN);
 					break;
 				}
+				if (position == (mListFragments.size() - 1) && mListFragments.size() > mTotalItems) callApiGetConference(mCurrentPage + 1);
 			}
 
 		});
@@ -80,11 +82,31 @@ public class HomeHorizontalFragment extends HomeFragment {
 				fragment.setConference(conference);
 				mListFragments.add(fragment);
 			} while (cursor.moveToNext());
+			if (mListFragments.size() > mTotalItems) {
+				mTotalItems = mListFragments.size();
+				HomeContentHorizontalFragment fragment = new HomeContentHorizontalFragment();
+				mListFragments.add(fragment);
+			}
 
 			mAdapter.notifyDataSetChanged();
 			((HomeContentHorizontalFragment) mListFragments.get(mViewPager.getCurrentItem())).updateData();
 		}
 		if (cursor != null) cursor.close();
+	}
+
+	@Override
+	protected void showLoadingView() {
+		((HomeActivity) getActivity()).setSupportProgressBarIndeterminateVisibility(true);
+	}
+
+	@Override
+	protected void hideLoadingView() {
+		((HomeActivity) getActivity()).setSupportProgressBarIndeterminateVisibility(false);
+	}
+
+	@Override
+	protected void scrollToFirstItem() {
+		mViewPager.setCurrentItem(0);
 	}
 
 	@Override

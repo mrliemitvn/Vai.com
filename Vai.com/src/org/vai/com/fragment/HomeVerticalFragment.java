@@ -14,9 +14,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBack {
 
@@ -27,7 +32,7 @@ public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBa
 	private HomeVerticalAdapter mAdapter;
 	private ArrayList<ConferenceResource> mListConference = new ArrayList<ConferenceResource>();
 
-	private int mCurrentPage = 1;
+	private Runnable mRunnableScrollToFirst;
 
 	@Override
 	protected void setAdapterAndGetData() {
@@ -46,6 +51,31 @@ public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBa
 	@Override
 	protected void init() {
 		mListView = (ListView) mParentView.findViewById(R.id.listView);
+		OnScrollListener listOnScrollListener = new OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				// catch load more event
+				int headerFooterCount = (mListView.getHeaderViewsCount() + mListView.getFooterViewsCount());
+				if (totalItemCount > headerFooterCount && totalItemCount > mTotalItems) {
+					// what is the bottom item that is visible
+					int lastInScreen = firstVisibleItem + visibleItemCount;
+					// is the bottom item visible & not loading more already ? Load more !
+//					if (totalItemCount - lastInScreen <= 2) showLoadingMore();
+					if ((lastInScreen != totalItemCount)) return;
+					mTotalItems = totalItemCount;
+					callApiGetConference(mCurrentPage + 1);
+				}
+			}
+		};
+		PauseOnScrollListener pauseListener = new PauseOnScrollListener(ImageLoader.getInstance(), true, true,
+				listOnScrollListener);
+		mListView.setOnScrollListener(pauseListener);
 	}
 
 	@Override
@@ -83,6 +113,17 @@ public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBa
 	@Override
 	protected void hideLoadingView() {
 		mPbLoadingData.setVisibility(View.GONE);
+	}
+
+	@Override
+	protected void scrollToFirstItem() {
+		if (mRunnableScrollToFirst == null) mRunnableScrollToFirst = new Runnable() {
+			@Override
+			public void run() {
+				mListView.setSelection(0);
+			}
+		};
+		mListView.post(mRunnableScrollToFirst);
 	}
 
 	@Override
