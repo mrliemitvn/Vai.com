@@ -4,6 +4,7 @@ import org.vai.com.R;
 import org.vai.com.activity.YouTubePlayerActivity;
 import org.vai.com.resource.home.ConferenceResource;
 import org.vai.com.utils.Consts;
+import org.vai.com.utils.DownloadImageUtils;
 import org.vai.com.utils.EmotionsUtils;
 import org.vai.com.utils.Logger;
 
@@ -26,7 +27,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
-public class HomeContentHorizontalFragment extends BaseFragment {
+public class HomeContentHorizontalFragment extends BaseFragment implements OnClickListener {
 	private static final String TAG = HomeContentHorizontalFragment.class.getSimpleName();
 
 	private View mParentView;
@@ -41,6 +42,7 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 
 	private ConferenceResource mConferenceResource;
 	private EmotionsUtils mEmotionsUtils;
+	private DownloadImageUtils mDownloadImage;
 	private int mContentWidth;
 
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
@@ -60,6 +62,8 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 		mTvLike = (TextView) mParentView.findViewById(R.id.tvLike);
 		mTvComment = (TextView) mParentView.findViewById(R.id.tvComment);
 		mPbLoadingImage = (ProgressBar) mParentView.findViewById(R.id.pbLoadingImage);
+
+		mImgDownload.setOnClickListener(this);
 	}
 
 	public void setConference(ConferenceResource conferenceResource) {
@@ -87,6 +91,7 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 			mPbLoadingImage.setVisibility(View.VISIBLE);
 			return;
 		}
+		if (mDownloadImage == null) mDownloadImage = new DownloadImageUtils(getActivity());
 		mEmotionsUtils.setSpannableText(new SpannableStringBuilder(mConferenceResource.title));
 		mTvTitle.setText(mEmotionsUtils.getSmileText());
 		mTvLike.setText(mConferenceResource.like + "");
@@ -144,5 +149,15 @@ public class HomeContentHorizontalFragment extends BaseFragment {
 				Logger.debug(TAG, "image url: " + url + " downloaded file path = " + downloadedFile);
 			}
 		});
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v == mImgDownload) {
+			if (mConferenceResource == null) return;
+			long currentTime = System.currentTimeMillis();
+			String fileName = Consts.IMAGE_FILE_NAME + currentTime + Consts.IMAGE_FILE_JPG_TYPE;
+			mDownloadImage.downloadImage(mConferenceResource.image, fileName);
+		}
 	}
 }

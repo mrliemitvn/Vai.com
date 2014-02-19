@@ -8,6 +8,7 @@ import org.vai.com.activity.YouTubePlayerActivity;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.resource.home.ConferenceResource;
 import org.vai.com.utils.Consts;
+import org.vai.com.utils.DownloadImageUtils;
 import org.vai.com.utils.EmotionsUtils;
 
 import android.content.Context;
@@ -31,6 +32,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
+	private DownloadImageUtils mDownloadImage;
 	private OnClickListener mOnClickListener;
 	private ArrayList<ConferenceResource> mListConference = new ArrayList<ConferenceResource>();
 	private int mContentWidth;
@@ -44,6 +46,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		super(context, 0, listConference);
 		mContext = context;
 		mLayoutInflater = LayoutInflater.from(context);
+		mDownloadImage = new DownloadImageUtils(context);
 		mListConference = listConference;
 
 		// Calculate content width.
@@ -70,7 +73,11 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					}
 					mContext.startActivity(intent);
 					break;
-
+				case R.id.imgDownload:
+					long currentTime = System.currentTimeMillis();
+					String fileName = Consts.IMAGE_FILE_NAME + currentTime + Consts.IMAGE_FILE_JPG_TYPE;
+					mDownloadImage.downloadImage(viewHolder.conference.image, fileName);
+					break;
 				default:
 					break;
 				}
@@ -96,7 +103,9 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 
 			convertView.setTag(viewHolder);
 			viewHolder.imgContent.setTag(viewHolder);
+			viewHolder.imgDownload.setTag(viewHolder);
 			viewHolder.imgContent.setOnClickListener(mOnClickListener);
+			viewHolder.imgDownload.setOnClickListener(mOnClickListener);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}

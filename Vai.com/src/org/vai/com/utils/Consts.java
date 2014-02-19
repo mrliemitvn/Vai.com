@@ -9,6 +9,9 @@ public class Consts {
 
 	public static final String YOUTUBE_PACKAGE = "com.google.android.youtube";
 	public static final int MAX_SCROLL_DIFF = 5;
+	public static final String APP_FOLDER = "Vai.com";
+	public static final String IMAGE_FILE_NAME = "vai_com_";
+	public static final String IMAGE_FILE_JPG_TYPE = ".jpg";
 
 	// Callback upload progress
 	public static final String EXTRA_UPLOAD_PROGRESS = "org.vai.com.rest.EXTRA_UPLOAD_PROGRESS";
