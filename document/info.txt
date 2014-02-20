@@ -80,3 +80,5 @@ con 1 phan nua la add quang cao
 
  nua la login facebook de like va lay thong tin cua nguoi dung gui len server
 con comment facebook va xem youtube thi goi webview
+
+link browsers get comment: http://xn--vi-sia.com/api/app/mobile/vai.com/fbcomment.php?id=%@&w=750&appid=137092776349374

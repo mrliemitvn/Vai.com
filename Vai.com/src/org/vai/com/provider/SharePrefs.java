@@ -9,6 +9,9 @@ public class SharePrefs {
 	public static final String DEFAULT_BLANK = "";
 	public static final String ADS_ID = "ads_id";
 	public static final String FACEBOOK_APP_ID = "facebook_app_id";
+	public static final String FACEBOOK_USER_ID = "facebook_user_id";
+	public static final String FACEBOOK_USER_NAME = "facebook_user_name";
+	public static final String FACEBOOK_USER_TOKEN = "facebook_token";
 	public static final String SHOWING_CONTENT_OPTION = "show_content_option";
 	public static final int VERTICAL_SHOWING_CONTENT = 0;
 	public static final int HORIZONTAL_SHOWING_CONTENT = 1;
@@ -77,5 +80,29 @@ public class SharePrefs {
 
 	public int getShowingContentOption() {
 		return get(SHOWING_CONTENT_OPTION, VERTICAL_SHOWING_CONTENT);
+	}
+
+	public void saveFacebookUserId(String facebookUseId) {
+		save(FACEBOOK_USER_ID, facebookUseId);
+	}
+
+	public String getFacebookUserId() {
+		return get(FACEBOOK_USER_ID, DEFAULT_BLANK);
+	}
+
+	public void saveFacebookUserName(String facebookName) {
+		save(FACEBOOK_USER_NAME, facebookName);
+	}
+
+	public String getFacebookUserName() {
+		return get(FACEBOOK_USER_NAME, DEFAULT_BLANK);
+	}
+
+	public void saveFacebookUserToken(String token) {
+		save(FACEBOOK_USER_TOKEN, token);
+	}
+
+	public String getFacebookUserToken() {
+		return get(FACEBOOK_USER_TOKEN, DEFAULT_BLANK);
 	}
 }

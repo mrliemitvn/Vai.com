@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import org.vai.com.provider.DbContract.Category;
 import org.vai.com.provider.DbContract.Conference;
+import org.vai.com.provider.DbContract.LikeState;
 import org.vai.com.provider.DbContract.MoreWeb;
 import org.vai.com.provider.DbHelper.Tables;
 import org.vai.com.utils.Logger;
@@ -31,6 +32,8 @@ public class DbProvider extends ContentProvider {
 	private static final int CATEGORY = 0;
 	private static final int CONFERENCE = 1;
 	private static final int MORE_WEB = 2;
+	private static final int LIKE_STATE = 3;
+	private static final int CONFERENCE_JOIN_LIKE_STATE = 4;
 
 	/**
 	 * Build and return a {@link UriMatcher} that catches all {@link Uri} variations supported by this
@@ -43,6 +46,8 @@ public class DbProvider extends ContentProvider {
 		matcher.addURI(authority, DbContract.PATH_CATEGORY, CATEGORY);
 		matcher.addURI(authority, DbContract.PATH_CONFERENCE, CONFERENCE);
 		matcher.addURI(authority, DbContract.PATH_MORE_WEB, MORE_WEB);
+		matcher.addURI(authority, DbContract.PATH_LIKE_STATE, LIKE_STATE);
+		matcher.addURI(authority, DbContract.PATH_CONFERENCE_JOIN_LIKE_STATE, CONFERENCE_JOIN_LIKE_STATE);
 		return matcher;
 	}
 
@@ -60,9 +65,12 @@ public class DbProvider extends ContentProvider {
 		case CATEGORY:
 			return Category.CONTENT_TYPE;
 		case CONFERENCE:
+		case CONFERENCE_JOIN_LIKE_STATE:
 			return Conference.CONTENT_TYPE;
 		case MORE_WEB:
 			return MoreWeb.CONTENT_TYPE;
+		case LIKE_STATE:
+			return LikeState.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -80,12 +88,17 @@ public class DbProvider extends ContentProvider {
 			builder.setTables(Tables.CATEGORY);
 			return builder;
 		}
-		case CONFERENCE: {
+		case CONFERENCE:
+		case CONFERENCE_JOIN_LIKE_STATE: {
 			builder.setTables(Tables.CONFERENCE);
 			return builder;
 		}
 		case MORE_WEB: {
 			builder.setTables(Tables.MORE_WEB);
+			return builder;
+		}
+		case LIKE_STATE: {
+			builder.setTables(Tables.LIKE_STATE);
 			return builder;
 		}
 		default: {
@@ -113,13 +126,17 @@ public class DbProvider extends ContentProvider {
 			builder.setTables(Tables.MORE_WEB);
 			return builder;
 		}
-		// case FRIEND: {
-		// builder.setTables(Tables.USER_JOIN_FRIENDSHIP);
-		// HashMap<String, String> columnMap = buildFriendColumnMap();
-		// builder.setProjectionMap(columnMap);
-		// builder.setDistinct(true);
-		// return builder;
-		// }
+		case LIKE_STATE: {
+			builder.setTables(Tables.LIKE_STATE);
+			return builder;
+		}
+		case CONFERENCE_JOIN_LIKE_STATE: {
+			builder.setTables(Tables.CONFERENCE_JOIN_LIKE_STATE);
+			HashMap<String, String> columnMap = buildConferenceJoinLikeStateColumnMap();
+			builder.setProjectionMap(columnMap);
+			builder.setDistinct(true);
+			return builder;
+		}
 		default: {
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -131,23 +148,28 @@ public class DbProvider extends ContentProvider {
 	 * 
 	 * @return column map with key is the column name, value is the alias of the column
 	 */
-	private HashMap<String, String> buildFriendColumnMap() {
+	private HashMap<String, String> buildConferenceJoinLikeStateColumnMap() {
 		HashMap<String, String> map = new HashMap<String, String>();
-		// String userProjection[] = { Users._ID, Users._STATUS, Users.AVATAR, Users.AVATAR_THUMB, Users.COVER,
-		// Users.BIRTH_DAY, Users.FACEBOOK_ID, Users.LEVEL, Users.NAME, Users.NOTE, Users.ONLINE, Users.PHONE,
-		// Users.SEX, Users.TOTAL_FRIENDS, Users.TOTAL_MUTUAL_FRIENDS, Users.TOTAL_TAG_TOPICS,
-		// Users.TOTAL_TAG_LOCATIONS, Users.TOTAL_FOLLOWERS, Users.TWITTER_ID, Users.AREA_CODE };
-		// for (String col : userProjection) {
-		// String qualifiedCol = UboxContract.getQualifiedColumnName(Tables.USERS, col);
-		// String alias = UboxContract.getAlias(Tables.USERS, col);
-		// map.put(qualifiedCol, qualifiedCol + " AS " + alias);
-		// }
-		// String friendshipProjection[] = { Friendships.FID, Friendships.UID, Friendships.FRIENDSHIP_STATUS };
-		// for (String col : friendshipProjection) {
-		// String qualifiedCol = UboxContract.getQualifiedColumnName(Tables.FRIENDSHIPS, col);
-		// String alias = UboxContract.getAlias(Tables.FRIENDSHIPS, col);
-		// map.put(qualifiedCol, qualifiedCol + " AS " + alias);
-		// }
+		String conferenceProjection[] = { Conference._ID, Conference.POST_ID, Conference.CATEGORY_ID, Conference.TITLE,
+				Conference.TITLE_ASCII, Conference.ALIAS, Conference.INTRO, Conference.VIDEO_ID, Conference.IMAGE,
+				Conference._STATUS, Conference.AUTHOR, Conference.IMAGE_WIDTH, Conference.IMAGE_HEIGHT,
+				Conference.TIME_CREATED, Conference.TIME_MODIFIED, Conference.VIEWED, Conference.LIKE,
+				Conference.COMMENT };
+		for (String col : conferenceProjection) {
+			String qualifiedCol = DbContract.getQualifiedColumnName(Tables.CONFERENCE, col);
+			if (qualifiedCol.equals(DbContract.getQualifiedColumnName(Tables.CONFERENCE, Conference._ID))) {
+				map.put(qualifiedCol, qualifiedCol + " AS " + Conference._ID);
+			} else {
+				String alias = DbContract.getAlias(Tables.CONFERENCE, col);
+				map.put(qualifiedCol, qualifiedCol + " AS " + alias);
+			}
+		}
+		String friendshipProjection[] = { LikeState._ID, LikeState.LIKE_STATE, LikeState.FACEBOOK_USER_ID };
+		for (String col : friendshipProjection) {
+			String qualifiedCol = DbContract.getQualifiedColumnName(Tables.LIKE_STATE, col);
+			String alias = DbContract.getAlias(Tables.LIKE_STATE, col);
+			map.put(qualifiedCol, qualifiedCol + " AS " + alias);
+		}
 		return map;
 	}
 
@@ -180,7 +202,8 @@ public class DbProvider extends ContentProvider {
 			Logger.debug(TAG, "Insert to uri: " + newUri.toString());
 			return newUri;
 		}
-		case CONFERENCE: {
+		case CONFERENCE:
+		case CONFERENCE_JOIN_LIKE_STATE: {
 			long id = db.insertWithOnConflict(Tables.CONFERENCE, null, values, SQLiteDatabase.CONFLICT_IGNORE);
 			// Notify any watchers of the change
 			Uri newUri = ContentUris.withAppendedId(uri, id);
@@ -189,6 +212,13 @@ public class DbProvider extends ContentProvider {
 		}
 		case MORE_WEB: {
 			long id = db.insertWithOnConflict(Tables.MORE_WEB, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+			// Notify any watchers of the change
+			Uri newUri = ContentUris.withAppendedId(uri, id);
+			Logger.debug(TAG, "Insert to uri: " + newUri.toString());
+			return newUri;
+		}
+		case LIKE_STATE: {
+			long id = db.insertWithOnConflict(Tables.LIKE_STATE, null, values, SQLiteDatabase.CONFLICT_IGNORE);
 			// Notify any watchers of the change
 			Uri newUri = ContentUris.withAppendedId(uri, id);
 			Logger.debug(TAG, "Insert to uri: " + newUri.toString());
@@ -219,6 +249,7 @@ public class DbProvider extends ContentProvider {
 				}
 				break;
 			case CONFERENCE:
+			case CONFERENCE_JOIN_LIKE_STATE:
 				for (ContentValues valuesConference : contentValues) {
 					if (valuesConference != null && valuesConference.size() > 0) {
 						long id = db.insertWithOnConflict(Tables.CONFERENCE, null, valuesConference,
@@ -233,6 +264,15 @@ public class DbProvider extends ContentProvider {
 						long id = db.insertWithOnConflict(Tables.MORE_WEB, null, valuesMoreWeb,
 								SQLiteDatabase.CONFLICT_REPLACE);
 						Logger.debug(TAG, "bulkInsert database MORE_WEB " + id);
+					}
+				}
+				break;
+			case LIKE_STATE:
+				for (ContentValues valuesLikeState : contentValues) {
+					if (valuesLikeState != null && valuesLikeState.size() > 0) {
+						long id = db.insertWithOnConflict(Tables.LIKE_STATE, null, valuesLikeState,
+								SQLiteDatabase.CONFLICT_REPLACE);
+						Logger.debug(TAG, "bulkInsert database LIKE_STATE " + id);
 					}
 				}
 				break;
@@ -305,7 +345,6 @@ public class DbProvider extends ContentProvider {
 			for (int i = 0; i < numOperations; i++) {
 				ContentProviderOperation op = operations.get(i);
 				results[i] = op.apply(this, results, i);
-				// getContext().getContentResolver().notifyChange(op.getUri(), null);
 				db.yieldIfContendedSafely();
 			}
 			db.setTransactionSuccessful();

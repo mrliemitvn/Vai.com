@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import org.vai.com.R;
 import org.vai.com.activity.HomeActivity;
 import org.vai.com.adapter.SmartFragmentStatePagerAdapter;
+import org.vai.com.provider.DbContract;
+import org.vai.com.provider.SharePrefs;
 import org.vai.com.provider.DbContract.Conference;
+import org.vai.com.provider.DbContract.LikeState;
+import org.vai.com.provider.DbHelper.Tables;
 import org.vai.com.resource.home.ConferenceResource;
 
 import android.database.Cursor;
@@ -71,9 +75,12 @@ public class HomeHorizontalFragment extends HomeFragment {
 	@Override
 	protected void getDataFromDb() {
 		if (getActivity() == null) return;
-		String where = new StringBuilder().append(Conference.CATEGORY_ID).append("='").append(mCategoryId).append("'")
-				.toString();
-		Cursor cursor = getActivity().getContentResolver().query(Conference.CONTENT_URI, null, where, null, null);
+		String where = new StringBuilder().append(DbContract.getAlias(Tables.CONFERENCE, Conference.CATEGORY_ID))
+				.append("='").append(mCategoryId).append("' and ")
+				.append(DbContract.getAlias(Tables.LIKE_STATE, LikeState.FACEBOOK_USER_ID)).append("='")
+				.append(SharePrefs.getInstance().getFacebookUserId()).append("'").toString();
+		Cursor cursor = getActivity().getContentResolver().query(Conference.CONTENT_URI_CONFERENCE_JOIN_LIKE_STATE,
+				null, where, null, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			mListFragments.clear();
 			do {

@@ -2,6 +2,7 @@ package org.vai.com.provider;
 
 import org.vai.com.provider.DbContract.Category;
 import org.vai.com.provider.DbContract.Conference;
+import org.vai.com.provider.DbContract.LikeState;
 import org.vai.com.provider.DbContract.MoreWeb;
 
 import android.content.Context;
@@ -20,6 +21,10 @@ public class DbHelper extends SQLiteOpenHelper {
 		public static final String CATEGORY = "category";
 		public static final String CONFERENCE = "conference";
 		public static final String MORE_WEB = "more_web";
+		public static final String LIKE_STATE = "like_state";
+
+		// Join table.
+		public static final String CONFERENCE_JOIN_LIKE_STATE = "conference INNER JOIN like_state ON conference._id = like_state._id";
 	}
 
 	// Name of the database file
@@ -80,6 +85,16 @@ public class DbHelper extends SQLiteOpenHelper {
 		sqlBuilder.append(MoreWeb._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, ");
 		sqlBuilder.append(MoreWeb.NAME + " TEXT, ");
 		sqlBuilder.append(MoreWeb.LINK + " TEXT ");
+		sqlBuilder.append(")");
+		sql = sqlBuilder.toString();
+		db.execSQL(sql);
+
+		// Create LIKE_STATE table.
+		sqlBuilder = new StringBuilder();
+		sqlBuilder.append("CREATE TABLE IF NOT EXISTS " + Tables.LIKE_STATE + " (");
+		sqlBuilder.append(LikeState._ID + " TEXT, ");
+		sqlBuilder.append(LikeState.LIKE_STATE + " INTEGER, ");
+		sqlBuilder.append(LikeState.FACEBOOK_USER_ID + " TEXT ");
 		sqlBuilder.append(")");
 		sql = sqlBuilder.toString();
 		db.execSQL(sql);

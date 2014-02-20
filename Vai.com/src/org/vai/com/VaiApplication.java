@@ -1,9 +1,6 @@
 package org.vai.com;
 
-import java.io.File;
-
 import org.vai.com.provider.SharePrefs;
-import org.vai.com.utils.Consts;
 import org.vai.com.utils.LruBitmapCache;
 import org.vai.com.utils.NetworkUtils;
 import org.vai.com.utils.VaiUtils;
@@ -58,12 +55,6 @@ public class VaiApplication extends Application {
 		InitImageLoaderConfiguration();
 
 		SharePrefs.getInstance().init(this);
-
-		// create temp path
-		File file = new File(Consts.TEMP_PATH);
-		if (!file.exists()) {
-			file.mkdirs();
-		}
 
 		NetworkUtils.enableHttpResponseCache(this);
 	}

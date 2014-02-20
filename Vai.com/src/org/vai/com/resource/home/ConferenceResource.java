@@ -4,13 +4,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.json.JSONObject;
+import org.vai.com.provider.DbContract;
 import org.vai.com.provider.DbContract.Conference;
+import org.vai.com.provider.DbContract.LikeState;
+import org.vai.com.provider.DbHelper.Tables;
 import org.vai.com.resource.BaseResource;
 import org.vai.com.resource.Resource;
 import org.vai.com.utils.Consts;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 public class ConferenceResource implements BaseResource, Resource {
 
@@ -30,6 +34,7 @@ public class ConferenceResource implements BaseResource, Resource {
 	public int author;
 	public int imgWidth;
 	public int imgHeight;
+	public int likeState;
 	public long timeCreated;
 	public long timeModified;
 	public long viewed;
@@ -73,9 +78,9 @@ public class ConferenceResource implements BaseResource, Resource {
 					Pattern pattern = Pattern.compile(strPatternImageInfo, Pattern.CASE_INSENSITIVE);
 					Matcher matcher = pattern.matcher(imgInfo);
 					while (matcher.find()) {
-						image = matcher.group(1);
-						imgWidth = Integer.parseInt(matcher.group(2));
-						imgHeight = Integer.parseInt(matcher.group(3));
+						if (!TextUtils.isEmpty(matcher.group(1))) image = matcher.group(1);
+						if (!TextUtils.isEmpty(matcher.group(2))) imgWidth = Integer.parseInt(matcher.group(2));
+						if (!TextUtils.isEmpty(matcher.group(3))) imgHeight = Integer.parseInt(matcher.group(3));
 					}
 				}
 				if (!json.isNull(Consts.JSON_STATUS)) {
@@ -107,22 +112,23 @@ public class ConferenceResource implements BaseResource, Resource {
 
 	public ConferenceResource(Cursor cursor) {
 		int idIndex = cursor.getColumnIndex(Conference._ID);
-		int postIdIndex = cursor.getColumnIndex(Conference.POST_ID);
-		int categoryIdIndex = cursor.getColumnIndex(Conference.CATEGORY_ID);
-		int titleIndex = cursor.getColumnIndex(Conference.TITLE);
-		int titleAsciiIndex = cursor.getColumnIndex(Conference.TITLE_ASCII);
-		int aliasIndex = cursor.getColumnIndex(Conference.ALIAS);
-		int introIndex = cursor.getColumnIndex(Conference.INTRO);
-		int videoIdIndex = cursor.getColumnIndex(Conference.VIDEO_ID);
-		int imageIndex = cursor.getColumnIndex(Conference.IMAGE);
-		int authorIndex = cursor.getColumnIndex(Conference.AUTHOR);
-		int imageWidthIndex = cursor.getColumnIndex(Conference.IMAGE_WIDTH);
-		int imageHeightIndex = cursor.getColumnIndex(Conference.IMAGE_HEIGHT);
-		int timeCreatedIndex = cursor.getColumnIndex(Conference.TIME_CREATED);
-		int timeModifiedIndex = cursor.getColumnIndex(Conference.TIME_MODIFIED);
-		int viewedIndex = cursor.getColumnIndex(Conference.VIEWED);
-		int likeIndex = cursor.getColumnIndex(Conference.LIKE);
-		int commentIndex = cursor.getColumnIndex(Conference.COMMENT);
+		int postIdIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.POST_ID));
+		int categoryIdIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.CATEGORY_ID));
+		int titleIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.TITLE));
+		int titleAsciiIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.TITLE_ASCII));
+		int aliasIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.ALIAS));
+		int introIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.INTRO));
+		int videoIdIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.VIDEO_ID));
+		int imageIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.IMAGE));
+		int authorIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.AUTHOR));
+		int imageWidthIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.IMAGE_WIDTH));
+		int imageHeightIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.IMAGE_HEIGHT));
+		int timeCreatedIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.TIME_CREATED));
+		int timeModifiedIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.TIME_MODIFIED));
+		int viewedIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.VIEWED));
+		int likeIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.LIKE));
+		int commentIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.COMMENT));
+		int likeStateIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.LIKE_STATE, LikeState.LIKE_STATE));
 
 		if (idIndex > -1) id = cursor.getString(idIndex);
 		if (postIdIndex > -1) postId = cursor.getString(postIdIndex);
@@ -141,6 +147,7 @@ public class ConferenceResource implements BaseResource, Resource {
 		if (viewedIndex > -1) viewed = cursor.getLong(viewedIndex);
 		if (likeIndex > -1) like = cursor.getLong(likeIndex);
 		if (commentIndex > -1) comment = cursor.getLong(commentIndex);
+		if (likeStateIndex > -1) likeState = cursor.getInt(likeStateIndex);
 	}
 
 	@Override

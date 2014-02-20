@@ -43,6 +43,8 @@ public class DbContract {
 	static final String PATH_CATEGORY = "category";
 	static final String PATH_CONFERENCE = "conference";
 	static final String PATH_MORE_WEB = "more_web";
+	static final String PATH_LIKE_STATE = "like_state";
+	static final String PATH_CONFERENCE_JOIN_LIKE_STATE = "conference_join_like_state";
 
 	public static class Category implements ResourceTable {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CATEGORY).build();
@@ -54,6 +56,8 @@ public class DbContract {
 
 	public static class Conference implements ResourceTable {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CONFERENCE).build();
+		public static final Uri CONTENT_URI_CONFERENCE_JOIN_LIKE_STATE = BASE_CONTENT_URI.buildUpon()
+				.appendPath(PATH_CONFERENCE_JOIN_LIKE_STATE).build();
 		public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.vai.conference";
 		public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.vai.conference";
 		/** Post id */
@@ -98,5 +102,15 @@ public class DbContract {
 		public static final String NAME = "name";
 		/** Web link */
 		public static final String LINK = "link";
+	}
+
+	public static class LikeState implements ResourceTable {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_LIKE_STATE).build();
+		public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.vai.like_state";
+		public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.vai.like_state";
+		/** Facebook user id */
+		public static final String FACEBOOK_USER_ID = "facebook_user_id";
+		/** Like state */
+		public static final String LIKE_STATE = "like_state";
 	}
 }

@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableLeft="@drawable/notlike"
+                android:drawableLeft="@drawable/btn_like_state"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:singleLine="true"
@@ -86,7 +86,8 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal" >
 
             <ImageView
                 android:id="@+id/imgContent"

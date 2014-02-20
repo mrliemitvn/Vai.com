@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.vai.com.processor.BaseProcessor;
 import org.vai.com.provider.DbContract.Conference;
+import org.vai.com.provider.DbContract.LikeState;
+import org.vai.com.provider.SharePrefs;
 import org.vai.com.resource.home.ConferenceResource;
 import org.vai.com.resource.home.ListConferenceResource;
 import org.vai.com.rest.RestMethod;
@@ -15,6 +17,7 @@ import org.vai.com.utils.Consts.UriConsts;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -58,7 +61,8 @@ public class GetConferenceProcessor extends BaseProcessor<ListConferenceResource
 				mContext.getContentResolver().delete(Conference.CONTENT_URI, where, null);
 			}
 			ArrayList<ConferenceResource> listConference = mResult.getResource().getListConference();
-			ContentValues[] values = new ContentValues[listConference.size()];
+			ContentValues[] valuesConferences = new ContentValues[listConference.size()];
+			ContentValues[] valuesLikeState = new ContentValues[listConference.size()];
 			for (int i = 0; i < listConference.size(); i++) {
 				ConferenceResource conference = listConference.get(i);
 				if (TextUtils.isEmpty(conference.categoryId)) conference.categoryId = category;
@@ -68,10 +72,25 @@ public class GetConferenceProcessor extends BaseProcessor<ListConferenceResource
 						.toString();
 				int resultUpdate = mContext.getContentResolver().update(Conference.CONTENT_URI, valuesConference,
 						where, null);
-				if (resultUpdate <= 0) values[i] = valuesConference;
+				if (resultUpdate <= 0) valuesConferences[i] = valuesConference;
+
+				// Check to insert data in LIKE_STATE table.
+				where = new StringBuilder().append(LikeState._ID).append("='").append(conference.id).append("' and ")
+						.append(LikeState.FACEBOOK_USER_ID).append("='")
+						.append(SharePrefs.getInstance().getFacebookUserId()).append("'").toString();
+				Cursor cursor = mContext.getContentResolver().query(LikeState.CONTENT_URI, null, where, null, null);
+				if (cursor == null || cursor.getCount() <= 0) {
+					ContentValues valueLike = new ContentValues();
+					valueLike.put(LikeState._ID, conference.id);
+					valueLike.put(LikeState.LIKE_STATE, Consts.STATE_OFF);
+					valueLike.put(LikeState.FACEBOOK_USER_ID, SharePrefs.getInstance().getFacebookUserId());
+					valuesLikeState[i] = valueLike;
+				}
+				if (cursor != null) cursor.close();
 			}
 
-			mContext.getContentResolver().bulkInsert(Conference.CONTENT_URI, values);
+			mContext.getContentResolver().bulkInsert(Conference.CONTENT_URI, valuesConferences);
+			mContext.getContentResolver().bulkInsert(LikeState.CONTENT_URI, valuesLikeState);
 		}
 	}
 

@@ -96,6 +96,11 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 		mTvTitle.setText(mEmotionsUtils.getSmileText());
 		mTvLike.setText(mConferenceResource.like + "");
 		mTvComment.setText(mConferenceResource.comment + "");
+		if (Consts.STATE_ON == mConferenceResource.likeState) {
+			mTvLike.setSelected(true);
+		} else {
+			mTvLike.setSelected(false);
+		}
 		mImgContent.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

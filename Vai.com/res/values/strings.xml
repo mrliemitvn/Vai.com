@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">Vai.com</string>
+    <!-- Facebook app id -->
+    <string name="app_id">578437172192441</string>
     <!-- Google api key debug -->
     <string name="common_google_map_api_key">AIzaSyAshwfRl4tYwcoRKm4fRRb1LzAvOsoFDO4</string>
     <!-- Google api key release -->

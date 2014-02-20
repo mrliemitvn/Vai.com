@@ -124,6 +124,11 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder.imgIcon.setImageResource(R.drawable.photo_icon);
 			viewHolder.imgPlayYoutube.setVisibility(View.GONE);
 		}
+		if (Consts.STATE_ON == conferenceResource.likeState) {
+			viewHolder.tvLike.setSelected(true);
+		} else {
+			viewHolder.tvLike.setSelected(false);
+		}
 		int imgHeight = mContentWidth;
 		if (conferenceResource.imgWidth > 0) {
 			imgHeight = mContentWidth * conferenceResource.imgHeight / conferenceResource.imgWidth;

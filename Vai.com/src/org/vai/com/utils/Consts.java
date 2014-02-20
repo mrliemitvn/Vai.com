@@ -1,26 +1,21 @@
 package org.vai.com.utils;
 
-import java.io.File;
-
 import android.net.Uri;
-import android.os.Environment;
 
 public class Consts {
 
-	public static final String YOUTUBE_PACKAGE = "com.google.android.youtube";
+	public static final int STATE_ON = 1;
+	public static final int STATE_OFF = 0;
 	public static final int MAX_SCROLL_DIFF = 5;
+	public static final String YOUTUBE_PACKAGE = "com.google.android.youtube";
 	public static final String APP_FOLDER = "Vai.com";
 	public static final String IMAGE_FILE_NAME = "vai_com_";
 	public static final String IMAGE_FILE_JPG_TYPE = ".jpg";
+	public static final String IMAGE_URL = "image_url";
 
 	// Callback upload progress
 	public static final String EXTRA_UPLOAD_PROGRESS = "org.vai.com.rest.EXTRA_UPLOAD_PROGRESS";
 	public static final String EXTRA_UPLOAD_DATA = "org.vai.com.rest.EXTRA_UPLOAD_DATA";
-
-	public static final String BASE_PATH = Environment.getExternalStorageDirectory().toString() + File.separator
-			+ "org.vai.com" + File.separator;
-	public static final String TEMP_PATH = BASE_PATH + "temp" + File.separator;
-	public static final String IMAGE_URL = "image_url";
 
 	/* Json string */
 	public static final String JSON_ID = "id";
