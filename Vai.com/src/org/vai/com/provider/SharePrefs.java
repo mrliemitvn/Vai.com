@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.facebook.Session;
+
 public class SharePrefs {
 
 	public static final String DEFAULT_BLANK = "";
@@ -104,5 +106,15 @@ public class SharePrefs {
 
 	public String getFacebookUserToken() {
 		return get(FACEBOOK_USER_TOKEN, DEFAULT_BLANK);
+	}
+
+	public void logoutFacebook() {
+		if (Session.getActiveSession() != null) {
+			Session.getActiveSession().closeAndClearTokenInformation();
+		}
+		Session.setActiveSession(null);
+		saveFacebookUserToken(DEFAULT_BLANK);
+		saveFacebookUserId(DEFAULT_BLANK);
+		saveFacebookUserName(DEFAULT_BLANK);
 	}
 }

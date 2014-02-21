@@ -1,7 +1,9 @@
 package org.vai.com.activity;
 
 import org.vai.com.R;
+import org.vai.com.appinterface.IFacebookCallBack;
 import org.vai.com.provider.SharePrefs;
+import org.vai.com.utils.FacebookUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,68 +15,57 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.model.GraphUser;
 
-public class OptionsActivity extends SherlockActivity {
+public class OptionsActivity extends SherlockActivity implements IFacebookCallBack {
 
+	private SharePrefs mSharePrefs = SharePrefs.getInstance();
 	private CheckBox mCbHorizontal;
 	private CheckBox mCbVertical;
 	private Button mBtnLoginFacebook;
 	private TextView mTvFacebookName;
+	private FacebookUtils mFacebookUtils;
 
 	/**
 	 * Login facebook.
 	 */
 	private void loginFacebook() {
 		// start Facebook Login
-		Session.openActiveSession(OptionsActivity.this, true, new Session.StatusCallback() {
-			// callback when session changes state
-			@Override
-			public void call(Session session, SessionState state, Exception exception) {
-				if (session.isOpened()) {
-					SharePrefs.getInstance().saveFacebookUserToken(session.getAccessToken());
-					// make request to the /me API
-					Request.newMeRequest(session, new Request.GraphUserCallback() {
-						// callback after Graph API response with user object
-						@Override
-						public void onCompleted(GraphUser user, Response response) {
-							if (user != null) {
-								SharePrefs.getInstance().saveFacebookUserId(user.getId());
-								SharePrefs.getInstance().saveFacebookUserName(user.getName());
-								mTvFacebookName.setText(user.getName());
-							}
-						}
-					});
-				}
-			}
-		});
+		if (mFacebookUtils == null) {
+			mFacebookUtils = new FacebookUtils(this, this);
+		}
+		mFacebookUtils.loginFacebook();
 	}
 
 	/**
-	 * Update data on view.
+	 * Update view type to show content.
 	 */
-	private void updateData() {
+	private void updateViewType() {
 		// Set up view type of content.
-		if (SharePrefs.getInstance().getShowingContentOption() == SharePrefs.HORIZONTAL_SHOWING_CONTENT) {
+		if (mSharePrefs.getShowingContentOption() == SharePrefs.HORIZONTAL_SHOWING_CONTENT) {
 			mCbHorizontal.setChecked(true);
 			mCbVertical.setChecked(false);
 		} else {
 			mCbHorizontal.setChecked(false);
 			mCbVertical.setChecked(true);
 		}
+	}
 
+	/**
+	 * Update facebook data on view.
+	 */
+	private void updateFacebookData() {
 		// Show facebook name if logined.
-		if (TextUtils.isEmpty(SharePrefs.getInstance().getFacebookUserToken())) {
+		if (TextUtils.isEmpty(mSharePrefs.getFacebookUserToken())) {
 			mTvFacebookName.setText(R.string.options_login_facebook);
+			mBtnLoginFacebook.setText(R.string.options_login);
 		} else {
-			mTvFacebookName.setText(SharePrefs.getInstance().getFacebookUserName());
+			mTvFacebookName.setText(mSharePrefs.getFacebookUserName());
+			mBtnLoginFacebook.setText(R.string.options_logout);
 		}
 	}
 
@@ -92,9 +83,9 @@ public class OptionsActivity extends SherlockActivity {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				mCbVertical.setChecked(!isChecked);
 				if (isChecked) {
-					SharePrefs.getInstance().setShowingContentOption(SharePrefs.HORIZONTAL_SHOWING_CONTENT);
+					mSharePrefs.setShowingContentOption(SharePrefs.HORIZONTAL_SHOWING_CONTENT);
 				} else {
-					SharePrefs.getInstance().setShowingContentOption(SharePrefs.VERTICAL_SHOWING_CONTENT);
+					mSharePrefs.setShowingContentOption(SharePrefs.VERTICAL_SHOWING_CONTENT);
 				}
 			}
 		});
@@ -104,20 +95,27 @@ public class OptionsActivity extends SherlockActivity {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				mCbHorizontal.setChecked(!isChecked);
 				if (isChecked) {
-					SharePrefs.getInstance().setShowingContentOption(SharePrefs.VERTICAL_SHOWING_CONTENT);
+					mSharePrefs.setShowingContentOption(SharePrefs.VERTICAL_SHOWING_CONTENT);
 				} else {
-					SharePrefs.getInstance().setShowingContentOption(SharePrefs.HORIZONTAL_SHOWING_CONTENT);
+					mSharePrefs.setShowingContentOption(SharePrefs.HORIZONTAL_SHOWING_CONTENT);
 				}
 			}
 		});
 
-		// Update data on view.
-		updateData();
+		// Update view type.
+		updateViewType();
+		// Update facebook data on view.
+		updateFacebookData();
 
 		mBtnLoginFacebook.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				loginFacebook();
+				if (TextUtils.isEmpty(mSharePrefs.getFacebookUserToken())) {
+					loginFacebook();
+				} else {
+					mSharePrefs.logoutFacebook();
+				}
+				updateFacebookData();
 			}
 		});
 	}
@@ -137,6 +135,9 @@ public class OptionsActivity extends SherlockActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+		if (Session.getActiveSession().isOpened() && mFacebookUtils != null) {
+			mFacebookUtils.getFacebookInfo(Session.getActiveSession());
+		}
 	}
 
 	@Override
@@ -146,5 +147,15 @@ public class OptionsActivity extends SherlockActivity {
 			finish();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onSuccess(Session session) {
+		updateFacebookData();
+	}
+
+	@Override
+	public void onFailed() {
+		Toast.makeText(this, R.string.login_failed, Toast.LENGTH_SHORT).show();
 	}
 }

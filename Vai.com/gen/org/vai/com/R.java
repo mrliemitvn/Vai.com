@@ -1548,6 +1548,7 @@ containing a value of this type.
         public static final int common_google_map_api_key=0x7f080028;
         public static final int empty=0x7f080034;
         public static final int loading_more=0x7f080038;
+        public static final int login_failed=0x7f080039;
         public static final int menu_more=0x7f080036;
         public static final int menu_options=0x7f080035;
         public static final int msg_err_bad_request=0x7f08002a;
@@ -1564,22 +1565,23 @@ containing a value of this type.
         public static final int msg_err_server_error=0x7f08002f;
         public static final int msg_err_something_wrong=0x7f080032;
         public static final int msg_info_no_data_result=0x7f080033;
-        public static final int options_clear_cache=0x7f08003e;
-        public static final int options_connect_facebook=0x7f08003a;
-        public static final int options_horizontal_style=0x7f080041;
-        public static final int options_login=0x7f08003c;
-        public static final int options_login_facebook=0x7f08003b;
-        public static final int options_rate=0x7f08003f;
-        public static final int options_title=0x7f08003d;
+        public static final int options_clear_cache=0x7f080040;
+        public static final int options_connect_facebook=0x7f08003b;
+        public static final int options_horizontal_style=0x7f080043;
+        public static final int options_login=0x7f08003d;
+        public static final int options_login_facebook=0x7f08003c;
+        public static final int options_logout=0x7f08003e;
+        public static final int options_rate=0x7f080041;
+        public static final int options_title=0x7f08003f;
         /**  Options screen 
          */
-        public static final int options_vai_description=0x7f080039;
-        public static final int options_vertical_style=0x7f080042;
-        public static final int options_view_style=0x7f080040;
+        public static final int options_vai_description=0x7f08003a;
+        public static final int options_vertical_style=0x7f080044;
+        public static final int options_view_style=0x7f080042;
         public static final int refresh=0x7f080037;
         /**  Youtube player 
          */
-        public static final int youtube_error_player=0x7f080043;
+        public static final int youtube_error_player=0x7f080045;
     }
     public static final class style {
         /** 
