@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.vai.com.R;
 import org.vai.com.adapter.HomeVerticalAdapter;
-import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.provider.DbContract;
 import org.vai.com.provider.DbContract.Conference;
 import org.vai.com.provider.DbContract.LikeState;
@@ -29,7 +28,7 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
-public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBack {
+public class HomeVerticalFragment extends HomeFragment {
 
 	private View mHeaderLoadingContent;
 	private View mFooterLoadmoreContent;
@@ -65,7 +64,7 @@ public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBa
 		((View) mFooterLoadmoreContent.findViewById(R.id.pbLoadingMore)).setVisibility(View.GONE);
 		((View) mFooterLoadmoreContent.findViewById(R.id.tvLoadingMore)).setVisibility(View.GONE);
 
-		mAdapter = new HomeVerticalAdapter(getActivity(), mListConference, this);
+		mAdapter = new HomeVerticalAdapter(getActivity(), mListConference, mAdapterCallBack);
 		mListView.setAdapter(mAdapter);
 
 		super.setAdapterAndGetData();
@@ -180,11 +179,5 @@ public class HomeVerticalFragment extends HomeFragment implements IAdapterCallBa
 		init();
 
 		return mParentView;
-	}
-
-	@Override
-	public void adapterCallBack(Bundle bundle) {
-		// TODO Auto-generated method stub
-
 	}
 }

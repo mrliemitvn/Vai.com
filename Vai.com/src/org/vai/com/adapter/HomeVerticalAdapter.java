@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
+	private IAdapterCallBack mAdapterCallBack;
 	private DownloadImageUtils mDownloadImage;
 	private OnClickListener mOnClickListener;
 	private ArrayList<ConferenceResource> mListConference = new ArrayList<ConferenceResource>();
@@ -46,6 +48,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		super(context, 0, listConference);
 		mContext = context;
 		mLayoutInflater = LayoutInflater.from(context);
+		mAdapterCallBack = adapterCallBack;
 		mDownloadImage = new DownloadImageUtils(context);
 		mListConference = listConference;
 
@@ -78,6 +81,18 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					String fileName = Consts.IMAGE_FILE_NAME + currentTime + Consts.IMAGE_FILE_JPG_TYPE;
 					mDownloadImage.downloadImage(viewHolder.conference.image, fileName);
 					break;
+				case R.id.tvLike:
+					Bundle bundle = new Bundle();
+					if (viewHolder.tvLike.isSelected()) { // Current state is liked.
+						bundle.putInt(Consts.JSON_LIKE, Consts.STATE_OFF);
+						bundle.putString(Consts.IMAGE_URL, viewHolder.conference.image);
+					} else { // Current state is not liked.
+						// TODO: call like.
+						bundle.putInt(Consts.JSON_LIKE, Consts.STATE_ON);
+						bundle.putString(Consts.IMAGE_URL, viewHolder.conference.image);
+					}
+					if (mAdapterCallBack != null) mAdapterCallBack.adapterCallBack(bundle);
+					break;
 				default:
 					break;
 				}
@@ -104,8 +119,10 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			convertView.setTag(viewHolder);
 			viewHolder.imgContent.setTag(viewHolder);
 			viewHolder.imgDownload.setTag(viewHolder);
+			viewHolder.tvLike.setTag(viewHolder);
 			viewHolder.imgContent.setOnClickListener(mOnClickListener);
 			viewHolder.imgDownload.setOnClickListener(mOnClickListener);
+			viewHolder.tvLike.setOnClickListener(mOnClickListener);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}

@@ -6,6 +6,7 @@ public class Consts {
 
 	public static final int STATE_ON = 1;
 	public static final int STATE_OFF = 0;
+	public static final int STATE_UNKNOWN = -1;
 	public static final int MAX_SCROLL_DIFF = 5;
 	public static final String YOUTUBE_PACKAGE = "com.google.android.youtube";
 	public static final String APP_FOLDER = "Vai.com";

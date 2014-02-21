@@ -1,5 +1,6 @@
 package org.vai.com.fragment;
 
+import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.broadcastreceiver.BroadcastReceiverCallback;
 import org.vai.com.broadcastreceiver.RestBroadcastReceiver;
 import org.vai.com.service.Actions;
@@ -21,6 +22,7 @@ public class HomeFragment extends BaseFragment {
 	protected boolean mIsLoading = false;
 	protected int mCurrentPage = 1;
 	protected int mTotalItems = 0;
+	protected IAdapterCallBack mAdapterCallBack;
 
 	protected Long mRequestId;
 	protected RestBroadcastReceiver mRequestReceiver = new RestBroadcastReceiver(TAG, new BroadcastReceiverCallback() {
@@ -70,6 +72,14 @@ public class HomeFragment extends BaseFragment {
 
 	public void setCategoryId(String categoryId) {
 		mCategoryId = categoryId;
+	}
+
+	/**
+	 * @param adapterCallBack
+	 *            adapterCallBack to set.
+	 */
+	public void setAdapterCallBack(IAdapterCallBack adapterCallBack) {
+		mAdapterCallBack = adapterCallBack;
 	}
 
 	public void callApiGetConference(int page) {

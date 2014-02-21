@@ -6,10 +6,10 @@ import org.vai.com.R;
 import org.vai.com.activity.HomeActivity;
 import org.vai.com.adapter.SmartFragmentStatePagerAdapter;
 import org.vai.com.provider.DbContract;
-import org.vai.com.provider.SharePrefs;
 import org.vai.com.provider.DbContract.Conference;
 import org.vai.com.provider.DbContract.LikeState;
 import org.vai.com.provider.DbHelper.Tables;
+import org.vai.com.provider.SharePrefs;
 import org.vai.com.resource.home.ConferenceResource;
 
 import android.database.Cursor;
@@ -87,6 +87,7 @@ public class HomeHorizontalFragment extends HomeFragment {
 				ConferenceResource conference = new ConferenceResource(cursor);
 				HomeContentHorizontalFragment fragment = new HomeContentHorizontalFragment();
 				fragment.setConference(conference);
+				fragment.setAdapterCallBack(mAdapterCallBack);
 				mListFragments.add(fragment);
 			} while (cursor.moveToNext());
 			if (mListFragments.size() > mTotalItems) {

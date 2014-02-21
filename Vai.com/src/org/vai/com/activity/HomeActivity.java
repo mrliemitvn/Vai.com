@@ -2,6 +2,7 @@ package org.vai.com.activity;
 
 import org.vai.com.R;
 import org.vai.com.appinterface.IAdapterCallBack;
+import org.vai.com.appinterface.IFacebookCallBack;
 import org.vai.com.fragment.HomeFragment;
 import org.vai.com.fragment.HomeHorizontalFragment;
 import org.vai.com.fragment.HomeMenuFragment;
@@ -9,23 +10,33 @@ import org.vai.com.fragment.HomeVerticalFragment;
 import org.vai.com.provider.DbContract.Category;
 import org.vai.com.provider.SharePrefs;
 import org.vai.com.utils.Consts;
+import org.vai.com.utils.FacebookUtils;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class HomeActivity extends SlidingFragmentActivity implements IAdapterCallBack {
+public class HomeActivity extends SlidingFragmentActivity implements IAdapterCallBack, IFacebookCallBack {
 
 	private SharePrefs mSharePrefs = SharePrefs.getInstance();
 	private HomeMenuFragment mMenuFragment;
 	private HomeFragment mContentFragment;
+	private FacebookUtils mFacebookUtils;
 
 	private String mCategoryId = "";
+	private String mImageUrlLike = "";
 
 	/**
 	 * Initialize category id and menu.
@@ -68,6 +79,22 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 		sm.setFadeDegree(0.25f);
 	}
 
+	/**
+	 * Like action.
+	 */
+	private void callLikeAction() {
+		if (mFacebookUtils == null) mFacebookUtils = new FacebookUtils(this, this);
+		mFacebookUtils.initActiveSession();
+		Bundle params = new Bundle();
+		params.putString("object", mImageUrlLike);
+		/* make the API call */
+		new Request(Session.getActiveSession(), "/me/og.likes", params, HttpMethod.POST, new Request.Callback() {
+			public void onCompleted(Response response) {
+				/* handle the result */
+			}
+		}).executeAsync();
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,8 +122,18 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 		} else {
 			mContentFragment = new HomeVerticalFragment();
 		}
+		mContentFragment.setAdapterCallBack(this);
 		mContentFragment.setCategoryId(mCategoryId);
 		getSupportFragmentManager().beginTransaction().replace(R.id.mainContent, mContentFragment).commit();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent aIntent) {
+		super.onActivityResult(requestCode, resultCode, aIntent);
+		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, aIntent);
+		if (Session.getActiveSession().isOpened() && mFacebookUtils != null) {
+			mFacebookUtils.getFacebookInfo(Session.getActiveSession());
+		}
 	}
 
 	@Override
@@ -121,11 +158,39 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 
 	@Override
 	public void adapterCallBack(Bundle bundle) {
-		mCategoryId = bundle.getString(Consts.JSON_CATEGORY_ID);
-		String categoryName = bundle.getString(Consts.JSON_NAME);
-		getSupportActionBar().setTitle(categoryName);
-		toggle();
-		mContentFragment.setCategoryId(mCategoryId);
-		mContentFragment.callApiGetConference(1);
+		int callLikeState = bundle.getInt(Consts.JSON_LIKE, Consts.STATE_UNKNOWN);
+		if (callLikeState == Consts.STATE_ON) { // Like conference.
+			mImageUrlLike = bundle.getString(Consts.IMAGE_URL);
+			/*
+			 * If user hasn't logged in facebook, call login.
+			 * else, call like action.
+			 */
+			if (TextUtils.isEmpty(mSharePrefs.getFacebookUserToken())) { // Not logged in, call login facebook.
+				if (mFacebookUtils == null) mFacebookUtils = new FacebookUtils(this, this);
+				mFacebookUtils.loginFacebook();
+			} else { // Is logged in, all like action.
+				callLikeAction();
+			}
+		} else if (callLikeState == Consts.STATE_OFF) { // Unlike conference.
+
+		} else { // Clicked on menu, change category.
+			mCategoryId = bundle.getString(Consts.JSON_CATEGORY_ID);
+			String categoryName = bundle.getString(Consts.JSON_NAME);
+			getSupportActionBar().setTitle(categoryName);
+			toggle();
+			mContentFragment.setCategoryId(mCategoryId);
+			mContentFragment.callApiGetConference(1);
+		}
+	}
+
+	@Override
+	public void onSuccess(Session session) {
+		// Login successfully, call like action.
+		callLikeAction();
+	}
+
+	@Override
+	public void onFailed() {
+		Toast.makeText(this, R.string.login_failed, Toast.LENGTH_SHORT).show();
 	}
 }

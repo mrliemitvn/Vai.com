@@ -1,24 +1,31 @@
 package org.vai.com.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.vai.com.appinterface.IFacebookCallBack;
 import org.vai.com.provider.SharePrefs;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import android.app.Activity;
+
+import com.facebook.AccessToken;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.Session.OpenRequest;
+import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 
 public class FacebookUtils {
 
-	private IFacebookCallBack facebookCallBack;
-	private SherlockActivity activity;
+	private static final List<String> FACEBOOK_PERMISSION = Arrays.asList("basic_info", "email", "publish_stream",
+			"publish_actions");
 
-	public FacebookUtils(SherlockActivity activity, IFacebookCallBack facebookCallBack) {
+	private IFacebookCallBack facebookCallBack;
+	private Activity activity;
+
+	public FacebookUtils(Activity activity, IFacebookCallBack facebookCallBack) {
 		this.activity = activity;
 		this.facebookCallBack = facebookCallBack;
 	}
@@ -35,6 +42,8 @@ public class FacebookUtils {
 			List<String> permissions = new ArrayList<String>();
 			permissions.add("basic_info");
 			permissions.add("email");
+			permissions.add("publish_stream");
+			permissions.add("publish_actions");
 			op.setPermissions(permissions);
 
 			Session session = new Session.Builder(activity).build();
@@ -62,5 +71,23 @@ public class FacebookUtils {
 				}
 			}
 		}).executeAsync();
+	}
+
+	public void initActiveSession() {
+		if (Session.getActiveSession() == null || Session.getActiveSession().isClosed()) { // Recreate session.
+			// Create AccessToken from token which is saved in SharePrefs.
+			String token = SharePrefs.getInstance().getFacebookUserToken();
+			AccessToken accessToken = AccessToken.createFromExistingAccessToken(token, null, null, null,
+					FacebookUtils.FACEBOOK_PERMISSION);
+			// Recreate Session.
+			Session.openActiveSessionWithAccessToken(activity, accessToken, new Session.StatusCallback() {
+				@Override
+				public void call(Session session, SessionState state, Exception exception) {
+					if (session.isOpened()) {
+						Session.setActiveSession(session);
+					}
+				}
+			});
+		}
 	}
 }

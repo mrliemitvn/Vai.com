@@ -2,6 +2,7 @@ package org.vai.com.fragment;
 
 import org.vai.com.R;
 import org.vai.com.activity.YouTubePlayerActivity;
+import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.resource.home.ConferenceResource;
 import org.vai.com.utils.Consts;
 import org.vai.com.utils.DownloadImageUtils;
@@ -43,6 +44,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 	private ConferenceResource mConferenceResource;
 	private EmotionsUtils mEmotionsUtils;
 	private DownloadImageUtils mDownloadImage;
+	private IAdapterCallBack mAdapterCallBack;
 	private int mContentWidth;
 
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
@@ -68,6 +70,14 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 
 	public void setConference(ConferenceResource conferenceResource) {
 		mConferenceResource = conferenceResource;
+	}
+
+	/**
+	 * @param adapterCallBack
+	 *            adapterCallBack to set.
+	 */
+	public void setAdapterCallBack(IAdapterCallBack adapterCallBack) {
+		mAdapterCallBack = adapterCallBack;
 	}
 
 	@Override
