@@ -83,12 +83,14 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					break;
 				case R.id.tvLike:
 					Bundle bundle = new Bundle();
-					if (viewHolder.tvLike.isSelected()) { // Current state is liked.
-						bundle.putInt(Consts.JSON_LIKE, Consts.STATE_OFF);
-						bundle.putString(Consts.IMAGE_URL, viewHolder.conference.image);
-					} else { // Current state is not liked.
-						// TODO: call like.
+					// Change like state of tvLike.
+					viewHolder.tvLike.setSelected(!viewHolder.tvLike.isSelected());
+					if (viewHolder.tvLike.isSelected()) { // Call like action.
 						bundle.putInt(Consts.JSON_LIKE, Consts.STATE_ON);
+						bundle.putString(Consts.IMAGE_URL, viewHolder.conference.image);
+					} else { // Call unlike action.
+						// TODO: call unlike.
+						bundle.putInt(Consts.JSON_LIKE, Consts.STATE_OFF);
 						bundle.putString(Consts.IMAGE_URL, viewHolder.conference.image);
 					}
 					if (mAdapterCallBack != null) mAdapterCallBack.adapterCallBack(bundle);
