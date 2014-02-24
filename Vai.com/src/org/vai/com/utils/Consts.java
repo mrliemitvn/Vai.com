@@ -49,6 +49,7 @@ public class Consts {
 
 	/* Place holder string */
 	public static final String CATEGORY_PLACE_HOLDER = "{category}";
+	public static final String ID_PLACE_HOLDER = "{id}";
 
 	/* CONST URI */
 	public static final class UriConsts {
@@ -76,6 +77,9 @@ public class Consts {
 
 		public static final String BASE_URL = "http://xn--vi-sia.com/";
 		public static final String CLIENT_KEY = "vnvmcnjhbjch-mmqadtyiocdefb";
+
+		// Url load comment on webview.
+		public static final String URL_LOAD_COMMENT = "http://xn--vi-sia.com/api/app/mobile/vai.com/fbcomment.php?id={id}&w=750&appid=137092776349374";
 
 		// Get category url.
 		public static final String GET_CATEGORY_URL = BASE_URL + "api/app/mobile/vai.com/config.php?key=" + CLIENT_KEY;

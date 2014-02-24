@@ -1,6 +1,7 @@
 package org.vai.com.fragment;
 
 import org.vai.com.R;
+import org.vai.com.activity.CommentPageActivity;
 import org.vai.com.activity.ImageViewDetailActivity;
 import org.vai.com.activity.YouTubePlayerActivity;
 import org.vai.com.appinterface.IAdapterCallBack;
@@ -115,6 +116,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 			mTvLike.setSelected(false);
 		}
 		mTvLike.setOnClickListener(this);
+		mTvComment.setOnClickListener(this);
 		mImgContent.setOnClickListener(this);
 		mContentWidth = getResources().getDisplayMetrics().widthPixels;
 		mImageLoader.loadImage(mConferenceResource.image, mSquareOptions, new ImageLoadingListener() {
@@ -200,6 +202,10 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + mConferenceResource.videoId));
 			}
 			getActivity().startActivity(intent);
+		} else if (v == mTvComment) {
+			Intent intentComment = new Intent(getActivity(), CommentPageActivity.class);
+			intentComment.putExtra(Consts.JSON_ID, mConferenceResource.id);
+			startActivity(intentComment);
 		}
 	}
 }

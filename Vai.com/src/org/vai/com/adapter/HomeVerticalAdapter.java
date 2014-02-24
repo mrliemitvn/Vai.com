@@ -3,6 +3,7 @@ package org.vai.com.adapter;
 import java.util.ArrayList;
 
 import org.vai.com.R;
+import org.vai.com.activity.CommentPageActivity;
 import org.vai.com.activity.ImageViewDetailActivity;
 import org.vai.com.activity.YouTubePlayerActivity;
 import org.vai.com.appinterface.IAdapterCallBack;
@@ -110,6 +111,11 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 							.update(Conference.CONTENT_URI, values, where, null);
 					Logger.debug(TAG, "number conference is updated = " + resultUpdate);
 					break;
+				case R.id.tvComment:
+					Intent intentComment = new Intent(mContext, CommentPageActivity.class);
+					intentComment.putExtra(Consts.JSON_ID, viewHolder.conference.id);
+					mContext.startActivity(intentComment);
+					break;
 				default:
 					break;
 				}
@@ -137,9 +143,11 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder.imgContent.setTag(viewHolder);
 			viewHolder.imgDownload.setTag(viewHolder);
 			viewHolder.tvLike.setTag(viewHolder);
+			viewHolder.tvComment.setTag(viewHolder);
 			viewHolder.imgContent.setOnClickListener(mOnClickListener);
 			viewHolder.imgDownload.setOnClickListener(mOnClickListener);
 			viewHolder.tvLike.setOnClickListener(mOnClickListener);
+			viewHolder.tvComment.setOnClickListener(mOnClickListener);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
