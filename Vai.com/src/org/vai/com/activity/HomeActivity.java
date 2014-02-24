@@ -1,6 +1,7 @@
 package org.vai.com.activity;
 
 import org.vai.com.R;
+import org.vai.com.VaiApplication;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.appinterface.IFacebookCallBack;
 import org.vai.com.fragment.HomeFragment;
@@ -25,6 +26,9 @@ import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -125,6 +129,21 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 		mContentFragment.setAdapterCallBack(this);
 		mContentFragment.setCategoryId(mCategoryId);
 		getSupportFragmentManager().beginTransaction().replace(R.id.mainContent, mContentFragment).commit();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// For google anlytics.
+		EasyTracker.getInstance(this).activityStart(this);
+		VaiApplication.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getName());
+		VaiApplication.getGaTracker().send(MapBuilder.createAppView().build());
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override

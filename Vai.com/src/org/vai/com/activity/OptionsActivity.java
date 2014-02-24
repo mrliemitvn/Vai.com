@@ -1,6 +1,7 @@
 package org.vai.com.activity;
 
 import org.vai.com.R;
+import org.vai.com.VaiApplication;
 import org.vai.com.appinterface.IFacebookCallBack;
 import org.vai.com.provider.SharePrefs;
 import org.vai.com.utils.FacebookUtils;
@@ -20,6 +21,9 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.facebook.Session;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 
 public class OptionsActivity extends SherlockActivity implements IFacebookCallBack {
 
@@ -129,6 +133,21 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 		getSupportActionBar().setIcon(R.drawable.icon_back);
 
 		init(); // Define view.
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// For google anlytics.
+		EasyTracker.getInstance(this).activityStart(this);
+		VaiApplication.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getName());
+		VaiApplication.getGaTracker().send(MapBuilder.createAppView().build());
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override

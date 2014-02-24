@@ -54,7 +54,7 @@
             android:label="@string/menu_options" >
         </activity>
         <activity
-            android:name="org.vai.com.activity.MoreActivity"
+            android:name="org.vai.com.activity.MoreWebActivity"
             android:label="@string/menu_more" >
         </activity>
         <activity

@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.vai.com.R;
+import org.vai.com.VaiApplication;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -39,6 +40,9 @@ import android.view.KeyEvent;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -77,6 +81,21 @@ public class YouTubePlayerActivity extends YouTubeBaseActivity implements YouTub
 		mAutoRotation = Settings.System.getInt(getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1;
 
 		addContentView(mPlayerView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// For google anlytics.
+		EasyTracker.getInstance(this).activityStart(this);
+		VaiApplication.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getName());
+		VaiApplication.getGaTracker().send(MapBuilder.createAppView().build());
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override
@@ -185,8 +204,7 @@ public class YouTubePlayerActivity extends YouTubeBaseActivity implements YouTub
 				// Regular expression some how doesn't work with id with "v" at
 				// prefix
 				String groupIndex1 = matcher.group(7);
-				if (groupIndex1 != null && groupIndex1.length() == 11)
-					video_id = groupIndex1;
+				if (groupIndex1 != null && groupIndex1.length() == 11) video_id = groupIndex1;
 				else if (groupIndex1 != null && groupIndex1.length() == 10) video_id = "v" + groupIndex1;
 			}
 		}

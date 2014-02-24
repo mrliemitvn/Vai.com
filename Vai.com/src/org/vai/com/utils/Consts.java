@@ -4,15 +4,20 @@ import android.net.Uri;
 
 public class Consts {
 
-	public static final int STATE_ON = 1;
-	public static final int STATE_OFF = 0;
-	public static final int STATE_UNKNOWN = -1;
-	public static final int MAX_SCROLL_DIFF = 5;
+	/*
+	 * For GA.
+	 */
+	public static final String MENU_SELECTED = "MENU_SELECTED";
+
 	public static final String YOUTUBE_PACKAGE = "com.google.android.youtube";
 	public static final String APP_FOLDER = "Vai.com";
 	public static final String IMAGE_FILE_NAME = "vai_com_";
 	public static final String IMAGE_FILE_JPG_TYPE = ".jpg";
 	public static final String IMAGE_URL = "image_url";
+	public static final int STATE_ON = 1;
+	public static final int STATE_OFF = 0;
+	public static final int STATE_UNKNOWN = -1;
+	public static final int MAX_SCROLL_DIFF = 5;
 
 	// Callback upload progress
 	public static final String EXTRA_UPLOAD_PROGRESS = "org.vai.com.rest.EXTRA_UPLOAD_PROGRESS";

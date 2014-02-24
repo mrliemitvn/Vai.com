@@ -933,6 +933,12 @@ containing a value of this type.
          */
         public static final int abs__config_showMenuShortcutsWhenKeyboardPresent=0x7f0a0003;
         public static final int abs__split_action_bar_is_narrow=0x7f0a0001;
+        /**  Enable automatic activity tracking 
+         */
+        public static final int ga_autoActivityTracking=0x7f0a0006;
+        /**  Enable automatic exception tracking 
+         */
+        public static final int ga_reportUncaughtExceptions=0x7f0a0007;
     }
     public static final class color {
         public static final int abs__background_holo_dark=0x7f070007;
@@ -1413,6 +1419,12 @@ containing a value of this type.
     }
     public static final class integer {
         public static final int abs__max_action_buttons=0x7f0b0000;
+        /**  Set a time to dispatch period of 30 seconds 
+         */
+        public static final int ga_dispatchPeriod=0x7f0b0001;
+        /**  Set a session timeout period of 60 seconds 
+         */
+        public static final int ga_sessionTimeout=0x7f0b0002;
     }
     public static final class layout {
         public static final int abs__action_bar_home=0x7f030000;
@@ -1516,8 +1528,8 @@ containing a value of this type.
         public static final int abs__shareactionprovider_share_with_application=0x7f080020;
         /**  Facebook app id 
          */
-        public static final int app_id=0x7f080027;
-        public static final int app_name=0x7f080026;
+        public static final int app_id=0x7f080028;
+        public static final int app_name=0x7f080027;
         public static final int com_facebook_choose_friends=0x7f08000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f080000;
         public static final int com_facebook_internet_permission_error_message=0x7f080013;
@@ -1545,43 +1557,46 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f08000a;
         /**  Google api key debug 
          */
-        public static final int common_google_map_api_key=0x7f080028;
-        public static final int empty=0x7f080034;
-        public static final int loading_more=0x7f080038;
-        public static final int login_failed=0x7f080039;
-        public static final int menu_more=0x7f080036;
-        public static final int menu_options=0x7f080035;
-        public static final int msg_err_bad_request=0x7f08002a;
-        public static final int msg_err_conflict=0x7f08002e;
-        public static final int msg_err_connecting_error=0x7f080030;
-        public static final int msg_err_data_error=0x7f080031;
-        public static final int msg_err_forbidden=0x7f08002c;
-        public static final int msg_err_invalid_token=0x7f08002b;
+        public static final int common_google_map_api_key=0x7f080029;
+        public static final int empty=0x7f080035;
+        /**  Tracking ID Google analytics official 
+         */
+        public static final int ga_trackingId=0x7f080026;
+        public static final int loading_more=0x7f080039;
+        public static final int login_failed=0x7f08003a;
+        public static final int menu_more=0x7f080037;
+        public static final int menu_options=0x7f080036;
+        public static final int msg_err_bad_request=0x7f08002b;
+        public static final int msg_err_conflict=0x7f08002f;
+        public static final int msg_err_connecting_error=0x7f080031;
+        public static final int msg_err_data_error=0x7f080032;
+        public static final int msg_err_forbidden=0x7f08002d;
+        public static final int msg_err_invalid_token=0x7f08002c;
         /**  Google api key release 
  <string name="common_google_map_api_key">AIzaSyBdh4XPUavbP-kTT7i02tBBv9vai7x9_oY</string> 
          */
-        public static final int msg_err_move_temporarily=0x7f080029;
-        public static final int msg_err_not_found=0x7f08002d;
-        public static final int msg_err_server_error=0x7f08002f;
-        public static final int msg_err_something_wrong=0x7f080032;
-        public static final int msg_info_no_data_result=0x7f080033;
-        public static final int options_clear_cache=0x7f080040;
-        public static final int options_connect_facebook=0x7f08003b;
-        public static final int options_horizontal_style=0x7f080043;
-        public static final int options_login=0x7f08003d;
-        public static final int options_login_facebook=0x7f08003c;
-        public static final int options_logout=0x7f08003e;
-        public static final int options_rate=0x7f080041;
-        public static final int options_title=0x7f08003f;
+        public static final int msg_err_move_temporarily=0x7f08002a;
+        public static final int msg_err_not_found=0x7f08002e;
+        public static final int msg_err_server_error=0x7f080030;
+        public static final int msg_err_something_wrong=0x7f080033;
+        public static final int msg_info_no_data_result=0x7f080034;
+        public static final int options_clear_cache=0x7f080041;
+        public static final int options_connect_facebook=0x7f08003c;
+        public static final int options_horizontal_style=0x7f080044;
+        public static final int options_login=0x7f08003e;
+        public static final int options_login_facebook=0x7f08003d;
+        public static final int options_logout=0x7f08003f;
+        public static final int options_rate=0x7f080042;
+        public static final int options_title=0x7f080040;
         /**  Options screen 
          */
-        public static final int options_vai_description=0x7f08003a;
-        public static final int options_vertical_style=0x7f080044;
-        public static final int options_view_style=0x7f080042;
-        public static final int refresh=0x7f080037;
+        public static final int options_vai_description=0x7f08003b;
+        public static final int options_vertical_style=0x7f080045;
+        public static final int options_view_style=0x7f080043;
+        public static final int refresh=0x7f080038;
         /**  Youtube player 
          */
-        public static final int youtube_error_player=0x7f080045;
+        public static final int youtube_error_player=0x7f080046;
     }
     public static final class style {
         /** 

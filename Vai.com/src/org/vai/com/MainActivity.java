@@ -21,6 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 
 public class MainActivity extends SherlockActivity {
 
@@ -85,6 +88,21 @@ public class MainActivity extends SherlockActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// For google anlytics.
+		EasyTracker.getInstance(this).activityStart(this);
+		VaiApplication.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getName());
+		VaiApplication.getGaTracker().send(MapBuilder.createAppView().build());
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	private void showMessageBar(String message) {

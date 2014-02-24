@@ -1,6 +1,7 @@
 package org.vai.com.activity;
 
 import org.vai.com.R;
+import org.vai.com.VaiApplication;
 import org.vai.com.adapter.MoreWebAdapter;
 import org.vai.com.provider.DbContract.MoreWeb;
 import org.vai.com.resource.menu.MoreWebResource;
@@ -20,8 +21,11 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 
-public class MoreActivity extends SherlockFragmentActivity implements LoaderCallbacks<Cursor> {
+public class MoreWebActivity extends SherlockFragmentActivity implements LoaderCallbacks<Cursor> {
 
 	private static final int LOADER_MORE_WEB = 1;
 	private ListView mListView;
@@ -58,6 +62,21 @@ public class MoreActivity extends SherlockFragmentActivity implements LoaderCall
 				}
 			}
 		});
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// For google anlytics.
+		EasyTracker.getInstance(this).activityStart(this);
+		VaiApplication.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getName());
+		VaiApplication.getGaTracker().send(MapBuilder.createAppView().build());
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override

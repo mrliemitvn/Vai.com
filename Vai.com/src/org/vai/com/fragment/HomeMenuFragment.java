@@ -1,7 +1,8 @@
 package org.vai.com.fragment;
 
 import org.vai.com.R;
-import org.vai.com.activity.MoreActivity;
+import org.vai.com.VaiApplication;
+import org.vai.com.activity.MoreWebActivity;
 import org.vai.com.activity.OptionsActivity;
 import org.vai.com.adapter.HomeMenuAdapter;
 import org.vai.com.appinterface.IAdapterCallBack;
@@ -26,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.google.analytics.tracking.android.MapBuilder;
 
 public class HomeMenuFragment extends SherlockFragment implements LoaderCallbacks<Cursor>, OnClickListener {
 
@@ -52,6 +54,12 @@ public class HomeMenuFragment extends SherlockFragment implements LoaderCallback
 					bundle.putString(Consts.JSON_CATEGORY_ID, categoryResource.id);
 					bundle.putString(Consts.JSON_NAME, categoryResource.name);
 					mAdapterCallBack.adapterCallBack(bundle);
+					// Send GA tracker.
+					VaiApplication.getGaTracker().send(MapBuilder.createEvent(Consts.MENU_SELECTED, // Category.
+							categoryResource.name, // Event action.
+							"", // Event label (not required).
+							null) // Event value.
+							.build());
 				}
 			}
 		});
@@ -129,7 +137,7 @@ public class HomeMenuFragment extends SherlockFragment implements LoaderCallback
 		if (v == mTvOptions) {
 			startActivity(new Intent(getActivity(), OptionsActivity.class));
 		} else if (v == mTvMore) {
-			startActivity(new Intent(getActivity(), MoreActivity.class));
+			startActivity(new Intent(getActivity(), MoreWebActivity.class));
 		}
 	}
 }
