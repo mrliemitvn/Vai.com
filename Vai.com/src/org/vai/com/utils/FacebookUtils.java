@@ -19,6 +19,7 @@ import com.facebook.model.GraphUser;
 
 public class FacebookUtils {
 
+	public static final int FACEBOOK_SHARE_REQUEST_CODE = 123;
 	private static final List<String> FACEBOOK_PERMISSION = Arrays.asList("basic_info", "email", "publish_stream",
 			"publish_actions");
 

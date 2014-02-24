@@ -7,6 +7,7 @@ import org.vai.com.provider.SharePrefs;
 import org.vai.com.utils.FacebookUtils;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -24,14 +25,21 @@ import com.facebook.Session;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class OptionsActivity extends SherlockActivity implements IFacebookCallBack {
+public class OptionsActivity extends SherlockActivity implements IFacebookCallBack, OnClickListener {
+
+	private AdView adView;
 
 	private SharePrefs mSharePrefs = SharePrefs.getInstance();
 	private CheckBox mCbHorizontal;
 	private CheckBox mCbVertical;
 	private Button mBtnLoginFacebook;
 	private TextView mTvFacebookName;
+	private TextView mTvRateApp;
+	private TextView mTvClearCache;
 	private FacebookUtils mFacebookUtils;
 
 	/**
@@ -81,6 +89,8 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 		mCbVertical = (CheckBox) findViewById(R.id.cbVertical);
 		mBtnLoginFacebook = (Button) findViewById(R.id.btnLoginFacebook);
 		mTvFacebookName = (TextView) findViewById(R.id.tvFacebookName);
+		mTvRateApp = (TextView) findViewById(R.id.tvRateApp);
+		mTvClearCache = (TextView) findViewById(R.id.tvClearCache);
 
 		mCbHorizontal.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
@@ -111,17 +121,14 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 		// Update facebook data on view.
 		updateFacebookData();
 
-		mBtnLoginFacebook.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (TextUtils.isEmpty(mSharePrefs.getFacebookUserToken())) {
-					loginFacebook();
-				} else {
-					mSharePrefs.logoutFacebook();
-				}
-				updateFacebookData();
-			}
-		});
+		mBtnLoginFacebook.setOnClickListener(this);
+		mTvRateApp.setOnClickListener(this);
+		mTvClearCache.setOnClickListener(this);
+
+		// For admob.
+		adView = (AdView) this.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		adView.loadAd(adRequest);
 	}
 
 	@Override
@@ -133,6 +140,24 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 		getSupportActionBar().setIcon(R.drawable.icon_back);
 
 		init(); // Define view.
+	}
+
+	@Override
+	public void onPause() {
+		adView.pause();
+		super.onPause();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		adView.resume();
+	}
+
+	@Override
+	public void onDestroy() {
+		adView.destroy();
+		super.onDestroy();
 	}
 
 	@Override
@@ -176,5 +201,28 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 	@Override
 	public void onFailed() {
 		Toast.makeText(this, R.string.login_failed, Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v == mTvRateApp) {
+			String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+			try {
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+			} catch (android.content.ActivityNotFoundException anfe) {
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="
+						+ appPackageName)));
+			}
+		} else if (v == mBtnLoginFacebook) {
+			if (TextUtils.isEmpty(mSharePrefs.getFacebookUserToken())) {
+				loginFacebook();
+			} else {
+				mSharePrefs.logoutFacebook();
+			}
+			updateFacebookData();
+		} else if (v == mTvClearCache) {
+			ImageLoader.getInstance().clearDiscCache();
+			ImageLoader.getInstance().clearMemoryCache();
+		}
 	}
 }

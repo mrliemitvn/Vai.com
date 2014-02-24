@@ -116,6 +116,15 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					intentComment.putExtra(Consts.JSON_ID, viewHolder.conference.id);
 					mContext.startActivity(intentComment);
 					break;
+				case R.id.imgShare:
+					if (mAdapterCallBack == null) return;
+					Bundle bundleShare = new Bundle();
+					bundleShare.putInt(Consts.SHARE_CONFERENCE, Consts.STATE_ON);
+					bundleShare.putString(Consts.JSON_ID, viewHolder.conference.id);
+					bundleShare.putString(Consts.JSON_TITLE, viewHolder.conference.title);
+					bundleShare.putString(Consts.IMAGE_URL, viewHolder.conference.image);
+					mAdapterCallBack.adapterCallBack(bundleShare);
+					break;
 				default:
 					break;
 				}
@@ -144,10 +153,12 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder.imgDownload.setTag(viewHolder);
 			viewHolder.tvLike.setTag(viewHolder);
 			viewHolder.tvComment.setTag(viewHolder);
+			viewHolder.imgShare.setTag(viewHolder);
 			viewHolder.imgContent.setOnClickListener(mOnClickListener);
 			viewHolder.imgDownload.setOnClickListener(mOnClickListener);
 			viewHolder.tvLike.setOnClickListener(mOnClickListener);
 			viewHolder.tvComment.setOnClickListener(mOnClickListener);
+			viewHolder.imgShare.setOnClickListener(mOnClickListener);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}

@@ -25,26 +25,40 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.facebook.FacebookRequestError;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
+import com.facebook.RequestAsyncTask;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.Session.StatusCallback;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class HomeActivity extends SlidingFragmentActivity implements IAdapterCallBack, IFacebookCallBack {
 	private static final String TAG = HomeActivity.class.getSimpleName();
 
+	private AdView adView;
+
 	private SharePrefs mSharePrefs = SharePrefs.getInstance();
 	private HomeMenuFragment mMenuFragment;
 	private HomeFragment mContentFragment;
 	private FacebookUtils mFacebookUtils;
+	private UiLifecycleHelper mUiHelper;
 
 	private String mCategoryId = "";
 	private String mConferenceId = "";
+	private String mTitle = "";
+	private String mImgUrl = "";
+	private boolean isCallShare = false;
 
 	/**
 	 * Initialize category id and menu.
@@ -85,6 +99,11 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 		sm.setShadowDrawable(R.drawable.shadow);
 		sm.setBehindScrollScale(0.25f);
 		sm.setFadeDegree(0.25f);
+
+		// For admob.
+		adView = (AdView) this.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		adView.loadAd(adRequest);
 	}
 
 	/**
@@ -144,6 +163,42 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 		}).executeAsync();
 	}
 
+	/**
+	 * Share content on facebook.
+	 */
+	private void shareOnFacebook() {
+		if (mFacebookUtils == null) mFacebookUtils = new FacebookUtils(this, this);
+		mFacebookUtils.initActiveSession();
+		String urlShare = Consts.URLConstants.BASE_URL + mConferenceId;
+		if (FacebookDialog.canPresentShareDialog(this, FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
+			FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+					.setApplicationName(getResources().getString(R.string.app_name)).setName(mTitle)
+					.setPicture(mImgUrl).setLink(urlShare).setDescription("")
+					.setRequestCode(FacebookUtils.FACEBOOK_SHARE_REQUEST_CODE).build();
+			mUiHelper.trackPendingDialogCall(shareDialog.present());
+		} else {
+			Bundle postParams = new Bundle();
+			postParams.putString("name", getResources().getString(R.string.app_name));
+			postParams.putString("caption", mTitle);
+			postParams.putString("link", urlShare);
+			postParams.putString("picture", mImgUrl);
+			Request.Callback callback = new Request.Callback() {
+				public void onCompleted(Response response) {
+					FacebookRequestError error = response.getError();
+					if (error != null) {
+						Toast.makeText(HomeActivity.this, R.string.msg_err_share_failed, Toast.LENGTH_SHORT).show();
+					} else {
+						Toast.makeText(HomeActivity.this, R.string.msg_info_share_successfully, Toast.LENGTH_SHORT)
+								.show();
+					}
+				}
+			};
+			Request request = new Request(Session.getActiveSession(), "me/feed", postParams, HttpMethod.POST, callback);
+			RequestAsyncTask task = new RequestAsyncTask(request);
+			task.execute();
+		}
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -153,11 +208,20 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 
 		// Initialize content and menu.
 		init();
+
+		mUiHelper = new UiLifecycleHelper(this, new StatusCallback() {
+			@Override
+			public void call(Session session, SessionState state, Exception exception) {
+			}
+		});
+		mUiHelper.onCreate(savedInstanceState);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		mUiHelper.onResume();
+		adView.resume();
 		// Set content.
 		int viewStyle = mSharePrefs.getShowingContentOption();
 		if (mContentFragment != null) {
@@ -177,6 +241,13 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 	}
 
 	@Override
+	protected void onPause() {
+		adView.pause();
+		super.onPause();
+		mUiHelper.onPause();
+	}
+
+	@Override
 	protected void onStart() {
 		super.onStart();
 		// For google anlytics.
@@ -192,11 +263,32 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 	}
 
 	@Override
+	protected void onDestroy() {
+		adView.destroy();
+		super.onDestroy();
+		mUiHelper.onDestroy();
+	}
+
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent aIntent) {
 		super.onActivityResult(requestCode, resultCode, aIntent);
-		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, aIntent);
-		if (Session.getActiveSession().isOpened() && mFacebookUtils != null) {
-			mFacebookUtils.getFacebookInfo(Session.getActiveSession());
+		if (requestCode == FacebookUtils.FACEBOOK_SHARE_REQUEST_CODE) {
+			mUiHelper.onActivityResult(requestCode, resultCode, aIntent, new FacebookDialog.Callback() {
+				@Override
+				public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+					Toast.makeText(HomeActivity.this, R.string.msg_err_share_failed, Toast.LENGTH_SHORT).show();
+				}
+
+				@Override
+				public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+					Toast.makeText(HomeActivity.this, R.string.msg_info_share_successfully, Toast.LENGTH_SHORT).show();
+				}
+			});
+		} else {
+			Session.getActiveSession().onActivityResult(this, requestCode, resultCode, aIntent);
+			if (Session.getActiveSession().isOpened() && mFacebookUtils != null) {
+				mFacebookUtils.getFacebookInfo(Session.getActiveSession());
+			}
 		}
 	}
 
@@ -232,30 +324,52 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 			if (TextUtils.isEmpty(mSharePrefs.getFacebookUserToken())) { // Not logged in, call login facebook.
 				if (mFacebookUtils == null) mFacebookUtils = new FacebookUtils(this, this);
 				mFacebookUtils.loginFacebook();
-			} else { // Is logged in, all like action.
+			} else { // Is logged in, call like action.
 				callLikeAction();
 			}
 		} else if (callLikeState == Consts.STATE_OFF) { // Unlike conference.
 			mConferenceId = bundle.getString(Consts.JSON_ID);
 			callUnlikeAction();
-		} else { // Clicked on menu, change category.
-			mCategoryId = bundle.getString(Consts.JSON_CATEGORY_ID);
-			String categoryName = bundle.getString(Consts.JSON_NAME);
-			getSupportActionBar().setTitle(categoryName);
-			toggle();
-			mContentFragment.setCategoryId(mCategoryId);
-			mContentFragment.callApiGetConference(1);
+		} else {
+			int callShare = bundle.getInt(Consts.SHARE_CONFERENCE, Consts.STATE_UNKNOWN);
+			if (callShare == Consts.STATE_ON) {
+				// Call share to facebook.
+				isCallShare = true;
+				mConferenceId = bundle.getString(Consts.JSON_ID);
+				mTitle = bundle.getString(Consts.JSON_TITLE);
+				mImgUrl = bundle.getString(Consts.IMAGE_URL);
+				if (TextUtils.isEmpty(mSharePrefs.getFacebookUserToken())) { // Not logged in, call login facebook.
+					if (mFacebookUtils == null) mFacebookUtils = new FacebookUtils(this, this);
+					mFacebookUtils.loginFacebook();
+				} else { // Is logged in, call share action.
+					shareOnFacebook();
+				}
+			} else {
+				// Clicked on menu, change category.
+				mCategoryId = bundle.getString(Consts.JSON_CATEGORY_ID);
+				String categoryName = bundle.getString(Consts.JSON_NAME);
+				getSupportActionBar().setTitle(categoryName);
+				toggle();
+				mContentFragment.setCategoryId(mCategoryId);
+				mContentFragment.callApiGetConference(1);
+			}
 		}
 	}
 
 	@Override
 	public void onSuccess(Session session) {
-		// Login successfully, call like action.
-		callLikeAction();
+		// Login successfully, call like action or share to facebook.
+		if (isCallShare) {
+			shareOnFacebook();
+			isCallShare = false; // Reset flag.
+		} else {
+			callLikeAction();
+		}
 	}
 
 	@Override
 	public void onFailed() {
 		Toast.makeText(this, R.string.login_failed, Toast.LENGTH_SHORT).show();
+		isCallShare = false; // Reset flag.
 	}
 }

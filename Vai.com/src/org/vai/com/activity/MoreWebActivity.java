@@ -24,8 +24,12 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class MoreWebActivity extends SherlockFragmentActivity implements LoaderCallbacks<Cursor> {
+
+	private AdView adView;
 
 	private static final int LOADER_MORE_WEB = 1;
 	private ListView mListView;
@@ -62,6 +66,29 @@ public class MoreWebActivity extends SherlockFragmentActivity implements LoaderC
 				}
 			}
 		});
+
+		// For admob.
+		adView = (AdView) this.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		adView.loadAd(adRequest);
+	}
+
+	@Override
+	public void onPause() {
+		adView.pause();
+		super.onPause();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		adView.resume();
+	}
+
+	@Override
+	public void onDestroy() {
+		adView.destroy();
+		super.onDestroy();
 	}
 
 	@Override

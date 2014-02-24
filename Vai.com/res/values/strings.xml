@@ -4,6 +4,7 @@
     <string name="app_name">Vai.com</string>
     <!-- Facebook app id -->
     <string name="app_id">578437172192441</string>
+    <string name="admob_id">a152bef79f598c2</string>
     <!-- Google api key debug -->
     <string name="common_google_map_api_key">AIzaSyAshwfRl4tYwcoRKm4fRRb1LzAvOsoFDO4</string>
     <!-- Google api key release -->
@@ -19,6 +20,8 @@
     <string name="msg_err_connecting_error">No network connectivity, please check your network and try again later.</string>
     <string name="msg_err_data_error">Response data is not as expected</string>
     <string name="msg_err_something_wrong">Something went wrong. Please try again!</string>
+    <string name="msg_err_share_failed">Cannot share to facebook</string>
+    <string name="msg_info_share_successfully">Share to facebook successfully</string>
     <string name="msg_info_no_data_result">No data result</string>
     <string name="empty"></string>
     <string name="menu_options">Options</string>

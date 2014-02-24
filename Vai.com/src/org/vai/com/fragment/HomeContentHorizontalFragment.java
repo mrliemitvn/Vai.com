@@ -68,8 +68,6 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 		mTvLike = (TextView) mParentView.findViewById(R.id.tvLike);
 		mTvComment = (TextView) mParentView.findViewById(R.id.tvComment);
 		mPbLoadingImage = (ProgressBar) mParentView.findViewById(R.id.pbLoadingImage);
-
-		mImgDownload.setOnClickListener(this);
 	}
 
 	public void setConference(ConferenceResource conferenceResource) {
@@ -118,6 +116,8 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 		mTvLike.setOnClickListener(this);
 		mTvComment.setOnClickListener(this);
 		mImgContent.setOnClickListener(this);
+		mImgDownload.setOnClickListener(this);
+		mImgShare.setOnClickListener(this);
 		mContentWidth = getResources().getDisplayMetrics().widthPixels;
 		mImageLoader.loadImage(mConferenceResource.image, mSquareOptions, new ImageLoadingListener() {
 
@@ -206,6 +206,13 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 			Intent intentComment = new Intent(getActivity(), CommentPageActivity.class);
 			intentComment.putExtra(Consts.JSON_ID, mConferenceResource.id);
 			startActivity(intentComment);
+		} else if (v == mImgShare) {
+			Bundle bundleShare = new Bundle();
+			bundleShare.putInt(Consts.SHARE_CONFERENCE, Consts.STATE_ON);
+			bundleShare.putString(Consts.JSON_ID, mConferenceResource.id);
+			bundleShare.putString(Consts.JSON_TITLE, mConferenceResource.title);
+			bundleShare.putString(Consts.IMAGE_URL, mConferenceResource.image);
+			mAdapterCallBack.adapterCallBack(bundleShare);
 		}
 	}
 }
