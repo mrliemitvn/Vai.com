@@ -9,10 +9,13 @@ import org.vai.com.fragment.HomeHorizontalFragment;
 import org.vai.com.fragment.HomeMenuFragment;
 import org.vai.com.fragment.HomeVerticalFragment;
 import org.vai.com.provider.DbContract.Category;
+import org.vai.com.provider.DbContract.LikeState;
 import org.vai.com.provider.SharePrefs;
 import org.vai.com.utils.Consts;
 import org.vai.com.utils.FacebookUtils;
+import org.vai.com.utils.Logger;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -33,6 +36,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class HomeActivity extends SlidingFragmentActivity implements IAdapterCallBack, IFacebookCallBack {
+	private static final String TAG = HomeActivity.class.getSimpleName();
 
 	private SharePrefs mSharePrefs = SharePrefs.getInstance();
 	private HomeMenuFragment mMenuFragment;
@@ -40,7 +44,7 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 	private FacebookUtils mFacebookUtils;
 
 	private String mCategoryId = "";
-	private String mImageUrlLike = "";
+	private String mConferenceId = "";
 
 	/**
 	 * Initialize category id and menu.
@@ -90,11 +94,52 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 		if (mFacebookUtils == null) mFacebookUtils = new FacebookUtils(this, this);
 		mFacebookUtils.initActiveSession();
 		Bundle params = new Bundle();
-		params.putString("object", mImageUrlLike);
+		params.putString("object", Consts.URLConstants.BASE_URL + mConferenceId);
 		/* make the API call */
 		new Request(Session.getActiveSession(), "/me/og.likes", params, HttpMethod.POST, new Request.Callback() {
 			public void onCompleted(Response response) {
 				/* handle the result */
+				Logger.debug(TAG, response.toString());
+				if (response.getError() == null) { // Call like successfully.
+					String id = response.getGraphObject().getProperty("id").toString();
+					ContentValues values = new ContentValues();
+					values.put(LikeState.FACEBOOK_CONTENT_LIKED_ID, id);
+					values.put(LikeState.LIKE_STATE, Consts.STATE_ON);
+					String where = new StringBuilder().append(LikeState._ID).append("='").append(mConferenceId)
+							.append("' and ").append(LikeState.FACEBOOK_USER_ID).append("='")
+							.append(mSharePrefs.getFacebookUserId()).append("'").toString();
+					int resultUpdate = getContentResolver().update(LikeState.CONTENT_URI, values, where, null);
+					Logger.debug(TAG, "number update = " + resultUpdate);
+				}
+			}
+		}).executeAsync();
+	}
+
+	/**
+	 * Unlike action.
+	 */
+	private void callUnlikeAction() {
+		if (mFacebookUtils == null) mFacebookUtils = new FacebookUtils(this, this);
+		mFacebookUtils.initActiveSession();
+		String idFbContentLiked = "";
+		String where = new StringBuilder().append(LikeState._ID).append("='").append(mConferenceId).append("' and ")
+				.append(LikeState.FACEBOOK_USER_ID).append("='").append(mSharePrefs.getFacebookUserId()).append("'")
+				.toString();
+		Cursor cursor = getContentResolver().query(LikeState.CONTENT_URI, null, where, null, null);
+		if (cursor != null && cursor.moveToFirst()) {
+			int idFbContentLikedIndex = cursor.getColumnIndex(LikeState.FACEBOOK_CONTENT_LIKED_ID);
+			if (idFbContentLikedIndex > -1) idFbContentLiked = cursor.getString(idFbContentLikedIndex);
+		}
+		if (cursor != null) cursor.close();
+		ContentValues values = new ContentValues();
+		values.put(LikeState.FACEBOOK_CONTENT_LIKED_ID, "");
+		values.put(LikeState.LIKE_STATE, Consts.STATE_OFF);
+		int resultUpdate = getContentResolver().update(LikeState.CONTENT_URI, values, where, null);
+		Logger.debug(TAG, "number update = " + resultUpdate);
+		new Request(Session.getActiveSession(), idFbContentLiked, null, HttpMethod.DELETE, new Request.Callback() {
+			public void onCompleted(Response response) {
+				/* handle the result */
+				Logger.debug(TAG, response.toString());
 			}
 		}).executeAsync();
 	}
@@ -179,7 +224,7 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 	public void adapterCallBack(Bundle bundle) {
 		int callLikeState = bundle.getInt(Consts.JSON_LIKE, Consts.STATE_UNKNOWN);
 		if (callLikeState == Consts.STATE_ON) { // Like conference.
-			mImageUrlLike = bundle.getString(Consts.IMAGE_URL);
+			mConferenceId = bundle.getString(Consts.JSON_ID);
 			/*
 			 * If user hasn't logged in facebook, call login.
 			 * else, call like action.
@@ -191,7 +236,8 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 				callLikeAction();
 			}
 		} else if (callLikeState == Consts.STATE_OFF) { // Unlike conference.
-
+			mConferenceId = bundle.getString(Consts.JSON_ID);
+			callUnlikeAction();
 		} else { // Clicked on menu, change category.
 			mCategoryId = bundle.getString(Consts.JSON_CATEGORY_ID);
 			String categoryName = bundle.getString(Consts.JSON_NAME);

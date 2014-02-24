@@ -94,6 +94,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		sqlBuilder.append("CREATE TABLE IF NOT EXISTS " + Tables.LIKE_STATE + " (");
 		sqlBuilder.append(LikeState._ID + " TEXT, ");
 		sqlBuilder.append(LikeState.LIKE_STATE + " INTEGER, ");
+		sqlBuilder.append(LikeState.FACEBOOK_CONTENT_LIKED_ID + " TEXT, ");
 		sqlBuilder.append(LikeState.FACEBOOK_USER_ID + " TEXT ");
 		sqlBuilder.append(")");
 		sql = sqlBuilder.toString();

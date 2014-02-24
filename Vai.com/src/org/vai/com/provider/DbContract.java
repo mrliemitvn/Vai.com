@@ -112,5 +112,7 @@ public class DbContract {
 		public static final String FACEBOOK_USER_ID = "facebook_user_id";
 		/** Like state */
 		public static final String LIKE_STATE = "like_state";
+		/** Facebook content id liked */
+		public static final String FACEBOOK_CONTENT_LIKED_ID = "facebook_content_liked_id";
 	}
 }

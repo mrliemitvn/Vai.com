@@ -6,11 +6,14 @@ import org.vai.com.R;
 import org.vai.com.activity.ImageViewDetailActivity;
 import org.vai.com.activity.YouTubePlayerActivity;
 import org.vai.com.appinterface.IAdapterCallBack;
+import org.vai.com.provider.DbContract.Conference;
 import org.vai.com.resource.home.ConferenceResource;
 import org.vai.com.utils.Consts;
 import org.vai.com.utils.DownloadImageUtils;
 import org.vai.com.utils.EmotionsUtils;
+import org.vai.com.utils.Logger;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,6 +33,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
+	private static final String TAG = HomeVerticalAdapter.class.getSimpleName();
 
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
@@ -85,15 +89,26 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					Bundle bundle = new Bundle();
 					// Change like state of tvLike.
 					viewHolder.tvLike.setSelected(!viewHolder.tvLike.isSelected());
+					long likeNumber = viewHolder.conference.like;
 					if (viewHolder.tvLike.isSelected()) { // Call like action.
 						bundle.putInt(Consts.JSON_LIKE, Consts.STATE_ON);
-						bundle.putString(Consts.IMAGE_URL, viewHolder.conference.image);
+						bundle.putString(Consts.JSON_ID, viewHolder.conference.id);
+						likeNumber++;
 					} else { // Call unlike action.
-						// TODO: call unlike.
 						bundle.putInt(Consts.JSON_LIKE, Consts.STATE_OFF);
-						bundle.putString(Consts.IMAGE_URL, viewHolder.conference.image);
+						bundle.putString(Consts.JSON_ID, viewHolder.conference.id);
+						if (likeNumber > 0) likeNumber--;
 					}
 					if (mAdapterCallBack != null) mAdapterCallBack.adapterCallBack(bundle);
+					viewHolder.tvLike.setText(likeNumber + "");
+					// Update like number of conference.
+					String where = new StringBuilder().append(Conference._ID).append("='")
+							.append(viewHolder.conference.id).append("'").toString();
+					ContentValues values = new ContentValues();
+					values.put(Conference.LIKE, likeNumber);
+					int resultUpdate = mContext.getContentResolver()
+							.update(Conference.CONTENT_URI, values, where, null);
+					Logger.debug(TAG, "number conference is updated = " + resultUpdate);
 					break;
 				default:
 					break;
