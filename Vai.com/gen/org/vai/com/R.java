@@ -1784,8 +1784,6 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070023;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f070024;
         /**  Google api key debug 
- <string name="common_google_map_api_key">AIzaSyAshwfRl4tYwcoRKm4fRRb1LzAvOsoFDO4</string> 
- Google api key release 
          */
         public static final int common_google_map_api_key=0x7f070044;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
@@ -1873,6 +1871,9 @@ containing a value of this type.
         public static final int msg_err_data_error=0x7f07004d;
         public static final int msg_err_forbidden=0x7f070048;
         public static final int msg_err_invalid_token=0x7f070047;
+        /**  Google api key release 
+ <string name="common_google_map_api_key">AIzaSyAshwfRl4tYwcoRKm4fRRb1LzAvOsoFDO4</string> 
+         */
         public static final int msg_err_move_temporarily=0x7f070045;
         public static final int msg_err_not_found=0x7f070049;
         public static final int msg_err_server_error=0x7f07004b;

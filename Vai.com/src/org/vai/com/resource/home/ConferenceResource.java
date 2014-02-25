@@ -54,10 +54,10 @@ public class ConferenceResource implements BaseResource, Resource {
 					categoryId = json.getString(Consts.JSON_CATEGORY_ID);
 				}
 				if (!json.isNull(Consts.JSON_TITLE)) {
-					title = json.getString(Consts.JSON_TITLE);
+					title = json.getString(Consts.JSON_TITLE).replace("\\", "");
 				}
 				if (!json.isNull(Consts.JSON_TITLE_ASCII)) {
-					titleAscii = json.getString(Consts.JSON_TITLE_ASCII);
+					titleAscii = json.getString(Consts.JSON_TITLE_ASCII).replace("\\", "");
 				}
 				if (!json.isNull(Consts.JSON_ALIAS)) {
 					alias = json.getString(Consts.JSON_ALIAS);
