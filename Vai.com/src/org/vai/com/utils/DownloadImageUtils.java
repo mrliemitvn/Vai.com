@@ -3,10 +3,13 @@ package org.vai.com.utils;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import org.vai.com.R;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.view.View;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -80,6 +83,8 @@ public class DownloadImageUtils {
 			ret = bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
 			out.flush();
 			out.close();
+			ret = true;
+			Toast.makeText(context, R.string.msg_info_download_complete, Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ret = false;

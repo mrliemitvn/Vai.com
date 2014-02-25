@@ -42,6 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
+                android:background="@drawable/abs__item_background_holo_dark"
                 android:drawableLeft="@drawable/icon_comment"
                 android:ellipsize="end"
                 android:gravity="center"
@@ -60,6 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
+                android:background="@drawable/abs__item_background_holo_dark"
                 android:contentDescription="@string/empty"
                 android:src="@drawable/icon_save" />
         </FrameLayout>
@@ -74,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
+                android:background="@drawable/abs__item_background_holo_dark"
                 android:contentDescription="@string/empty"
                 android:src="@drawable/icon_share" />
         </FrameLayout>
