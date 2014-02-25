@@ -43,12 +43,6 @@
             android:contentDescription="@string/empty"
             android:src="@drawable/playbtn"
             android:visibility="gone" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_mask_height"
-            android:layout_alignParentBottom="true"
-            android:background="@color/white" />
     </RelativeLayout>
 
     <View
@@ -56,7 +50,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_divider_height"
         android:layout_below="@id/rlContent"
-        android:layout_marginTop="@dimen/divider_below_mask_magin_top"
         android:background="@color/common_background" />
 
     <LinearLayout
@@ -96,6 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
+                android:background="@drawable/abs__item_background_holo_dark"
                 android:drawableLeft="@drawable/icon_comment"
                 android:ellipsize="end"
                 android:gravity="center"
@@ -114,6 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
+                android:background="@drawable/abs__item_background_holo_dark"
                 android:contentDescription="@string/empty"
                 android:src="@drawable/icon_save" />
         </FrameLayout>
@@ -128,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
+                android:background="@drawable/abs__item_background_holo_dark"
                 android:contentDescription="@string/empty"
                 android:src="@drawable/icon_share" />
         </FrameLayout>

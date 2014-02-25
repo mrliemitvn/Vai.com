@@ -6,9 +6,10 @@
     <string name="app_id">578437172192441</string>
     <string name="admob_id">a152bef79f598c2</string>
     <!-- Google api key debug -->
-    <string name="common_google_map_api_key">AIzaSyAshwfRl4tYwcoRKm4fRRb1LzAvOsoFDO4</string>
+    <string name="common_google_map_api_key">AIzaSyBdh4XPUavbP-kTT7i02tBBv9vai7x9_oY</string>
+
     <!-- Google api key release -->
-    <!-- <string name="common_google_map_api_key">AIzaSyBdh4XPUavbP-kTT7i02tBBv9vai7x9_oY</string> -->
+    <!-- <string name="common_google_map_api_key">AIzaSyAshwfRl4tYwcoRKm4fRRb1LzAvOsoFDO4</string> -->
 
     <string name="msg_err_move_temporarily">Already sent</string>
     <string name="msg_err_bad_request">Data sent to server incorrectly, please try again later.</string>

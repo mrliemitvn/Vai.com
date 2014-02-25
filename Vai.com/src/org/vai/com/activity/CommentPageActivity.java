@@ -19,6 +19,13 @@ import com.google.analytics.tracking.android.MapBuilder;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+/**
+ * This class display all comment of content.
+ * Include showing advertising.
+ * 
+ * @author liemnguyen
+ * 
+ */
 public class CommentPageActivity extends SherlockActivity {
 
 	private AdView adView;

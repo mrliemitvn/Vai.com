@@ -14,10 +14,15 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ImageViewDetailActivity extends SherlockActivity {
+
+	private AdView adView;
+
 	private String urlImage = "";
 	private TouchImageView mImgSaveImage;
 	private ImageLoader imageLoader = ImageLoader.getInstance();
@@ -42,6 +47,11 @@ public class ImageViewDetailActivity extends SherlockActivity {
 				finish();
 			}
 		});
+
+		// For admob.
+		adView = (AdView) this.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		adView.loadAd(adRequest);
 	}
 
 	@Override
@@ -57,5 +67,23 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	protected void onStop() {
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this);
+	}
+
+	@Override
+	protected void onPause() {
+		adView.pause();
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		adView.resume();
+	}
+
+	@Override
+	protected void onDestroy() {
+		adView.destroy();
+		super.onDestroy();
 	}
 }

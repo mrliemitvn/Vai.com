@@ -43,6 +43,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 	private OnClickListener mOnClickListener;
 	private ArrayList<ConferenceResource> mListConference = new ArrayList<ConferenceResource>();
 	private int mContentWidth;
+	private int mMaskHeight;
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.image_loading)
 			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
@@ -60,6 +61,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		// Calculate content width.
 		int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
 		mContentWidth = screenWidth - 4 * mContext.getResources().getDimensionPixelSize(R.dimen.common_margin_small);
+		mMaskHeight = mContext.getResources().getDimensionPixelSize(R.dimen.default_mask_height);
 
 		mOnClickListener = new OnClickListener() {
 			@Override
@@ -184,7 +186,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		}
 		int imgHeight = mContentWidth;
 		if (conferenceResource.imgWidth > 0) {
-			imgHeight = mContentWidth * conferenceResource.imgHeight / conferenceResource.imgWidth;
+			imgHeight = mContentWidth * conferenceResource.imgHeight / conferenceResource.imgWidth + mMaskHeight;
 		}
 		viewHolder.imgContent.getLayoutParams().height = imgHeight;
 		mImageLoader.displayImage(conferenceResource.image, viewHolder.imgContent, mSquareOptions);
