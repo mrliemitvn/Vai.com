@@ -28,10 +28,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 	private static final String TAG = HomeVerticalAdapter.class.getSimpleName();
@@ -47,7 +51,8 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.image_loading)
 			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
-			.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565).build();
+			.cacheOnDisc(true).displayer(new FadeInBitmapDisplayer(300)).resetViewBeforeLoading(true)
+			.bitmapConfig(Bitmap.Config.RGB_565).build();
 
 	public HomeVerticalAdapter(Context context, ArrayList<ConferenceResource> listConference,
 			IAdapterCallBack adapterCallBack) {
@@ -70,6 +75,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 				ViewHolder viewHolder = (ViewHolder) v.getTag();
 				switch (id) {
 				case R.id.imgContent:
+				case R.id.imgContent1:
 					Intent intent;
 					if (TextUtils.isEmpty(viewHolder.conference.videoId)) {
 						intent = new Intent(mContext, ImageViewDetailActivity.class);
@@ -136,27 +142,72 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder viewHolder;
+		final ViewHolder viewHolder;
 		if (convertView == null) {
 			convertView = mLayoutInflater.inflate(R.layout.item_list_conference, null);
 			viewHolder = new ViewHolder();
 			viewHolder.emotionsUtils = new EmotionsUtils(mContext);
+			viewHolder.rlContent = (RelativeLayout) convertView.findViewById(R.id.rlContent);
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
 			viewHolder.tvLike = (TextView) convertView.findViewById(R.id.tvLike);
 			viewHolder.tvComment = (TextView) convertView.findViewById(R.id.tvComment);
 			viewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 			viewHolder.imgContent = (ImageView) convertView.findViewById(R.id.imgContent);
+			viewHolder.imgContent1 = (ImageView) convertView.findViewById(R.id.imgContent1);
 			viewHolder.imgPlayYoutube = (ImageView) convertView.findViewById(R.id.imgPlayYoutube);
 			viewHolder.imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
 			viewHolder.imgShare = (ImageView) convertView.findViewById(R.id.imgShare);
+			viewHolder.imageLoadingListener = new ImageLoadingListener() {
+				@Override
+				public void onLoadingStarted(String imageUri, View view) {
+				}
+
+				@Override
+				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+				}
+
+				@Override
+				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+					int imgHeight = mContentWidth;
+					if (loadedImage.getWidth() > 0) {
+						imgHeight = mContentWidth * loadedImage.getHeight() / loadedImage.getWidth();
+					}
+
+					Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
+							loadedImage.getHeight() / 2);
+					Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
+							loadedImage.getWidth(), loadedImage.getHeight() / 2);
+
+					viewHolder.imgContent.getLayoutParams().height = imgHeight / 2;
+					viewHolder.imgContent.setImageBitmap(bitmap1);
+					viewHolder.imgContent1.getLayoutParams().height = imgHeight / 2;
+					viewHolder.imgContent1.setImageBitmap(bitmap2);
+				}
+
+				@Override
+				public void onLoadingCancelled(String imageUri, View view) {
+					Logger.debug(TAG, "image url: " + imageUri);
+					if (viewHolder.countTryDisplay <= 0) {
+						mImageLoader.loadImage(viewHolder.conference.image, mSquareOptions,
+								viewHolder.imageLoadingListener);
+					}
+				}
+
+				@Override
+				public void onDownloadComplete(String downloadedFile, String url) {
+					Logger.debug(TAG, "image url: " + url + " downloaded file path = " + downloadedFile);
+				}
+			};
 
 			convertView.setTag(viewHolder);
 			viewHolder.imgContent.setTag(viewHolder);
+			viewHolder.imgContent1.setTag(viewHolder);
 			viewHolder.imgDownload.setTag(viewHolder);
 			viewHolder.tvLike.setTag(viewHolder);
 			viewHolder.tvComment.setTag(viewHolder);
 			viewHolder.imgShare.setTag(viewHolder);
 			viewHolder.imgContent.setOnClickListener(mOnClickListener);
+			viewHolder.imgContent1.setOnClickListener(mOnClickListener);
 			viewHolder.imgDownload.setOnClickListener(mOnClickListener);
 			viewHolder.tvLike.setOnClickListener(mOnClickListener);
 			viewHolder.tvComment.setOnClickListener(mOnClickListener);
@@ -184,23 +235,30 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		} else {
 			viewHolder.tvLike.setSelected(false);
 		}
+		viewHolder.imgContent.setImageResource(R.color.image_loading);
+		viewHolder.imgContent1.setImageResource(R.color.image_loading);
 		int imgHeight = mContentWidth;
 		if (conferenceResource.imgWidth > 0) {
 			imgHeight = mContentWidth * conferenceResource.imgHeight / conferenceResource.imgWidth + mMaskHeight;
 		}
-		viewHolder.imgContent.getLayoutParams().height = imgHeight;
-		mImageLoader.displayImage(conferenceResource.image, viewHolder.imgContent, mSquareOptions);
+		viewHolder.rlContent.getLayoutParams().height = imgHeight;
+		viewHolder.countTryDisplay = 0;
+		mImageLoader.loadImage(conferenceResource.image, mSquareOptions, viewHolder.imageLoadingListener);
 		return convertView;
 	}
 
 	private class ViewHolder {
+		int countTryDisplay;
 		ConferenceResource conference;
 		EmotionsUtils emotionsUtils;
+		ImageLoadingListener imageLoadingListener;
+		RelativeLayout rlContent;
 		TextView tvTitle;
 		TextView tvLike;
 		TextView tvComment;
 		ImageView imgIcon;
 		ImageView imgContent;
+		ImageView imgContent1;
 		ImageView imgPlayYoutube;
 		ImageView imgDownload;
 		ImageView imgShare;

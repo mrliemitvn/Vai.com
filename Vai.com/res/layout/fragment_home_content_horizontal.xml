@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true" >
 
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
@@ -97,7 +97,14 @@
                     android:id="@+id/imgContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/imgContent1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imgContent"
                     android:contentDescription="@string/empty"
                     android:scaleType="centerCrop" />
 
@@ -105,11 +112,11 @@
                     android:id="@+id/imgPlayYoutube"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_centerInParent="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/playbtn"
                     android:visibility="gone" />
-            </FrameLayout>
+            </RelativeLayout>
         </ScrollView>
     </RelativeLayout>
 

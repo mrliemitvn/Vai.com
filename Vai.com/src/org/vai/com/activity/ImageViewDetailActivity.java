@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class ImageViewDetailActivity extends SherlockActivity {
 
@@ -29,7 +30,7 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	private DisplayImageOptions imgSquareOptions = new DisplayImageOptions.Builder()
 			.showStubImage(R.color.image_loading).showImageForEmptyUri(R.color.image_loading)
 			.showImageOnFail(R.color.image_loading).cacheInMemory(true).cacheOnDisc(true)
-			.bitmapConfig(Bitmap.Config.RGB_565).build();
+			.displayer(new FadeInBitmapDisplayer(300)).bitmapConfig(Bitmap.Config.RGB_565).build();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

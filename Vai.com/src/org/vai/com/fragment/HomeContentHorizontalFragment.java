@@ -31,12 +31,14 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class HomeContentHorizontalFragment extends BaseFragment implements OnClickListener {
 	private static final String TAG = HomeContentHorizontalFragment.class.getSimpleName();
 
 	private View mParentView;
 	private ImageView mImgContent;
+	private ImageView mImgContent1;
 	private ImageView mImgPlayYoutube;
 	private ImageView mImgDownload;
 	private ImageView mImgShare;
@@ -50,17 +52,21 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 	private DownloadImageUtils mDownloadImage;
 	private IAdapterCallBack mAdapterCallBack;
 	private int mContentWidth;
+	private int mCountTryDisplay = 0;
 
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.image_loading)
 			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
-			.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565).build();
+			.cacheOnDisc(true).displayer(new FadeInBitmapDisplayer(300)).resetViewBeforeLoading(true)
+			.bitmapConfig(Bitmap.Config.RGB_565).build();
+	private ImageLoadingListener mImageLoadingListener;
 
 	/**
 	 * Define view.
 	 */
 	private void init() {
 		mImgContent = (ImageView) mParentView.findViewById(R.id.imgContent);
+		mImgContent1 = (ImageView) mParentView.findViewById(R.id.imgContent1);
 		mImgPlayYoutube = (ImageView) mParentView.findViewById(R.id.imgPlayYoutube);
 		mImgDownload = (ImageView) mParentView.findViewById(R.id.imgDownload);
 		mImgShare = (ImageView) mParentView.findViewById(R.id.imgShare);
@@ -68,6 +74,60 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 		mTvLike = (TextView) mParentView.findViewById(R.id.tvLike);
 		mTvComment = (TextView) mParentView.findViewById(R.id.tvComment);
 		mPbLoadingImage = (ProgressBar) mParentView.findViewById(R.id.pbLoadingImage);
+
+		if (mImageLoadingListener == null) {
+			mImageLoadingListener = new ImageLoadingListener() {
+
+				@Override
+				public void onLoadingStarted(String imageUri, View view) {
+					mPbLoadingImage.setVisibility(View.VISIBLE);
+				}
+
+				@Override
+				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+					mPbLoadingImage.setVisibility(View.GONE);
+				}
+
+				@Override
+				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+					int imgHeight = mContentWidth;
+					if (loadedImage.getWidth() > 0) {
+						imgHeight = mContentWidth * loadedImage.getHeight() / loadedImage.getWidth();
+					}
+
+					Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
+							loadedImage.getHeight() / 2);
+					Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
+							loadedImage.getWidth(), loadedImage.getHeight() / 2);
+
+					mImgContent.getLayoutParams().height = imgHeight / 2;
+					mImgContent.setImageBitmap(bitmap1);
+					mImgContent1.getLayoutParams().height = imgHeight / 2;
+					mImgContent1.setImageBitmap(bitmap2);
+					mPbLoadingImage.setVisibility(View.GONE);
+					if (!TextUtils.isEmpty(mConferenceResource.videoId)) {
+						mImgPlayYoutube.setVisibility(View.VISIBLE);
+					} else {
+						mImgPlayYoutube.setVisibility(View.GONE);
+					}
+				}
+
+				@Override
+				public void onLoadingCancelled(String imageUri, View view) {
+					if (mCountTryDisplay > 0) {
+						mPbLoadingImage.setVisibility(View.GONE);
+					} else {
+						mImageLoader.loadImage(mConferenceResource.image, mSquareOptions, mImageLoadingListener);
+						mCountTryDisplay++;
+					}
+				}
+
+				@Override
+				public void onDownloadComplete(String downloadedFile, String url) {
+					Logger.debug(TAG, "image url: " + url + " downloaded file path = " + downloadedFile);
+				}
+			};
+		}
 	}
 
 	public void setConference(ConferenceResource conferenceResource) {
@@ -103,6 +163,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 			mPbLoadingImage.setVisibility(View.VISIBLE);
 			return;
 		}
+		mCountTryDisplay = 0;
 		if (mDownloadImage == null) mDownloadImage = new DownloadImageUtils(getActivity());
 		mEmotionsUtils.setSpannableText(new SpannableStringBuilder(mConferenceResource.title));
 		mTvTitle.setText(mEmotionsUtils.getSmileText());
@@ -116,47 +177,11 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 		mTvLike.setOnClickListener(this);
 		mTvComment.setOnClickListener(this);
 		mImgContent.setOnClickListener(this);
+		mImgContent1.setOnClickListener(this);
 		mImgDownload.setOnClickListener(this);
 		mImgShare.setOnClickListener(this);
 		mContentWidth = getResources().getDisplayMetrics().widthPixels;
-		mImageLoader.loadImage(mConferenceResource.image, mSquareOptions, new ImageLoadingListener() {
-
-			@Override
-			public void onLoadingStarted(String imageUri, View view) {
-				mPbLoadingImage.setVisibility(View.VISIBLE);
-			}
-
-			@Override
-			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-				mPbLoadingImage.setVisibility(View.GONE);
-			}
-
-			@Override
-			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-				int imgHeight = mContentWidth;
-				if (loadedImage.getWidth() > 0) {
-					imgHeight = mContentWidth * loadedImage.getHeight() / loadedImage.getWidth();
-				}
-				mImgContent.getLayoutParams().height = imgHeight;
-				mImageLoader.displayImage(mConferenceResource.image, mImgContent, mSquareOptions);
-				mPbLoadingImage.setVisibility(View.GONE);
-				if (!TextUtils.isEmpty(mConferenceResource.videoId)) {
-					mImgPlayYoutube.setVisibility(View.VISIBLE);
-				} else {
-					mImgPlayYoutube.setVisibility(View.GONE);
-				}
-			}
-
-			@Override
-			public void onLoadingCancelled(String imageUri, View view) {
-				mPbLoadingImage.setVisibility(View.GONE);
-			}
-
-			@Override
-			public void onDownloadComplete(String downloadedFile, String url) {
-				Logger.debug(TAG, "image url: " + url + " downloaded file path = " + downloadedFile);
-			}
-		});
+		mImageLoader.loadImage(mConferenceResource.image, mSquareOptions, mImageLoadingListener);
 	}
 
 	@Override
@@ -190,7 +215,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 			values.put(Conference.LIKE, likeNumber);
 			int resultUpdate = getActivity().getContentResolver().update(Conference.CONTENT_URI, values, where, null);
 			Logger.debug(TAG, "number conference is updated = " + resultUpdate);
-		} else if (v == mImgContent) {
+		} else if (v == mImgContent || v == mImgContent1) {
 			Intent intent;
 			if (TextUtils.isEmpty(mConferenceResource.videoId)) {
 				intent = new Intent(getActivity(), ImageViewDetailActivity.class);
