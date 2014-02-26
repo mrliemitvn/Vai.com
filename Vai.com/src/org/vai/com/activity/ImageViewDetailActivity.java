@@ -13,11 +13,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.imagezoom.ImageAttacher;
 import com.imagezoom.ImageAttacher.OnMatrixChangedListener;
 import com.imagezoom.ImageAttacher.OnPhotoTapListener;
@@ -95,7 +95,7 @@ public class ImageViewDetailActivity extends SherlockActivity {
 
 		// For admob.
 		adView = (AdView) this.findViewById(R.id.adView);
-		AdRequest adRequest = new AdRequest.Builder().build();
+		AdRequest adRequest = new AdRequest();
 		adView.loadAd(adRequest);
 	}
 
@@ -115,20 +115,8 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	}
 
 	@Override
-	protected void onPause() {
-		adView.pause();
-		super.onPause();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		adView.resume();
-	}
-
-	@Override
 	protected void onDestroy() {
-		adView.destroy();
+		if (adView != null) adView.destroy();
 		super.onDestroy();
 	}
 

@@ -13,11 +13,11 @@ import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 /**
  * This class display all comment of content.
@@ -65,7 +65,7 @@ public class CommentPageActivity extends SherlockActivity {
 
 		// For admob.
 		adView = (AdView) this.findViewById(R.id.adView);
-		AdRequest adRequest = new AdRequest.Builder().build();
+		AdRequest adRequest = new AdRequest();
 		adView.loadAd(adRequest);
 	}
 
@@ -96,20 +96,8 @@ public class CommentPageActivity extends SherlockActivity {
 	}
 
 	@Override
-	public void onPause() {
-		adView.pause();
-		super.onPause();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		adView.resume();
-	}
-
-	@Override
 	public void onDestroy() {
-		adView.destroy();
+		if (adView != null) adView.destroy();
 		super.onDestroy();
 	}
 

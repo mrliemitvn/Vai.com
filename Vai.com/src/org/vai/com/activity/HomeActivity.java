@@ -37,11 +37,11 @@ import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.FacebookDialog;
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -105,7 +105,7 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 
 		// For admob.
 		adView = (AdView) this.findViewById(R.id.adView);
-		AdRequest adRequest = new AdRequest.Builder().build();
+		AdRequest adRequest = new AdRequest();
 		adView.loadAd(adRequest);
 	}
 
@@ -240,7 +240,6 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 	protected void onResume() {
 		super.onResume();
 		mUiHelper.onResume();
-		adView.resume();
 		// Set content.
 		int viewStyle = mSharePrefs.getShowingContentOption();
 		if (mContentFragment != null) {
@@ -261,7 +260,6 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 
 	@Override
 	protected void onPause() {
-		adView.pause();
 		super.onPause();
 		mUiHelper.onPause();
 	}
@@ -283,7 +281,7 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 
 	@Override
 	protected void onDestroy() {
-		adView.destroy();
+		if (adView != null) adView.destroy();
 		super.onDestroy();
 		mUiHelper.onDestroy();
 	}
