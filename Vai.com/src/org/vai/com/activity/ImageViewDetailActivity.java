@@ -37,6 +37,7 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	private boolean isLoaded = false;
 	private ImageAttacher mAttacher;
 	private ImageView mImgSaveImage;
+	private ImageView mImgSaveImage1;
 	private ProgressBar mPbLoadingImage;
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions imgSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.transparent)
@@ -51,9 +52,11 @@ public class ImageViewDetailActivity extends SherlockActivity {
 		mScreenWidth = getResources().getDisplayMetrics().widthPixels;
 
 		mImgSaveImage = (ImageView) findViewById(R.id.imgSaveImage);
+		mImgSaveImage1 = (ImageView) findViewById(R.id.imgSaveImage1);
 		mPbLoadingImage = (ProgressBar) findViewById(R.id.pbLoadingImage);
 
-		usingSimpleImage(mImgSaveImage);
+		// TODO: working with zoom image.
+		// usingSimpleImage(mImgSaveImage);
 
 		urlImage = getIntent().getExtras().getString(Consts.IMAGE_URL);
 		imageLoader.displayImage(urlImage, mImgSaveImage, imgSquareOptions, new ImageLoadingListener() {
@@ -72,6 +75,21 @@ public class ImageViewDetailActivity extends SherlockActivity {
 			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 				isLoaded = true;
 				mPbLoadingImage.setVisibility(View.GONE);
+
+				int imgHeight = mScreenWidth;
+				if (loadedImage.getWidth() > 0) {
+					imgHeight = mScreenWidth * loadedImage.getHeight() / loadedImage.getWidth();
+				}
+
+				Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
+						loadedImage.getHeight() / 2);
+				Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
+						loadedImage.getWidth(), loadedImage.getHeight() / 2);
+
+				mImgSaveImage.getLayoutParams().height = imgHeight / 2;
+				mImgSaveImage.setImageBitmap(bitmap1);
+				mImgSaveImage1.getLayoutParams().height = imgHeight / 2;
+				mImgSaveImage1.setImageBitmap(bitmap2);
 			}
 
 			@Override
@@ -86,6 +104,12 @@ public class ImageViewDetailActivity extends SherlockActivity {
 		});
 
 		mImgSaveImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		mImgSaveImage1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();

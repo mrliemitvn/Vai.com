@@ -224,7 +224,8 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 				intent = new Intent(getActivity(), YouTubePlayerActivity.class);
 				intent.putExtra(YouTubePlayerActivity.EXTRA_VIDEO_ID, mConferenceResource.videoId);
 			} else {
-				intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + mConferenceResource.videoId));
+				intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Consts.URLConstants.YOUTUBE_VIDEO_WATCHING_URL
+						+ mConferenceResource.videoId));
 			}
 			getActivity().startActivity(intent);
 		} else if (v == mTvComment) {

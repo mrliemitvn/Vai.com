@@ -85,8 +85,9 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 						intent = new Intent(mContext, YouTubePlayerActivity.class);
 						intent.putExtra(YouTubePlayerActivity.EXTRA_VIDEO_ID, viewHolder.conference.videoId);
 					} else {
-						intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://"
-								+ viewHolder.conference.videoId));
+						intent = new Intent(Intent.ACTION_VIEW,
+								Uri.parse(Consts.URLConstants.YOUTUBE_VIDEO_WATCHING_URL
+										+ viewHolder.conference.videoId));
 					}
 					mContext.startActivity(intent);
 					break;

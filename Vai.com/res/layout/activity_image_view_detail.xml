@@ -18,26 +18,38 @@
         android:layout_height="match_parent"
         android:layout_above="@id/adView" >
 
-        <FrameLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" >
 
-            <ImageView
-                android:id="@+id/imgSaveImage"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:contentDescription="@string/empty"
-                android:scaleType="fitCenter" />
+                android:layout_height="wrap_content" >
 
-            <ProgressBar
-                android:id="@+id/pbLoadingImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:visibility="gone" />
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/imgSaveImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/imgSaveImage1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imgSaveImage"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="centerCrop" />
+
+                <ProgressBar
+                    android:id="@+id/pbLoadingImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </ScrollView>
     </RelativeLayout>
 
 </RelativeLayout>

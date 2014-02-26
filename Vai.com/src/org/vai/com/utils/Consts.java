@@ -76,6 +76,7 @@ public class Consts {
 
 		/** Youtube thumbnail url */
 		public static final String YOUTUBE_VIDEO_THUMB_URL = "http://img.youtube.com/vi/{id}/0.jpg";
+		public static final String YOUTUBE_VIDEO_WATCHING_URL = "http://www.youtube.com/watch?v=";
 
 		public static final String BASE_URL = "http://xn--vi-sia.com/";
 		public static final String CLIENT_KEY = "vnvmcnjhbjch-mmqadtyiocdefb";
