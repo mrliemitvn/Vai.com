@@ -55,7 +55,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 	private int mCountTryDisplay = 0;
 
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
-	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.image_loading)
+	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.transparent)
 			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
 			.cacheOnDisc(true).displayer(new FadeInBitmapDisplayer(300)).resetViewBeforeLoading(true)
 			.bitmapConfig(Bitmap.Config.RGB_565).build();

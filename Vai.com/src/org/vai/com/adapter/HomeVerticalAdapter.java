@@ -28,6 +28,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,7 +50,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 	private int mContentWidth;
 	private int mMaskHeight;
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
-	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.image_loading)
+	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.transparent)
 			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
 			.cacheOnDisc(true).displayer(new FadeInBitmapDisplayer(300)).resetViewBeforeLoading(true)
 			.bitmapConfig(Bitmap.Config.RGB_565).build();
@@ -149,6 +150,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder.emotionsUtils = new EmotionsUtils(mContext);
 			viewHolder.rlContent = (RelativeLayout) convertView.findViewById(R.id.rlContent);
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+			viewHolder.pbLoadingImage = (ProgressBar) convertView.findViewById(R.id.pbLoadingImage);
 			viewHolder.tvLike = (TextView) convertView.findViewById(R.id.tvLike);
 			viewHolder.tvComment = (TextView) convertView.findViewById(R.id.tvComment);
 			viewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
@@ -160,14 +162,17 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder.imageLoadingListener = new ImageLoadingListener() {
 				@Override
 				public void onLoadingStarted(String imageUri, View view) {
+					viewHolder.pbLoadingImage.setVisibility(View.VISIBLE);
 				}
 
 				@Override
 				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+					viewHolder.pbLoadingImage.setVisibility(View.GONE);
 				}
 
 				@Override
 				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+					viewHolder.pbLoadingImage.setVisibility(View.GONE);
 					int imgHeight = mContentWidth;
 					if (loadedImage.getWidth() > 0) {
 						imgHeight = mContentWidth * loadedImage.getHeight() / loadedImage.getWidth();
@@ -190,12 +195,15 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					if (viewHolder.countTryDisplay <= 0) {
 						mImageLoader.loadImage(viewHolder.conference.image, mSquareOptions,
 								viewHolder.imageLoadingListener);
+						return;
 					}
+					viewHolder.pbLoadingImage.setVisibility(View.GONE);
 				}
 
 				@Override
 				public void onDownloadComplete(String downloadedFile, String url) {
 					Logger.debug(TAG, "image url: " + url + " downloaded file path = " + downloadedFile);
+					viewHolder.pbLoadingImage.setVisibility(View.GONE);
 				}
 			};
 
@@ -235,8 +243,8 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		} else {
 			viewHolder.tvLike.setSelected(false);
 		}
-		viewHolder.imgContent.setImageResource(R.color.image_loading);
-		viewHolder.imgContent1.setImageResource(R.color.image_loading);
+		viewHolder.imgContent.setImageResource(R.color.transparent);
+		viewHolder.imgContent1.setImageResource(R.color.transparent);
 		int imgHeight = mContentWidth;
 		if (conferenceResource.imgWidth > 0) {
 			imgHeight = mContentWidth * conferenceResource.imgHeight / conferenceResource.imgWidth + mMaskHeight;
@@ -253,6 +261,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		EmotionsUtils emotionsUtils;
 		ImageLoadingListener imageLoadingListener;
 		RelativeLayout rlContent;
+		ProgressBar pbLoadingImage;
 		TextView tvTitle;
 		TextView tvLike;
 		TextView tvComment;

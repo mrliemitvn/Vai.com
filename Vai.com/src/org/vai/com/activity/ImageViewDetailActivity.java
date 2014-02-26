@@ -39,10 +39,9 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	private ImageView mImgSaveImage;
 	private ProgressBar mPbLoadingImage;
 	private ImageLoader imageLoader = ImageLoader.getInstance();
-	private DisplayImageOptions imgSquareOptions = new DisplayImageOptions.Builder()
-			.showStubImage(R.color.image_loading).showImageForEmptyUri(R.color.image_loading)
-			.showImageOnFail(R.color.image_loading).cacheInMemory(true).cacheOnDisc(true)
-			.displayer(new FadeInBitmapDisplayer(300)).bitmapConfig(Bitmap.Config.RGB_565).build();
+	private DisplayImageOptions imgSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.transparent)
+			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
+			.cacheOnDisc(true).displayer(new FadeInBitmapDisplayer(300)).bitmapConfig(Bitmap.Config.RGB_565).build();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

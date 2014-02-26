@@ -26,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvTitle"
-        android:layout_marginTop="@dimen/common_margin_large" >
+        android:layout_marginTop="@dimen/common_margin_large"
+        android:background="@color/image_loading" >
 
         <ImageView
             android:id="@+id/imgContent"
@@ -50,6 +51,13 @@
             android:layout_centerInParent="true"
             android:contentDescription="@string/empty"
             android:src="@drawable/playbtn"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/pbLoadingImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:visibility="gone" />
     </RelativeLayout>
 
