@@ -3,12 +3,14 @@ package org.vai.com.activity;
 import org.vai.com.R;
 import org.vai.com.VaiApplication;
 import org.vai.com.utils.Consts;
-import org.vai.com.views.TouchImageView;
 
 import android.graphics.Bitmap;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -16,8 +18,13 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.imagezoom.ImageAttacher;
+import com.imagezoom.ImageAttacher.OnMatrixChangedListener;
+import com.imagezoom.ImageAttacher.OnPhotoTapListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class ImageViewDetailActivity extends SherlockActivity {
@@ -25,7 +32,12 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	private AdView adView;
 
 	private String urlImage = "";
-	private TouchImageView mImgSaveImage;
+	private int mScreenWidth;
+	private boolean isScale = false;
+	private boolean isLoaded = false;
+	private ImageAttacher mAttacher;
+	private ImageView mImgSaveImage;
+	private ProgressBar mPbLoadingImage;
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions imgSquareOptions = new DisplayImageOptions.Builder()
 			.showStubImage(R.color.image_loading).showImageForEmptyUri(R.color.image_loading)
@@ -37,10 +49,42 @@ public class ImageViewDetailActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_image_view_detail);
 
-		mImgSaveImage = (TouchImageView) findViewById(R.id.imgSaveImage);
+		mScreenWidth = getResources().getDisplayMetrics().widthPixels;
+
+		mImgSaveImage = (ImageView) findViewById(R.id.imgSaveImage);
+		mPbLoadingImage = (ProgressBar) findViewById(R.id.pbLoadingImage);
+
+		usingSimpleImage(mImgSaveImage);
 
 		urlImage = getIntent().getExtras().getString(Consts.IMAGE_URL);
-		imageLoader.displayImage(urlImage, mImgSaveImage, imgSquareOptions);
+		imageLoader.displayImage(urlImage, mImgSaveImage, imgSquareOptions, new ImageLoadingListener() {
+			@Override
+			public void onLoadingStarted(String imageUri, View view) {
+				mPbLoadingImage.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+				isLoaded = true;
+				mPbLoadingImage.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+				isLoaded = true;
+				mPbLoadingImage.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onLoadingCancelled(String imageUri, View view) {
+				isLoaded = true;
+				mPbLoadingImage.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onDownloadComplete(String downloadedFile, String url) {
+			}
+		});
 
 		mImgSaveImage.setOnClickListener(new OnClickListener() {
 			@Override
@@ -86,5 +130,39 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	protected void onDestroy() {
 		adView.destroy();
 		super.onDestroy();
+	}
+
+	public void usingSimpleImage(ImageView imageView) {
+		mAttacher = new ImageAttacher(imageView);
+		ImageAttacher.MAX_ZOOM = 2.0f; // Double the current Size
+		ImageAttacher.MIN_ZOOM = 0.5f; // Half the current Size
+		MatrixChangeListener mMaListener = new MatrixChangeListener();
+		mAttacher.setOnMatrixChangeListener(mMaListener);
+		PhotoTapListener mPhotoTap = new PhotoTapListener();
+		mAttacher.setOnPhotoTapListener(mPhotoTap);
+	}
+
+	private class PhotoTapListener implements OnPhotoTapListener {
+		@Override
+		public void onPhotoTap(View view, float x, float y) {
+		}
+	}
+
+	private class MatrixChangeListener implements OnMatrixChangedListener {
+
+		@Override
+		public void onMatrixChanged(RectF rect) {
+			if (!isLoaded) return;
+			if (!isScale) {
+				if ((mScreenWidth - (int) rect.width()) > 10) {
+					float scale = mAttacher.getScale();
+					scale = (float) (scale + 0.3);
+					mAttacher.zoomTo(scale, 0, 0);
+				} else {
+					isScale = true;
+					mAttacher.MAX_ZOOM = mAttacher.getScale() + 1;
+				}
+			}
+		}
 	}
 }

@@ -25,8 +25,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 public class HomeVerticalFragment extends HomeFragment {
 
@@ -110,9 +108,7 @@ public class HomeVerticalFragment extends HomeFragment {
 				}
 			}
 		};
-		PauseOnScrollListener pauseListener = new PauseOnScrollListener(ImageLoader.getInstance(), true, true,
-				listOnScrollListener);
-		mListView.setOnScrollListener(pauseListener);
+		mListView.setOnScrollListener(listOnScrollListener);
 	}
 
 	@Override

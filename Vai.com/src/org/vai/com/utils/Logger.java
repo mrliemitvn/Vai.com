@@ -20,7 +20,7 @@ public class Logger {
 
 	private static int mCurrentLevel = INFO;
 
-	private static String mAppLogTag = "ubox";
+	private static String mAppLogTag = "vai.com";
 
 	public static void setAppTag(String appTag) {
 		mAppLogTag = appTag;
