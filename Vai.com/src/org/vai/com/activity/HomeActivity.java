@@ -9,6 +9,7 @@ import org.vai.com.fragment.HomeHorizontalFragment;
 import org.vai.com.fragment.HomeMenuFragment;
 import org.vai.com.fragment.HomeVerticalFragment;
 import org.vai.com.provider.DbContract.Category;
+import org.vai.com.provider.DbContract.Conference;
 import org.vai.com.provider.DbContract.LikeState;
 import org.vai.com.provider.SharePrefs;
 import org.vai.com.utils.Consts;
@@ -20,6 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -59,6 +61,7 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 	private String mTitle = "";
 	private String mImgUrl = "";
 	private boolean isCallShare = false;
+	private long likeNumber;
 
 	/**
 	 * Initialize category id and menu.
@@ -129,6 +132,19 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 							.append(mSharePrefs.getFacebookUserId()).append("'").toString();
 					int resultUpdate = getContentResolver().update(LikeState.CONTENT_URI, values, where, null);
 					Logger.debug(TAG, "number update = " + resultUpdate);
+				} else {
+					Toast toast = Toast.makeText(HomeActivity.this, R.string.msg_err_cannot_like_now,
+							Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.show();
+					// Like unsuccessfully, update data.
+					String where = new StringBuilder().append(Conference._ID).append("='").append(mConferenceId)
+							.append("'").toString();
+					ContentValues values = new ContentValues();
+					values.put(Conference.LIKE, likeNumber);
+					int resultUpdate = getContentResolver().update(Conference.CONTENT_URI, values, where, null);
+					Logger.debug(TAG, "number conference is updated = " + resultUpdate);
+					mContentFragment.getDataFromDb();
 				}
 			}
 		}).executeAsync();
@@ -185,12 +201,15 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 			Request.Callback callback = new Request.Callback() {
 				public void onCompleted(Response response) {
 					FacebookRequestError error = response.getError();
+					Toast toast;
 					if (error != null) {
-						Toast.makeText(HomeActivity.this, R.string.msg_err_share_failed, Toast.LENGTH_SHORT).show();
+						toast = Toast.makeText(HomeActivity.this, R.string.msg_err_share_failed, Toast.LENGTH_SHORT);
 					} else {
-						Toast.makeText(HomeActivity.this, R.string.msg_info_share_successfully, Toast.LENGTH_SHORT)
-								.show();
+						toast = Toast.makeText(HomeActivity.this, R.string.msg_info_share_successfully,
+								Toast.LENGTH_SHORT);
 					}
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.show();
 				}
 			};
 			Request request = new Request(Session.getActiveSession(), "me/feed", postParams, HttpMethod.POST, callback);
@@ -276,12 +295,17 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 			mUiHelper.onActivityResult(requestCode, resultCode, aIntent, new FacebookDialog.Callback() {
 				@Override
 				public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
-					Toast.makeText(HomeActivity.this, R.string.msg_err_share_failed, Toast.LENGTH_SHORT).show();
+					Toast toast = Toast.makeText(HomeActivity.this, R.string.msg_err_share_failed, Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.show();
 				}
 
 				@Override
 				public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
-					Toast.makeText(HomeActivity.this, R.string.msg_info_share_successfully, Toast.LENGTH_SHORT).show();
+					Toast toast = Toast.makeText(HomeActivity.this, R.string.msg_info_share_successfully,
+							Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.show();
 				}
 			});
 		} else {
@@ -317,6 +341,7 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 		int callLikeState = bundle.getInt(Consts.JSON_LIKE, Consts.STATE_UNKNOWN);
 		if (callLikeState == Consts.STATE_ON) { // Like conference.
 			mConferenceId = bundle.getString(Consts.JSON_ID);
+			likeNumber = bundle.getLong(Consts.JSON_LIKE_NUMBER);
 			/*
 			 * If user hasn't logged in facebook, call login.
 			 * else, call like action.
@@ -329,6 +354,7 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 			}
 		} else if (callLikeState == Consts.STATE_OFF) { // Unlike conference.
 			mConferenceId = bundle.getString(Consts.JSON_ID);
+			likeNumber = bundle.getLong(Consts.JSON_LIKE_NUMBER);
 			callUnlikeAction();
 		} else {
 			int callShare = bundle.getInt(Consts.SHARE_CONFERENCE, Consts.STATE_UNKNOWN);
@@ -369,7 +395,9 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 
 	@Override
 	public void onFailed() {
-		Toast.makeText(this, R.string.login_failed, Toast.LENGTH_SHORT).show();
+		Toast toast = Toast.makeText(this, R.string.login_failed, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.show();
 		isCallShare = false; // Reset flag.
 	}
 }

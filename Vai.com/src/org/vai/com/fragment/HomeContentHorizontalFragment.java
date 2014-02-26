@@ -197,13 +197,13 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 			// Change like state of tvLike.
 			mTvLike.setSelected(!mTvLike.isSelected());
 			long likeNumber = mConferenceResource.like;
+			bundle.putString(Consts.JSON_ID, mConferenceResource.id);
+			bundle.putLong(Consts.JSON_LIKE_NUMBER, mConferenceResource.like);
 			if (mTvLike.isSelected()) { // Call like action.
 				bundle.putInt(Consts.JSON_LIKE, Consts.STATE_ON);
-				bundle.putString(Consts.JSON_ID, mConferenceResource.id);
 				likeNumber++;
 			} else { // Call unlike action.
 				bundle.putInt(Consts.JSON_LIKE, Consts.STATE_OFF);
-				bundle.putString(Consts.JSON_ID, mConferenceResource.id);
 				if (likeNumber > 0) likeNumber--;
 			}
 			if (mAdapterCallBack != null) mAdapterCallBack.adapterCallBack(bundle);

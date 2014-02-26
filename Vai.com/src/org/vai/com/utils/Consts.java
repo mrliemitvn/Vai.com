@@ -42,6 +42,7 @@ public class Consts {
 	public static final String JSON_CATEGORY_ID = "category_id";
 	public static final String JSON_POST_ID = "post_id";
 	public static final String JSON_LIKE = "like";
+	public static final String JSON_LIKE_NUMBER = "like_number";
 	public static final String JSON_COMMENT = "comment";
 	public static final String JSON_PAGE = "page";
 	public static final String JSON_MOREWEB = "moreweb";

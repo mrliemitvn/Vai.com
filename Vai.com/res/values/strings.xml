@@ -11,6 +11,7 @@
 
     <!-- Google api key release -->
     <string name="common_google_map_api_key">AIzaSyAshwfRl4tYwcoRKm4fRRb1LzAvOsoFDO4</string>
+    <string name="msg_err_cannot_like_now">Cannot like content now!</string>
     <string name="msg_err_move_temporarily">Already sent</string>
     <string name="msg_err_bad_request">Data sent to server incorrectly, please try again later.</string>
     <string name="msg_err_invalid_token">Your account may be used by another person</string>

@@ -73,7 +73,22 @@ public class HomeHorizontalFragment extends HomeFragment {
 	}
 
 	@Override
-	protected void getDataFromDb() {
+	protected void showLoadingView() {
+		((HomeActivity) getActivity()).setSupportProgressBarIndeterminateVisibility(true);
+	}
+
+	@Override
+	protected void hideLoadingView() {
+		((HomeActivity) getActivity()).setSupportProgressBarIndeterminateVisibility(false);
+	}
+
+	@Override
+	protected void scrollToFirstItem() {
+		mViewPager.setCurrentItem(0);
+	}
+
+	@Override
+	public void getDataFromDb() {
 		if (getActivity() == null) return;
 		String where = new StringBuilder().append(DbContract.getAlias(Tables.CONFERENCE, Conference.CATEGORY_ID))
 				.append("='").append(mCategoryId).append("' and ")
@@ -100,21 +115,6 @@ public class HomeHorizontalFragment extends HomeFragment {
 			((HomeContentHorizontalFragment) mListFragments.get(mViewPager.getCurrentItem())).updateData();
 		}
 		if (cursor != null) cursor.close();
-	}
-
-	@Override
-	protected void showLoadingView() {
-		((HomeActivity) getActivity()).setSupportProgressBarIndeterminateVisibility(true);
-	}
-
-	@Override
-	protected void hideLoadingView() {
-		((HomeActivity) getActivity()).setSupportProgressBarIndeterminateVisibility(false);
-	}
-
-	@Override
-	protected void scrollToFirstItem() {
-		mViewPager.setCurrentItem(0);
 	}
 
 	@Override

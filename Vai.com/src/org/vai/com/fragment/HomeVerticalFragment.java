@@ -112,35 +112,6 @@ public class HomeVerticalFragment extends HomeFragment {
 	}
 
 	@Override
-	protected void getDataFromDb() {
-		if (getActivity() == null) return;
-		String where = new StringBuilder().append(DbContract.getAlias(Tables.CONFERENCE, Conference.CATEGORY_ID))
-				.append("='").append(mCategoryId).append("' and ")
-				.append(DbContract.getAlias(Tables.LIKE_STATE, LikeState.FACEBOOK_USER_ID)).append("='")
-				.append(SharePrefs.getInstance().getFacebookUserId()).append("'").toString();
-		Cursor cursor = getActivity().getContentResolver().query(Conference.CONTENT_URI_CONFERENCE_JOIN_LIKE_STATE,
-				null, where, null, null);
-		if (cursor != null && cursor.moveToFirst()) {
-			mListConference.clear();
-			do {
-				ConferenceResource conference = new ConferenceResource(cursor);
-				mListConference.add(conference);
-			} while (cursor.moveToNext());
-
-			mAdapter.notifyDataSetChanged();
-		}
-		if (cursor != null) cursor.close();
-
-		if (mListConference.size() > 0) {
-			mTvNoData.setVisibility(View.GONE);
-			mHeaderLoadingContent.setVisibility(View.GONE);
-		} else if (mIsLoaded) {
-			mTvNoData.setVisibility(View.VISIBLE);
-			mHeaderLoadingContent.setVisibility(View.VISIBLE);
-		}
-	}
-
-	@Override
 	protected void showLoadingView() {
 		mHeaderLoadingContent.setVisibility(View.VISIBLE);
 		mPbLoadingData.setVisibility(View.VISIBLE);
@@ -166,6 +137,35 @@ public class HomeVerticalFragment extends HomeFragment {
 			}
 		};
 		mListView.post(mRunnableScrollToFirst);
+	}
+
+	@Override
+	public void getDataFromDb() {
+		if (getActivity() == null) return;
+		String where = new StringBuilder().append(DbContract.getAlias(Tables.CONFERENCE, Conference.CATEGORY_ID))
+				.append("='").append(mCategoryId).append("' and ")
+				.append(DbContract.getAlias(Tables.LIKE_STATE, LikeState.FACEBOOK_USER_ID)).append("='")
+				.append(SharePrefs.getInstance().getFacebookUserId()).append("'").toString();
+		Cursor cursor = getActivity().getContentResolver().query(Conference.CONTENT_URI_CONFERENCE_JOIN_LIKE_STATE,
+				null, where, null, null);
+		if (cursor != null && cursor.moveToFirst()) {
+			mListConference.clear();
+			do {
+				ConferenceResource conference = new ConferenceResource(cursor);
+				mListConference.add(conference);
+			} while (cursor.moveToNext());
+
+			mAdapter.notifyDataSetChanged();
+		}
+		if (cursor != null) cursor.close();
+
+		if (mListConference.size() > 0) {
+			mTvNoData.setVisibility(View.GONE);
+			mHeaderLoadingContent.setVisibility(View.GONE);
+		} else if (mIsLoaded) {
+			mTvNoData.setVisibility(View.VISIBLE);
+			mHeaderLoadingContent.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override

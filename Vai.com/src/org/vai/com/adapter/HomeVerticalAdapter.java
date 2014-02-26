@@ -99,13 +99,13 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					// Change like state of tvLike.
 					viewHolder.tvLike.setSelected(!viewHolder.tvLike.isSelected());
 					long likeNumber = viewHolder.conference.like;
+					bundle.putString(Consts.JSON_ID, viewHolder.conference.id);
+					bundle.putLong(Consts.JSON_LIKE_NUMBER, viewHolder.conference.like);
 					if (viewHolder.tvLike.isSelected()) { // Call like action.
 						bundle.putInt(Consts.JSON_LIKE, Consts.STATE_ON);
-						bundle.putString(Consts.JSON_ID, viewHolder.conference.id);
 						likeNumber++;
 					} else { // Call unlike action.
 						bundle.putInt(Consts.JSON_LIKE, Consts.STATE_OFF);
-						bundle.putString(Consts.JSON_ID, viewHolder.conference.id);
 						if (likeNumber > 0) likeNumber--;
 					}
 					if (mAdapterCallBack != null) mAdapterCallBack.adapterCallBack(bundle);

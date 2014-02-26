@@ -36,6 +36,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.Toast;
@@ -123,7 +124,9 @@ public class YouTubePlayerActivity extends YouTubeBaseActivity implements YouTub
 			errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
 		} else {
 			String errorMessage = String.format(getString(R.string.youtube_error_player), errorReason.toString());
-			Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+			Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.show();
 		}
 	}
 

@@ -53,9 +53,6 @@ public class HomeFragment extends BaseFragment {
 	protected void init() {
 	}
 
-	protected void getDataFromDb() {
-	}
-
 	protected void showLoadingView() {
 	}
 
@@ -68,6 +65,9 @@ public class HomeFragment extends BaseFragment {
 	protected void setAdapterAndGetData() {
 		getDataFromDb();
 		callApiGetConference(1);
+	}
+
+	public void getDataFromDb() {
 	}
 
 	public void setCategoryId(String categoryId) {

@@ -1860,45 +1860,46 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f070013;
-        public static final int empty=0x7f070053;
+        public static final int empty=0x7f070054;
         /**  Tracking ID Google analytics official 
          */
         public static final int ga_trackingId=0x7f070040;
-        public static final int loading_more=0x7f070057;
-        public static final int login_failed=0x7f070058;
-        public static final int menu_more=0x7f070055;
-        public static final int menu_options=0x7f070054;
-        public static final int msg_err_bad_request=0x7f070046;
-        public static final int msg_err_conflict=0x7f07004a;
-        public static final int msg_err_connecting_error=0x7f07004c;
-        public static final int msg_err_data_error=0x7f07004d;
-        public static final int msg_err_forbidden=0x7f070048;
-        public static final int msg_err_invalid_token=0x7f070047;
-        public static final int msg_err_move_temporarily=0x7f070045;
-        public static final int msg_err_not_found=0x7f070049;
-        public static final int msg_err_server_error=0x7f07004b;
-        public static final int msg_err_share_failed=0x7f07004f;
-        public static final int msg_err_something_wrong=0x7f07004e;
-        public static final int msg_info_download_complete=0x7f070052;
-        public static final int msg_info_no_data_result=0x7f070051;
-        public static final int msg_info_share_successfully=0x7f070050;
-        public static final int options_clear_cache=0x7f07005f;
-        public static final int options_connect_facebook=0x7f07005a;
-        public static final int options_horizontal_style=0x7f070062;
-        public static final int options_login=0x7f07005c;
-        public static final int options_login_facebook=0x7f07005b;
-        public static final int options_logout=0x7f07005d;
-        public static final int options_rate=0x7f070060;
-        public static final int options_title=0x7f07005e;
+        public static final int loading_more=0x7f070058;
+        public static final int login_failed=0x7f070059;
+        public static final int menu_more=0x7f070056;
+        public static final int menu_options=0x7f070055;
+        public static final int msg_err_bad_request=0x7f070047;
+        public static final int msg_err_cannot_like_now=0x7f070045;
+        public static final int msg_err_conflict=0x7f07004b;
+        public static final int msg_err_connecting_error=0x7f07004d;
+        public static final int msg_err_data_error=0x7f07004e;
+        public static final int msg_err_forbidden=0x7f070049;
+        public static final int msg_err_invalid_token=0x7f070048;
+        public static final int msg_err_move_temporarily=0x7f070046;
+        public static final int msg_err_not_found=0x7f07004a;
+        public static final int msg_err_server_error=0x7f07004c;
+        public static final int msg_err_share_failed=0x7f070050;
+        public static final int msg_err_something_wrong=0x7f07004f;
+        public static final int msg_info_download_complete=0x7f070053;
+        public static final int msg_info_no_data_result=0x7f070052;
+        public static final int msg_info_share_successfully=0x7f070051;
+        public static final int options_clear_cache=0x7f070060;
+        public static final int options_connect_facebook=0x7f07005b;
+        public static final int options_horizontal_style=0x7f070063;
+        public static final int options_login=0x7f07005d;
+        public static final int options_login_facebook=0x7f07005c;
+        public static final int options_logout=0x7f07005e;
+        public static final int options_rate=0x7f070061;
+        public static final int options_title=0x7f07005f;
         /**  Options screen 
          */
-        public static final int options_vai_description=0x7f070059;
-        public static final int options_vertical_style=0x7f070063;
-        public static final int options_view_style=0x7f070061;
-        public static final int refresh=0x7f070056;
+        public static final int options_vai_description=0x7f07005a;
+        public static final int options_vertical_style=0x7f070064;
+        public static final int options_view_style=0x7f070062;
+        public static final int refresh=0x7f070057;
         /**  Youtube player 
          */
-        public static final int youtube_error_player=0x7f070064;
+        public static final int youtube_error_player=0x7f070065;
     }
     public static final class style {
         /** 

@@ -8,6 +8,7 @@ import org.vai.com.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -84,7 +85,9 @@ public class DownloadImageUtils {
 			out.flush();
 			out.close();
 			ret = true;
-			Toast.makeText(context, R.string.msg_info_download_complete, Toast.LENGTH_SHORT).show();
+			Toast toast = Toast.makeText(context, R.string.msg_info_download_complete, Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ret = false;
