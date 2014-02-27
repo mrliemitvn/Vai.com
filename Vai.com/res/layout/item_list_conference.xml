@@ -21,11 +21,20 @@
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium" />
 
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitle"
+        android:background="@color/image_loading"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_small" />
+
     <RelativeLayout
         android:id="@+id/rlContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvTitle"
+        android:layout_below="@id/tvContent"
         android:layout_marginTop="@dimen/common_margin_large"
         android:background="@color/image_loading" >
 
@@ -72,10 +81,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/viewDivider"
-        android:layout_marginTop="@dimen/common_margin_small"
+        android:background="@color/white"
         android:baselineAligned="false"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/common_margin_small" >
 
         <FrameLayout
             android:layout_width="0dp"

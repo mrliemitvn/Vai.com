@@ -64,6 +64,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		sqlBuilder.append(Conference.TITLE_ASCII + " TEXT, ");
 		sqlBuilder.append(Conference.ALIAS + " TEXT, ");
 		sqlBuilder.append(Conference.INTRO + " TEXT, ");
+		sqlBuilder.append(Conference.CONTENT + " TEXT, ");
 		sqlBuilder.append(Conference.VIDEO_ID + " TEXT, ");
 		sqlBuilder.append(Conference.IMAGE + " TEXT, ");
 		sqlBuilder.append(Conference._STATUS + " TEXT, ");

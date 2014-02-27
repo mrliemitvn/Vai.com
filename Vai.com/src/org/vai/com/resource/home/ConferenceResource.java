@@ -28,6 +28,7 @@ public class ConferenceResource implements BaseResource, Resource {
 	public String titleAscii;
 	public String alias;
 	public String intro;
+	public String content;
 	public String videoId;
 	public String image;
 	public String status;
@@ -72,6 +73,7 @@ public class ConferenceResource implements BaseResource, Resource {
 					while (matcher.find()) {
 						videoId = matcher.group(1);
 					}
+					if (TextUtils.isEmpty(videoId)) this.content = content.replace("\\", "");
 				}
 				if (!json.isNull(Consts.JSON_OPTIONS)) {
 					String imgInfo = json.getString(Consts.JSON_OPTIONS) + ";";
@@ -118,6 +120,7 @@ public class ConferenceResource implements BaseResource, Resource {
 		int titleAsciiIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.TITLE_ASCII));
 		int aliasIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.ALIAS));
 		int introIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.INTRO));
+		int contentIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.CONTENT));
 		int videoIdIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.VIDEO_ID));
 		int imageIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.IMAGE));
 		int authorIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.AUTHOR));
@@ -137,6 +140,7 @@ public class ConferenceResource implements BaseResource, Resource {
 		if (titleAsciiIndex > -1) titleAscii = cursor.getString(titleAsciiIndex);
 		if (aliasIndex > -1) alias = cursor.getString(aliasIndex);
 		if (introIndex > -1) intro = cursor.getString(introIndex);
+		if (contentIndex > -1) content = cursor.getString(contentIndex);
 		if (videoIdIndex > -1) videoId = cursor.getString(videoIdIndex);
 		if (imageIndex > -1) image = cursor.getString(imageIndex);
 		if (authorIndex > -1) author = cursor.getInt(authorIndex);
@@ -160,6 +164,7 @@ public class ConferenceResource implements BaseResource, Resource {
 		values.put(Conference.TITLE_ASCII, titleAscii);
 		values.put(Conference.ALIAS, alias);
 		values.put(Conference.INTRO, intro);
+		values.put(Conference.CONTENT, content);
 		values.put(Conference.VIDEO_ID, videoId);
 		values.put(Conference.IMAGE, image);
 		values.put(Conference._STATUS, status);

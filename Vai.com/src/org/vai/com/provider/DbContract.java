@@ -72,6 +72,8 @@ public class DbContract {
 		public static final String ALIAS = "alias";
 		/** Intro */
 		public static final String INTRO = "intro";
+		/** Content */
+		public static final String CONTENT = "content";
 		/** Youtube video id */
 		public static final String VIDEO_ID = "video_id";
 		/** image URL */

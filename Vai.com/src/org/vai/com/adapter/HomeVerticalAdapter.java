@@ -30,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -150,7 +151,9 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder = new ViewHolder();
 			viewHolder.emotionsUtils = new EmotionsUtils(mContext);
 			viewHolder.rlContent = (RelativeLayout) convertView.findViewById(R.id.rlContent);
+			viewHolder.viewDivider = (View) convertView.findViewById(R.id.viewDivider);
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+			viewHolder.tvContent = (TextView) convertView.findViewById(R.id.tvContent);
 			viewHolder.pbLoadingImage = (ProgressBar) convertView.findViewById(R.id.pbLoadingImage);
 			viewHolder.tvLike = (TextView) convertView.findViewById(R.id.tvLike);
 			viewHolder.tvComment = (TextView) convertView.findViewById(R.id.tvComment);
@@ -174,10 +177,12 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 				@Override
 				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 					viewHolder.pbLoadingImage.setVisibility(View.GONE);
+
 					int imgHeight = mContentWidth;
 					if (loadedImage.getWidth() > 0) {
 						imgHeight = mContentWidth * loadedImage.getHeight() / loadedImage.getWidth();
 					}
+					viewHolder.rlContent.getLayoutParams().height = imgHeight;
 
 					Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
 							loadedImage.getHeight() / 2);
@@ -188,6 +193,14 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					viewHolder.imgContent.setImageBitmap(bitmap1);
 					viewHolder.imgContent1.getLayoutParams().height = imgHeight / 2;
 					viewHolder.imgContent1.setImageBitmap(bitmap2);
+
+					int imgHeightContent = mContentWidth;
+					if (viewHolder.conference.imgWidth > 0) {
+						imgHeightContent = mContentWidth * viewHolder.conference.imgHeight
+								/ viewHolder.conference.imgWidth;
+					}
+					int marginTop = imgHeightContent - imgHeight;
+					((LayoutParams) viewHolder.viewDivider.getLayoutParams()).setMargins(0, marginTop, 0, 0);
 				}
 
 				@Override
@@ -235,9 +248,16 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		if (!TextUtils.isEmpty(conferenceResource.videoId)) {
 			viewHolder.imgIcon.setImageResource(R.drawable.video_icon);
 			viewHolder.imgPlayYoutube.setVisibility(View.VISIBLE);
+			viewHolder.tvContent.setVisibility(View.GONE);
 		} else {
 			viewHolder.imgIcon.setImageResource(R.drawable.photo_icon);
 			viewHolder.imgPlayYoutube.setVisibility(View.GONE);
+			if (TextUtils.isEmpty(conferenceResource.content)) {
+				viewHolder.tvContent.setVisibility(View.GONE);
+			} else {
+				viewHolder.tvContent.setText(conferenceResource.content);
+				viewHolder.tvContent.setVisibility(View.VISIBLE);
+			}
 		}
 		if (Consts.STATE_ON == conferenceResource.likeState) {
 			viewHolder.tvLike.setSelected(true);
@@ -263,7 +283,9 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		ImageLoadingListener imageLoadingListener;
 		RelativeLayout rlContent;
 		ProgressBar pbLoadingImage;
+		View viewDivider;
 		TextView tvTitle;
+		TextView tvContent;
 		TextView tvLike;
 		TextView tvComment;
 		ImageView imgIcon;

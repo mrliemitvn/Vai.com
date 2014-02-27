@@ -151,10 +151,10 @@ public class DbProvider extends ContentProvider {
 	private HashMap<String, String> buildConferenceJoinLikeStateColumnMap() {
 		HashMap<String, String> map = new HashMap<String, String>();
 		String conferenceProjection[] = { Conference._ID, Conference.POST_ID, Conference.CATEGORY_ID, Conference.TITLE,
-				Conference.TITLE_ASCII, Conference.ALIAS, Conference.INTRO, Conference.VIDEO_ID, Conference.IMAGE,
-				Conference._STATUS, Conference.AUTHOR, Conference.IMAGE_WIDTH, Conference.IMAGE_HEIGHT,
-				Conference.TIME_CREATED, Conference.TIME_MODIFIED, Conference.VIEWED, Conference.LIKE,
-				Conference.COMMENT };
+				Conference.TITLE_ASCII, Conference.ALIAS, Conference.INTRO, Conference.CONTENT, Conference.VIDEO_ID,
+				Conference.IMAGE, Conference._STATUS, Conference.AUTHOR, Conference.IMAGE_WIDTH,
+				Conference.IMAGE_HEIGHT, Conference.TIME_CREATED, Conference.TIME_MODIFIED, Conference.VIEWED,
+				Conference.LIKE, Conference.COMMENT };
 		for (String col : conferenceProjection) {
 			String qualifiedCol = DbContract.getQualifiedColumnName(Tables.CONFERENCE, col);
 			if (qualifiedCol.equals(DbContract.getQualifiedColumnName(Tables.CONFERENCE, Conference._ID))) {

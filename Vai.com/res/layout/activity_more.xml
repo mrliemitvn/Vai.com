@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/admob_id"
-        ads:loadAdOnCreate="true" />
+        ads:adUnitId="@string/admob_id" />
 
     <ListView
         android:id="@+id/listView"

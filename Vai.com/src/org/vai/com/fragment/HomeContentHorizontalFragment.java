@@ -43,6 +43,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 	private ImageView mImgDownload;
 	private ImageView mImgShare;
 	private TextView mTvTitle;
+	private TextView mTvContent;
 	private TextView mTvLike;
 	private TextView mTvComment;
 	private ProgressBar mPbLoadingImage;
@@ -71,6 +72,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 		mImgDownload = (ImageView) mParentView.findViewById(R.id.imgDownload);
 		mImgShare = (ImageView) mParentView.findViewById(R.id.imgShare);
 		mTvTitle = (TextView) mParentView.findViewById(R.id.tvTitle);
+		mTvContent = (TextView) mParentView.findViewById(R.id.tvContent);
 		mTvLike = (TextView) mParentView.findViewById(R.id.tvLike);
 		mTvComment = (TextView) mParentView.findViewById(R.id.tvComment);
 		mPbLoadingImage = (ProgressBar) mParentView.findViewById(R.id.pbLoadingImage);
@@ -167,6 +169,16 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 		if (mDownloadImage == null) mDownloadImage = new DownloadImageUtils(getActivity());
 		mEmotionsUtils.setSpannableText(new SpannableStringBuilder(mConferenceResource.title));
 		mTvTitle.setText(mEmotionsUtils.getSmileText());
+		if (!TextUtils.isEmpty(mConferenceResource.videoId)) {
+			mTvContent.setVisibility(View.GONE);
+		} else {
+			if (TextUtils.isEmpty(mConferenceResource.content)) {
+				mTvContent.setVisibility(View.GONE);
+			} else {
+				mTvContent.setText(mConferenceResource.content);
+				mTvContent.setVisibility(View.VISIBLE);
+			}
+		}
 		mTvLike.setText(mConferenceResource.like + "");
 		mTvComment.setText(mConferenceResource.comment + "");
 		if (Consts.STATE_ON == mConferenceResource.likeState) {

@@ -147,7 +147,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/admob_id"
-        ads:loadAdOnCreate="true" />
+        ads:adUnitId="@string/admob_id" />
 
 </LinearLayout>

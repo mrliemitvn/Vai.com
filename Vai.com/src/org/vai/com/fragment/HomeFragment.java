@@ -118,6 +118,7 @@ public class HomeFragment extends BaseFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
+		mIsLoading = false;
 		try {
 			getActivity().unregisterReceiver(mRequestReceiver);
 		} catch (Exception e) {

@@ -94,13 +94,20 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/image_loading" >
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/tvContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textsize_small" />
 
                 <ImageView
                     android:id="@+id/imgContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/tvContent"
                     android:contentDescription="@string/empty"
                     android:scaleType="centerCrop" />
 
