@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.vai.com.R;
 import org.vai.com.activity.CommentPageActivity;
 import org.vai.com.activity.ImageViewDetailActivity;
+import org.vai.com.activity.PlayYoutubeVideoActivity;
 import org.vai.com.activity.YouTubePlayerActivity;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.provider.DbContract.Conference;
@@ -82,13 +83,9 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					if (TextUtils.isEmpty(viewHolder.conference.videoId)) {
 						intent = new Intent(mContext, ImageViewDetailActivity.class);
 						intent.putExtra(Consts.IMAGE_URL, viewHolder.conference.image);
-					} else if (mContext.getPackageManager().getLaunchIntentForPackage(Consts.YOUTUBE_PACKAGE) != null) {
-						intent = new Intent(mContext, YouTubePlayerActivity.class);
-						intent.putExtra(YouTubePlayerActivity.EXTRA_VIDEO_ID, viewHolder.conference.videoId);
 					} else {
-						intent = new Intent(Intent.ACTION_VIEW,
-								Uri.parse(Consts.URLConstants.YOUTUBE_VIDEO_WATCHING_URL
-										+ viewHolder.conference.videoId));
+						intent = new Intent(mContext, PlayYoutubeVideoActivity.class);
+						intent.putExtra(Consts.JSON_ID, viewHolder.conference.videoId);
 					}
 					mContext.startActivity(intent);
 					break;

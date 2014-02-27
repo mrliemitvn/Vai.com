@@ -12,6 +12,7 @@ import org.vai.com.provider.DbHelper.Tables;
 import org.vai.com.provider.SharePrefs;
 import org.vai.com.resource.home.ConferenceResource;
 
+import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +28,7 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class HomeHorizontalFragment extends HomeFragment {
 
+	private ProgressDialog mProgressDialog;
 	private ViewPager mViewPager;
 	private HomeHorizontalPagerAdapter mAdapter;
 	private ArrayList<SherlockFragment> mListFragments = new ArrayList<SherlockFragment>();
@@ -75,11 +77,17 @@ public class HomeHorizontalFragment extends HomeFragment {
 	@Override
 	protected void showLoadingView() {
 		((HomeActivity) getActivity()).setSupportProgressBarIndeterminateVisibility(true);
+		if (mProgressDialog == null) {
+			mProgressDialog = new ProgressDialog(getActivity());
+			mProgressDialog.setMessage("Loading");
+		}
+		if (!mProgressDialog.isShowing()) mProgressDialog.show();
 	}
 
 	@Override
 	protected void hideLoadingView() {
 		((HomeActivity) getActivity()).setSupportProgressBarIndeterminateVisibility(false);
+		if (mProgressDialog.isShowing()) mProgressDialog.dismiss();
 	}
 
 	@Override

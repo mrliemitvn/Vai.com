@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Vai.com</string>
+    <string name="app_name">Vãi.com</string>
     <!-- Facebook app id -->
     <string name="app_id">578437172192441</string>
     <string name="admob_id">a152bef79f598c2</string>

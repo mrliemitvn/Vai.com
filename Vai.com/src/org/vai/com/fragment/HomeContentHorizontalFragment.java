@@ -3,7 +3,7 @@ package org.vai.com.fragment;
 import org.vai.com.R;
 import org.vai.com.activity.CommentPageActivity;
 import org.vai.com.activity.ImageViewDetailActivity;
-import org.vai.com.activity.YouTubePlayerActivity;
+import org.vai.com.activity.PlayYoutubeVideoActivity;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.provider.DbContract.Conference;
 import org.vai.com.resource.home.ConferenceResource;
@@ -15,7 +15,6 @@ import org.vai.com.utils.Logger;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -232,12 +231,9 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 			if (TextUtils.isEmpty(mConferenceResource.videoId)) {
 				intent = new Intent(getActivity(), ImageViewDetailActivity.class);
 				intent.putExtra(Consts.IMAGE_URL, mConferenceResource.image);
-			} else if (getActivity().getPackageManager().getLaunchIntentForPackage(Consts.YOUTUBE_PACKAGE) != null) {
-				intent = new Intent(getActivity(), YouTubePlayerActivity.class);
-				intent.putExtra(YouTubePlayerActivity.EXTRA_VIDEO_ID, mConferenceResource.videoId);
 			} else {
-				intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Consts.URLConstants.YOUTUBE_VIDEO_WATCHING_URL
-						+ mConferenceResource.videoId));
+				intent = new Intent(getActivity(), PlayYoutubeVideoActivity.class);
+				intent.putExtra(Consts.JSON_ID, mConferenceResource.videoId);
 			}
 			getActivity().startActivity(intent);
 		} else if (v == mTvComment) {
