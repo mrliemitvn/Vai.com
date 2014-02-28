@@ -78,6 +78,8 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 				switch (id) {
 				case R.id.imgContent:
 				case R.id.imgContent1:
+				case R.id.imgContent2:
+				case R.id.imgContent3:
 					Intent intent;
 					if (TextUtils.isEmpty(viewHolder.conference.videoId)) {
 						intent = new Intent(mContext, ImageViewDetailActivity.class);
@@ -156,6 +158,8 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 			viewHolder.imgContent = (ImageView) convertView.findViewById(R.id.imgContent);
 			viewHolder.imgContent1 = (ImageView) convertView.findViewById(R.id.imgContent1);
+			viewHolder.imgContent2 = (ImageView) convertView.findViewById(R.id.imgContent2);
+			viewHolder.imgContent3 = (ImageView) convertView.findViewById(R.id.imgContent3);
 			viewHolder.imgPlayYoutube = (ImageView) convertView.findViewById(R.id.imgPlayYoutube);
 			viewHolder.imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
 			viewHolder.imgShare = (ImageView) convertView.findViewById(R.id.imgShare);
@@ -181,14 +185,22 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					viewHolder.rlContent.getLayoutParams().height = imgHeight;
 
 					Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
-							loadedImage.getHeight() / 2);
-					Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
-							loadedImage.getWidth(), loadedImage.getHeight() / 2);
+							loadedImage.getHeight() / 4);
+					Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 4,
+							loadedImage.getWidth(), loadedImage.getHeight() / 4);
+					Bitmap bitmap3 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
+							loadedImage.getWidth(), loadedImage.getHeight() / 4);
+					Bitmap bitmap4 = Bitmap.createBitmap(loadedImage, 0, 3 * loadedImage.getHeight() / 4,
+							loadedImage.getWidth(), loadedImage.getHeight() / 4);
 
-					viewHolder.imgContent.getLayoutParams().height = imgHeight / 2;
+					viewHolder.imgContent.getLayoutParams().height = imgHeight / 4;
 					viewHolder.imgContent.setImageBitmap(bitmap1);
-					viewHolder.imgContent1.getLayoutParams().height = imgHeight / 2;
+					viewHolder.imgContent1.getLayoutParams().height = imgHeight / 4;
 					viewHolder.imgContent1.setImageBitmap(bitmap2);
+					viewHolder.imgContent2.getLayoutParams().height = imgHeight / 4;
+					viewHolder.imgContent2.setImageBitmap(bitmap3);
+					viewHolder.imgContent3.getLayoutParams().height = imgHeight / 4;
+					viewHolder.imgContent3.setImageBitmap(bitmap4);
 
 					int imgHeightContent = mContentWidth;
 					if (viewHolder.conference.imgWidth > 0) {
@@ -214,12 +226,16 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			convertView.setTag(viewHolder);
 			viewHolder.imgContent.setTag(viewHolder);
 			viewHolder.imgContent1.setTag(viewHolder);
+			viewHolder.imgContent2.setTag(viewHolder);
+			viewHolder.imgContent3.setTag(viewHolder);
 			viewHolder.imgDownload.setTag(viewHolder);
 			viewHolder.tvLike.setTag(viewHolder);
 			viewHolder.tvComment.setTag(viewHolder);
 			viewHolder.imgShare.setTag(viewHolder);
 			viewHolder.imgContent.setOnClickListener(mOnClickListener);
 			viewHolder.imgContent1.setOnClickListener(mOnClickListener);
+			viewHolder.imgContent2.setOnClickListener(mOnClickListener);
+			viewHolder.imgContent3.setOnClickListener(mOnClickListener);
 			viewHolder.imgDownload.setOnClickListener(mOnClickListener);
 			viewHolder.tvLike.setOnClickListener(mOnClickListener);
 			viewHolder.tvComment.setOnClickListener(mOnClickListener);
@@ -256,6 +272,8 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		}
 		viewHolder.imgContent.setImageResource(R.color.transparent);
 		viewHolder.imgContent1.setImageResource(R.color.transparent);
+		viewHolder.imgContent2.setImageResource(R.color.transparent);
+		viewHolder.imgContent3.setImageResource(R.color.transparent);
 		int imgHeight = mContentWidth;
 		if (conferenceResource.imgWidth > 0) {
 			imgHeight = mContentWidth * conferenceResource.imgHeight / conferenceResource.imgWidth + mMaskHeight;
@@ -281,6 +299,8 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		ImageView imgIcon;
 		ImageView imgContent;
 		ImageView imgContent1;
+		ImageView imgContent2;
+		ImageView imgContent3;
 		ImageView imgPlayYoutube;
 		ImageView imgDownload;
 		ImageView imgShare;

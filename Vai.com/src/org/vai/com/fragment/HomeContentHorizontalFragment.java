@@ -38,6 +38,8 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 	private View mParentView;
 	private ImageView mImgContent;
 	private ImageView mImgContent1;
+	private ImageView mImgContent2;
+	private ImageView mImgContent3;
 	private ImageView mImgPlayYoutube;
 	private ImageView mImgDownload;
 	private ImageView mImgShare;
@@ -68,6 +70,8 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 	private void init() {
 		mImgContent = (ImageView) mParentView.findViewById(R.id.imgContent);
 		mImgContent1 = (ImageView) mParentView.findViewById(R.id.imgContent1);
+		mImgContent2 = (ImageView) mParentView.findViewById(R.id.imgContent2);
+		mImgContent3 = (ImageView) mParentView.findViewById(R.id.imgContent3);
 		mImgPlayYoutube = (ImageView) mParentView.findViewById(R.id.imgPlayYoutube);
 		mImgDownload = (ImageView) mParentView.findViewById(R.id.imgDownload);
 		mImgShare = (ImageView) mParentView.findViewById(R.id.imgShare);
@@ -98,14 +102,22 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 					}
 
 					Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
-							loadedImage.getHeight() / 2);
-					Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
-							loadedImage.getWidth(), loadedImage.getHeight() / 2);
+							loadedImage.getHeight() / 4);
+					Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 4,
+							loadedImage.getWidth(), loadedImage.getHeight() / 4);
+					Bitmap bitmap3 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
+							loadedImage.getWidth(), loadedImage.getHeight() / 4);
+					Bitmap bitmap4 = Bitmap.createBitmap(loadedImage, 0, 3 * loadedImage.getHeight() / 4,
+							loadedImage.getWidth(), loadedImage.getHeight() / 4);
 
-					mImgContent.getLayoutParams().height = imgHeight / 2;
+					mImgContent.getLayoutParams().height = imgHeight / 4;
 					mImgContent.setImageBitmap(bitmap1);
-					mImgContent1.getLayoutParams().height = imgHeight / 2;
+					mImgContent1.getLayoutParams().height = imgHeight / 4;
 					mImgContent1.setImageBitmap(bitmap2);
+					mImgContent2.getLayoutParams().height = imgHeight / 4;
+					mImgContent2.setImageBitmap(bitmap3);
+					mImgContent3.getLayoutParams().height = imgHeight / 4;
+					mImgContent3.setImageBitmap(bitmap4);
 					mPbLoadingImage.setVisibility(View.GONE);
 					if (!TextUtils.isEmpty(mConferenceResource.videoId)) {
 						mImgPlayYoutube.setVisibility(View.VISIBLE);
@@ -185,6 +197,8 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 		mTvComment.setOnClickListener(this);
 		mImgContent.setOnClickListener(this);
 		mImgContent1.setOnClickListener(this);
+		mImgContent2.setOnClickListener(this);
+		mImgContent3.setOnClickListener(this);
 		mImgDownload.setOnClickListener(this);
 		mImgShare.setOnClickListener(this);
 		mContentWidth = getResources().getDisplayMetrics().widthPixels;
@@ -222,7 +236,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 			values.put(Conference.LIKE, likeNumber);
 			int resultUpdate = getActivity().getContentResolver().update(Conference.CONTENT_URI, values, where, null);
 			Logger.debug(TAG, "number conference is updated = " + resultUpdate);
-		} else if (v == mImgContent || v == mImgContent1) {
+		} else if (v == mImgContent || v == mImgContent1 || v == mImgContent2 || v == mImgContent3) {
 			Intent intent;
 			if (TextUtils.isEmpty(mConferenceResource.videoId)) {
 				intent = new Intent(getActivity(), ImageViewDetailActivity.class);
