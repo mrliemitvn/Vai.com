@@ -13,7 +13,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;

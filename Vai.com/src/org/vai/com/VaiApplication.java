@@ -1,7 +1,6 @@
 package org.vai.com;
 
 import org.vai.com.provider.SharePrefs;
-import org.vai.com.utils.LruBitmapCache;
 import org.vai.com.utils.NetworkUtils;
 import org.vai.com.utils.VaiUtils;
 
@@ -11,10 +10,11 @@ import android.content.Context;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GAServiceManager;
 import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.Logger.LogLevel;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
-import com.google.analytics.tracking.android.Logger.LogLevel;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -84,7 +84,7 @@ public class VaiApplication extends Application {
 		final int cacheSize = maxMemory / 4 / 1024;
 
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-				.threadPoolSize(3).memoryCache(new LruBitmapCache(cacheSize)).discCacheSize(DISK_CACHE_SIZE)
+				.threadPoolSize(3).memoryCache(new LruMemoryCache(cacheSize)).discCacheSize(DISK_CACHE_SIZE)
 				.threadPriority(Thread.NORM_PRIORITY).discCacheFileNameGenerator(new HashCodeFileNameGenerator())
 				.memoryCacheExtraOptions(size[0], size[1]).tasksProcessingOrder(QueueProcessingType.LIFO).build();
 		// Initialize ImageLoader with configuration.

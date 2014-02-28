@@ -29,8 +29,8 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class HomeContentHorizontalFragment extends BaseFragment implements OnClickListener {
 	private static final String TAG = HomeContentHorizontalFragment.class.getSimpleName();
@@ -55,10 +55,11 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 	private int mCountTryDisplay = 0;
 
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
-	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.transparent)
-			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
-			.cacheOnDisc(true).displayer(new FadeInBitmapDisplayer(300)).resetViewBeforeLoading(true)
-			.bitmapConfig(Bitmap.Config.RGB_565).build();
+	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder()
+			.showImageOnLoading(R.color.transparent).showImageForEmptyUri(R.color.image_loading)
+			.showImageOnFail(R.color.image_loading).cacheInMemory(true).cacheOnDisc(true)
+			.displayer(new FadeInBitmapDisplayer(300)).resetViewBeforeLoading(true).bitmapConfig(Bitmap.Config.RGB_565)
+			.build();
 	private ImageLoadingListener mImageLoadingListener;
 
 	/**
@@ -121,11 +122,6 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 						mImageLoader.loadImage(mConferenceResource.image, mSquareOptions, mImageLoadingListener);
 						mCountTryDisplay++;
 					}
-				}
-
-				@Override
-				public void onDownloadComplete(String downloadedFile, String url) {
-					Logger.debug(TAG, "image url: " + url + " downloaded file path = " + downloadedFile);
 				}
 			};
 		}

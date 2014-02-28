@@ -24,8 +24,8 @@ import com.imagezoom.ImageAttacher.OnPhotoTapListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class ImageViewDetailActivity extends SherlockActivity {
 
@@ -40,9 +40,10 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	private ImageView mImgSaveImage1;
 	private ProgressBar mPbLoadingImage;
 	private ImageLoader imageLoader = ImageLoader.getInstance();
-	private DisplayImageOptions imgSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.transparent)
-			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
-			.cacheOnDisc(true).displayer(new FadeInBitmapDisplayer(300)).bitmapConfig(Bitmap.Config.RGB_565).build();
+	private DisplayImageOptions imgSquareOptions = new DisplayImageOptions.Builder()
+			.showImageOnLoading(R.color.transparent).showImageForEmptyUri(R.color.image_loading)
+			.showImageOnFail(R.color.image_loading).cacheInMemory(true).cacheOnDisc(true)
+			.displayer(new FadeInBitmapDisplayer(300)).bitmapConfig(Bitmap.Config.RGB_565).build();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,10 +97,6 @@ public class ImageViewDetailActivity extends SherlockActivity {
 			public void onLoadingCancelled(String imageUri, View view) {
 				isLoaded = true;
 				mPbLoadingImage.setVisibility(View.GONE);
-			}
-
-			@Override
-			public void onDownloadComplete(String downloadedFile, String url) {
 			}
 		});
 

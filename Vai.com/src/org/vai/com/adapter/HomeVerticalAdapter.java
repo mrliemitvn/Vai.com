@@ -6,7 +6,6 @@ import org.vai.com.R;
 import org.vai.com.activity.CommentPageActivity;
 import org.vai.com.activity.ImageViewDetailActivity;
 import org.vai.com.activity.PlayYoutubeVideoActivity;
-import org.vai.com.activity.YouTubePlayerActivity;
 import org.vai.com.appinterface.IAdapterCallBack;
 import org.vai.com.provider.DbContract.Conference;
 import org.vai.com.resource.home.ConferenceResource;
@@ -19,7 +18,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -37,8 +35,8 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 	private static final String TAG = HomeVerticalAdapter.class.getSimpleName();
@@ -52,10 +50,11 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 	private int mContentWidth;
 	private int mMaskHeight;
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
-	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder().showStubImage(R.color.transparent)
-			.showImageForEmptyUri(R.color.image_loading).showImageOnFail(R.color.image_loading).cacheInMemory(true)
-			.cacheOnDisc(true).displayer(new FadeInBitmapDisplayer(300)).resetViewBeforeLoading(true)
-			.bitmapConfig(Bitmap.Config.RGB_565).build();
+	private DisplayImageOptions mSquareOptions = new DisplayImageOptions.Builder()
+			.showImageOnLoading(R.color.transparent).showImageForEmptyUri(R.color.image_loading)
+			.showImageOnFail(R.color.image_loading).cacheInMemory(true).cacheOnDisc(true)
+			.displayer(new FadeInBitmapDisplayer(300)).resetViewBeforeLoading(true).bitmapConfig(Bitmap.Config.RGB_565)
+			.build();
 
 	public HomeVerticalAdapter(Context context, ArrayList<ConferenceResource> listConference,
 			IAdapterCallBack adapterCallBack) {
@@ -208,12 +207,6 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 								viewHolder.imageLoadingListener);
 						return;
 					}
-					viewHolder.pbLoadingImage.setVisibility(View.GONE);
-				}
-
-				@Override
-				public void onDownloadComplete(String downloadedFile, String url) {
-					Logger.debug(TAG, "image url: " + url + " downloaded file path = " + downloadedFile);
 					viewHolder.pbLoadingImage.setVisibility(View.GONE);
 				}
 			};

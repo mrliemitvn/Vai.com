@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class DownloadImageUtils {
 
@@ -27,6 +27,7 @@ public class DownloadImageUtils {
 
 	public void downloadImage(String url, final String fileName) {
 		imageLoader.loadImage(url, new ImageLoadingListener() {
+
 			@Override
 			public void onLoadingStarted(String imageUri, View view) {
 			}
@@ -50,10 +51,6 @@ public class DownloadImageUtils {
 
 			@Override
 			public void onLoadingCancelled(String imageUri, View view) {
-			}
-
-			@Override
-			public void onDownloadComplete(String downloadedFile, String url) {
 			}
 		});
 	}
