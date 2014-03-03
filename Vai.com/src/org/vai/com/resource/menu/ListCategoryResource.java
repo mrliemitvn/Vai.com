@@ -36,8 +36,15 @@ public class ListCategoryResource implements Resource {
 		this.listMoreWebResources = listMoreWebResources;
 	}
 
+	/**
+	 * Handler json data received from server after call GET_CATEGORY api.
+	 * 
+	 * @param jsonObject
+	 *            json data received from server.
+	 */
 	public ListCategoryResource(JSONObject jsonObject) {
 		if (jsonObject != null) {
+			/* Save ads code to share preference. */
 			if (!jsonObject.isNull(Consts.JSON_ADS)) {
 				try {
 					SharePrefs.getInstance().saveAdsId(jsonObject.getString(Consts.JSON_ADS));
@@ -45,6 +52,7 @@ public class ListCategoryResource implements Resource {
 					e.printStackTrace();
 				}
 			}
+			/* Save facebook application id to share preference. */
 			if (jsonObject.isNull(Consts.JSON_FBAPPID)) {
 				try {
 					SharePrefs.getInstance().saveFacebookAppId(jsonObject.getString(Consts.JSON_FBAPPID));
@@ -52,6 +60,7 @@ public class ListCategoryResource implements Resource {
 					e.printStackTrace();
 				}
 			}
+			/* Get all category information. */
 			if (!jsonObject.isNull(Consts.JSON_CATEGORY)) {
 				try {
 					JSONArray jsonArray = jsonObject.getJSONArray(Consts.JSON_CATEGORY);
@@ -66,6 +75,7 @@ public class ListCategoryResource implements Resource {
 					e.printStackTrace();
 				}
 			}
+			/* Get all other websites information. */
 			if (!jsonObject.isNull(Consts.JSON_MOREWEB)) {
 				try {
 					JSONArray jsonArrayMoreWeb = jsonObject.getJSONArray(Consts.JSON_MOREWEB);

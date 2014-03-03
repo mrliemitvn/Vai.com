@@ -5,7 +5,6 @@ import org.vai.com.utils.NetworkUtils;
 import org.vai.com.utils.VaiUtils;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GAServiceManager;
@@ -19,11 +18,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
+/**
+ * The application class. <br>
+ * This class will initialize something are used in application like: image loader, GA, share preference.
+ */
 public class VaiApplication extends Application {
 
 	private static final int DISK_CACHE_SIZE = 200 * 1024 * 1024; // 200 MB
-
-	private static Context context = null;
 
 	private static GoogleAnalytics mGa;
 	private static Tracker mTracker;
@@ -72,7 +73,7 @@ public class VaiApplication extends Application {
 
 	private void InitImageLoaderConfiguration() {
 		int size[] = VaiUtils.getScreenSize(this);
-		// Neu do ngang lon hon do dai thi swap
+		// If width > height (of screen), swap them.
 		if (size[0] > size[1]) {
 			int temp = size[0];
 			size[0] = size[1];
@@ -101,29 +102,23 @@ public class VaiApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-		initializeGa(); // Init google anlytics.
+		initializeGa(); // Initialize google analytics.
 
-		context = getApplicationContext();
+		InitImageLoaderConfiguration(); // Configuration image loader.
 
-		InitImageLoaderConfiguration();
+		SharePrefs.getInstance().init(this); // Initialize share preference.
 
-		SharePrefs.getInstance().init(this);
-
-		NetworkUtils.enableHttpResponseCache(this);
+		NetworkUtils.enableHttpResponseCache(this); // Configuration networking.
 	}
 
-	public static Context getAppContext() {
-		return context;
-	}
-
-	/*
+	/**
 	 * Returns the Google Analytics tracker.
 	 */
 	public static Tracker getGaTracker() {
 		return mTracker;
 	}
 
-	/*
+	/**
 	 * Returns the Google Analytics instance.
 	 */
 	public static GoogleAnalytics getGaInstance() {

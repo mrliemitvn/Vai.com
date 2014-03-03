@@ -18,6 +18,13 @@ public class ListConferenceResource implements Resource {
 		this.listConference = listConference;
 	}
 
+	/**
+	 * Get conference data from json array data receiver from server.<br>
+	 * After that, save to list
+	 * 
+	 * @param jsonArray
+	 *            json array data received from server.
+	 */
 	public ListConferenceResource(JSONArray jsonArray) {
 		if (jsonArray != null) {
 			try {

@@ -13,17 +13,27 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 
+/**
+ * This class is used to parse emotion icon.
+ */
 public class EmotionsUtils {
-	public static String[] mEmoText = new String[] { ":poop:", "(n)", "(y)", "(finger)", ":))", ":)", ":((", ":(",
+	/* Emotion text array */
+	private static String[] mEmoText = new String[] { ":poop:", "(n)", "(y)", "(finger)", ":))", ":)", ":((", ":(",
 			";))", ";)", ":-\"", ":|", ":\">", ":*", ":-*", "=))", "B-)", ":d", ":D", ":-ss", ":-s", ":-S", ":-o",
 			":-O", ":-?", ":-W", ":-w", ">:P", ">:p", ":P", ":p", "=P~", "=p~", ":-B", "8-}", ":x", ":X", "x(", "X(",
 			":-<", ":-/", ":v", "<3", ":3", "3:)", "3:-)", ":'(", "B)", "B|", ":\\", ":/", ":o", ":O", ":0", "^_^",
 			"-_-", "@@", "$$", "o.O", "O.o", "o.0", "0.o", ">:(" };
 
+	/* This map will map emotion text with id of icon image. */
 	private HashMap<Pattern, Integer> emoticons = new HashMap<Pattern, Integer>();
+
+	/* Context to get emotion icon from drawable. */
 	private Context mContext;
+
+	/* Spannable to replace emotion in it. */
 	private SpannableStringBuilder mSpannable;
 
+	/* Map emotion text with icon. */
 	private void addPattern() {
 		addPattern(emoticons, mEmoText[0], R.drawable.poop);
 		addPattern(emoticons, mEmoText[1], R.drawable.thumbsdown);
@@ -90,12 +100,28 @@ public class EmotionsUtils {
 		addPattern(emoticons, mEmoText[62], R.drawable.grumpy);
 	}
 
+	/**
+	 * Map emotion text with icon into a map.
+	 * 
+	 * @param map
+	 *            map want to add.
+	 * @param smile
+	 *            emotion text.
+	 * @param resource
+	 *            id of emotion icon.
+	 */
 	private static void addPattern(Map<Pattern, Integer> map, String smile, int resource) {
 		map.put(Pattern.compile(Pattern.quote(smile)), resource);
 	}
 
+	/**
+	 * Replace emotion icon to spannable in emotion text.
+	 * 
+	 * @param spannable
+	 *            spannable want to replace emotion text by icon.
+	 * @return spannable's already replace emotion text by icon.
+	 */
 	private SpannableStringBuilder getSmiledText(SpannableStringBuilder spannable) {
-
 		// For set emotions.
 		for (Entry<Pattern, Integer> entry : emoticons.entrySet()) {
 			Matcher matcher = entry.getKey().matcher(spannable);
@@ -103,8 +129,8 @@ public class EmotionsUtils {
 				boolean set = true;
 				if (!set) continue;
 				for (ImageSpan span : spannable.getSpans(matcher.start(), matcher.end(), ImageSpan.class))
-					if (spannable.getSpanStart(span) >= matcher.start() && spannable.getSpanEnd(span) <= matcher.end())
-						spannable.removeSpan(span);
+					if (spannable.getSpanStart(span) >= matcher.start() && spannable.getSpanEnd(span) <= matcher.end()) spannable
+							.removeSpan(span);
 					else {
 						set = false;
 						break;
@@ -118,15 +144,30 @@ public class EmotionsUtils {
 		return spannable;
 	}
 
+	/**
+	 * Constructor create {@link EmotionsUtils} object.
+	 * 
+	 * @param context
+	 *            context to set.
+	 */
 	public EmotionsUtils(Context context) {
 		mContext = context;
 		addPattern();
 	}
 
+	/**
+	 * Set spannable want to parse emotion.
+	 * 
+	 * @param spannable
+	 *            spannable to set.
+	 */
 	public void setSpannableText(SpannableStringBuilder spannable) {
 		mSpannable = spannable;
 	}
 
+	/**
+	 * @return mSpannable
+	 */
 	public SpannableStringBuilder getSmileText() {
 		return getSmiledText(mSpannable);
 	}

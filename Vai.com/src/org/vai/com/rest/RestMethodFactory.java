@@ -49,11 +49,13 @@ public class RestMethodFactory {
 
 		AbstractRestMethod abstractRestMethod = null;
 		switch (uriMatcher.match(resourceUri)) {
+		/* Get category */
 		case UriConsts.RESOURCE_TYPE_GET_CATEGORY_API:
 			if (method == Method.GET) {
 				abstractRestMethod = new GetCategoryRestMethod(mContext);
 			}
 			break;
+		/* Get conference */
 		case UriConsts.RESOURCE_TYPE_GET_CONFERENCE_API:
 			if (method == Method.GET) {
 				abstractRestMethod = new GetConferenceRestMethod(mContext);

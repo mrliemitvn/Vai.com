@@ -2,11 +2,12 @@ package org.vai.com.utils;
 
 import android.net.Uri;
 
+/**
+ * This class declare all constant variables.
+ */
 public class Consts {
 
-	/*
-	 * For GA.
-	 */
+	/* For GA tracking. */
 	public static final String MENU_SELECTED = "MENU_SELECTED";
 
 	public static final String YOUTUBE_PACKAGE = "com.google.android.youtube";
@@ -24,7 +25,7 @@ public class Consts {
 	public static final String EXTRA_UPLOAD_PROGRESS = "org.vai.com.rest.EXTRA_UPLOAD_PROGRESS";
 	public static final String EXTRA_UPLOAD_DATA = "org.vai.com.rest.EXTRA_UPLOAD_DATA";
 
-	/* Json string */
+	/* Json string data */
 	public static final String JSON_ID = "id";
 	public static final String JSON_NAME = "name";
 	public static final String JSON_CATEGORY = "category";
@@ -53,7 +54,9 @@ public class Consts {
 	public static final String CATEGORY_PLACE_HOLDER = "{category}";
 	public static final String ID_PLACE_HOLDER = "{id}";
 
-	/* CONST URI */
+	/**
+	 * This class declare all constant uri will be used in rest client process.
+	 */
 	public static final class UriConsts {
 		public static final String AUTHORITY = "org.vai.com.uriauthority";
 
@@ -71,13 +74,15 @@ public class Consts {
 		public static final int RESOURCE_TYPE_GET_CONFERENCE_API = 2;
 	}
 
-	// class URL
+	/**
+	 * This class declare all constant url will be used in application.
+	 */
 	public class URLConstants {
 
-		/** Youtube thumbnail url */
-		public static final String YOUTUBE_VIDEO_THUMB_URL = "http://img.youtube.com/vi/{id}/0.jpg";
+		/* Youtube video watching */
 		public static final String YOUTUBE_VIDEO_WATCHING_URL = "http://www.youtube.com/watch?v=";
 
+		/* Server url and client key */
 		public static final String BASE_URL = "http://xn--vi-sia.com/";
 		public static final String CLIENT_KEY = "vnvmcnjhbjch-mmqadtyiocdefb";
 

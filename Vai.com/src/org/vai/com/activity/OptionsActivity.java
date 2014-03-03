@@ -30,17 +30,40 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+/**
+ * This class is used to setting in application.<br>
+ * <ul>
+ * <li>Login with facebook account.<br>
+ * <li>Clear image cache.<br>
+ * <li>Go to Google play store to vote application.<br>
+ * <li>Set option showing content in horizontal or vertical.
+ * </ul>
+ */
 public class OptionsActivity extends SherlockActivity implements IFacebookCallBack, OnClickListener {
 
+	/* Display AdView (Google admob). */
 	private AdView adView;
 
+	/* Share preference to save showing content option and facebook information. */
 	private SharePrefs mSharePrefs = SharePrefs.getInstance();
+
+	/* Showing content option CheckBox. */
 	private CheckBox mCbHorizontal;
 	private CheckBox mCbVertical;
+
+	/* Login facebook button. */
 	private Button mBtnLoginFacebook;
+
+	/* Display facebook user name. */
 	private TextView mTvFacebookName;
+
+	/* TextView rate application. */
 	private TextView mTvRateApp;
+
+	/* TextView clear cache. */
 	private TextView mTvClearCache;
+
+	/* Use this variable to login facebook. */
 	private FacebookUtils mFacebookUtils;
 
 	/**
@@ -96,6 +119,11 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 		mCbHorizontal.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				/*
+				 * Change checked state.
+				 * If horizontal checkbox is selected, vertical checkbox will be unselected.
+				 * And if horizontal checkbox is not selected, vertical checkbox will be selected.
+				 */
 				mCbVertical.setChecked(!isChecked);
 				if (isChecked) {
 					mSharePrefs.setShowingContentOption(SharePrefs.HORIZONTAL_SHOWING_CONTENT);
@@ -108,6 +136,11 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 		mCbVertical.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				/*
+				 * Change checked state.
+				 * If horizontal checkbox is selected, vertical checkbox will be unselected.
+				 * And if horizontal checkbox is not selected, vertical checkbox will be selected.
+				 */
 				mCbHorizontal.setChecked(!isChecked);
 				if (isChecked) {
 					mSharePrefs.setShowingContentOption(SharePrefs.VERTICAL_SHOWING_CONTENT);
@@ -122,6 +155,7 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 		// Update facebook data on view.
 		updateFacebookData();
 
+		/* Set click event. */
 		mBtnLoginFacebook.setOnClickListener(this);
 		mTvRateApp.setOnClickListener(this);
 		mTvClearCache.setOnClickListener(this);
@@ -137,6 +171,7 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_options);
 
+		/* Show back button on action bar and set its icon. */
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setIcon(R.drawable.icon_back);
 
@@ -145,7 +180,7 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 
 	@Override
 	public void onDestroy() {
-		if (adView != null) adView.destroy();
+		if (adView != null) adView.destroy(); // Destroy AdView.
 		super.onDestroy();
 	}
 
@@ -161,12 +196,13 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
+		EasyTracker.getInstance(this).activityStop(this); // Stop google analytics for this activity.
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		/* Result from login facebook. */
 		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 		if (Session.getActiveSession().isOpened() && mFacebookUtils != null) {
 			mFacebookUtils.getFacebookInfo(Session.getActiveSession());
@@ -175,7 +211,7 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		switch (item.getItemId()) { // Finish activity when click on back button.
 		case android.R.id.home:
 			finish();
 		}
@@ -184,11 +220,13 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 
 	@Override
 	public void onSuccess(Session session) {
+		/* Login facebook successfully, update data. */
 		updateFacebookData();
 	}
 
 	@Override
 	public void onFailed() {
+		/* Login failed, show error message. */
 		Toast toast = Toast.makeText(this, R.string.login_failed, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.show();
@@ -196,22 +234,28 @@ public class OptionsActivity extends SherlockActivity implements IFacebookCallBa
 
 	@Override
 	public void onClick(View v) {
-		if (v == mTvRateApp) {
+		if (v == mTvRateApp) { // Go to google play store to rate application.
 			String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-			try {
+			try { // Try open google play application.
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
 			} catch (android.content.ActivityNotFoundException anfe) {
+				// Cannot open google play application, open browser.
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="
 						+ appPackageName)));
 			}
 		} else if (v == mBtnLoginFacebook) {
+			/*
+			 * If has not logged in facebook, login.
+			 * Else logout.
+			 * After that, update data.
+			 */
 			if (TextUtils.isEmpty(mSharePrefs.getFacebookUserToken())) {
 				loginFacebook();
 			} else {
 				mSharePrefs.logoutFacebook();
 			}
 			updateFacebookData();
-		} else if (v == mTvClearCache) {
+		} else if (v == mTvClearCache) { // Clear image cache.
 			ImageLoader.getInstance().clearDiscCache();
 			ImageLoader.getInstance().clearMemoryCache();
 		}

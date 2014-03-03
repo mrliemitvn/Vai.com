@@ -22,23 +22,32 @@ import com.google.analytics.tracking.android.MapBuilder;
 /**
  * This class display all comment of content.
  * Include showing advertising.
- * 
- * @author liemnguyen
- * 
  */
 public class CommentPageActivity extends SherlockActivity {
 
+	/* Display AdView (Google admob). */
 	private AdView adView;
 
+	/* Display progress bar when WebView is loading. */
 	private ProgressBar mPrgLoading;
+
+	/* WebView display conference comment. */
 	private WebView mWebView;
 
+	/**
+	 * Initialize view.
+	 */
 	private void initialize() {
+		/* Get conference id is passed in intent. */
 		String id = "";
 		if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Consts.JSON_ID)) {
 			id = getIntent().getExtras().getString(Consts.JSON_ID);
 		}
+
+		/* Create comment link. */
 		String linkLoadComment = Consts.URLConstants.URL_LOAD_COMMENT.replace(Consts.ID_PLACE_HOLDER, id);
+
+		/* Initialize view. */
 		mPrgLoading = (ProgressBar) findViewById(R.id.prgLoading);
 		mWebView = (WebView) findViewById(R.id.webView);
 		mWebView.getSettings().setJavaScriptEnabled(true);
@@ -47,10 +56,13 @@ public class CommentPageActivity extends SherlockActivity {
 		mWebView.getSettings().setDomStorageEnabled(true);
 
 		mWebView.setWebChromeClient(new WebChromeClient() {
-
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {
 				super.onProgressChanged(view, newProgress);
+				/*
+				 * Show progress bar when webview is loading.
+				 * Hide it when complete.
+				 */
 				if (newProgress < 100 && mPrgLoading.getVisibility() == View.GONE) {
 					mPrgLoading.setVisibility(View.VISIBLE);
 				}
@@ -60,7 +72,7 @@ public class CommentPageActivity extends SherlockActivity {
 		});
 		// Set webview client, web page will not call browser to show.
 		mWebView.setWebViewClient(new WebViewClient());
-
+		/* Load comment link. */
 		mWebView.loadUrl(linkLoadComment);
 
 		// For admob.
@@ -74,10 +86,11 @@ public class CommentPageActivity extends SherlockActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_comment_page);
 
+		/* Enable back button on action bar and set back icon. */
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setIcon(R.drawable.icon_back);
 
-		initialize();
+		initialize(); // Initialize view.
 	}
 
 	@Override
@@ -92,18 +105,18 @@ public class CommentPageActivity extends SherlockActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
+		EasyTracker.getInstance(this).activityStop(this); // Stop google analytics for this activity.
 	}
 
 	@Override
 	public void onDestroy() {
-		if (adView != null) adView.destroy();
+		if (adView != null) adView.destroy(); // Destroy AdView.
 		super.onDestroy();
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		switch (item.getItemId()) { // Click back button, finish activity.
 		case android.R.id.home:
 			finish();
 		}

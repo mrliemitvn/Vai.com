@@ -27,18 +27,37 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+/**
+ * This class display full image detail.
+ */
 public class ImageViewDetailActivity extends SherlockActivity {
 
+	/* Display AdView (Google admob). */
 	private AdView adView;
 
+	/* Image url. */
 	private String urlImage = "";
+
+	/* Screen width to display image. */
 	private int mScreenWidth;
+
+	/* Flag to scale image fill screen width. */
 	private boolean isScale = false;
+
+	/* Flag to loaded image state. */
 	private boolean isLoaded = false;
+
+	/* ImageAttacher to zoom image. */
 	private ImageAttacher mAttacher;
+
+	/* ImageView to display image. */
 	private ImageView mImgSaveImage;
 	private ImageView mImgSaveImage1;
+
+	/* Show progress bar when loading image. */
 	private ProgressBar mPbLoadingImage;
+
+	/* ImageLoader and DisplayImageOptions to display image. */
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions imgSquareOptions = new DisplayImageOptions.Builder()
 			.showImageOnLoading(R.color.transparent).showImageForEmptyUri(R.color.image_loading)
@@ -50,8 +69,10 @@ public class ImageViewDetailActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_image_view_detail);
 
+		/* Get screen width. */
 		mScreenWidth = getResources().getDisplayMetrics().widthPixels;
 
+		/* Initialize view. */
 		mImgSaveImage = (ImageView) findViewById(R.id.imgSaveImage);
 		mImgSaveImage1 = (ImageView) findViewById(R.id.imgSaveImage1);
 		mPbLoadingImage = (ProgressBar) findViewById(R.id.pbLoadingImage);
@@ -59,34 +80,46 @@ public class ImageViewDetailActivity extends SherlockActivity {
 		// TODO: working with zoom image.
 		// usingSimpleImage(mImgSaveImage);
 
+		/* Get image url. */
 		urlImage = getIntent().getExtras().getString(Consts.IMAGE_URL);
+
+		/* Display image with listener. */
 		imageLoader.displayImage(urlImage, mImgSaveImage, imgSquareOptions, new ImageLoadingListener() {
 			@Override
 			public void onLoadingStarted(String imageUri, View view) {
+				/* Display progress bar. */
 				mPbLoadingImage.setVisibility(View.VISIBLE);
 			}
 
 			@Override
 			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-				isLoaded = true;
-				mPbLoadingImage.setVisibility(View.GONE);
+				isLoaded = true; // Set loaded flag.
+				mPbLoadingImage.setVisibility(View.GONE); // Hide progress bar.
 			}
 
 			@Override
 			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-				isLoaded = true;
-				mPbLoadingImage.setVisibility(View.GONE);
+				isLoaded = true; // Set loaded flag.
+				mPbLoadingImage.setVisibility(View.GONE); // Hide progress bar.
 
+				/* Calculate full image height when display on device. */
 				int imgHeight = mScreenWidth;
 				if (loadedImage.getWidth() > 0) {
 					imgHeight = mScreenWidth * loadedImage.getHeight() / loadedImage.getWidth();
 				}
 
+				/*
+				 * After complete loading image, split image in 2 pieces then display on 2 ImageView.
+				 * Because some device with some operating system do not display large image, so use this handler
+				 * when display it.
+				 */
+				/* Split image in 2 pieces. */
 				Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
 						loadedImage.getHeight() / 2);
 				Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
 						loadedImage.getWidth(), loadedImage.getHeight() / 2);
 
+				/* Set each image height and display each pieces. */
 				mImgSaveImage.getLayoutParams().height = imgHeight / 2;
 				mImgSaveImage.setImageBitmap(bitmap1);
 				mImgSaveImage1.getLayoutParams().height = imgHeight / 2;
@@ -95,11 +128,12 @@ public class ImageViewDetailActivity extends SherlockActivity {
 
 			@Override
 			public void onLoadingCancelled(String imageUri, View view) {
-				isLoaded = true;
-				mPbLoadingImage.setVisibility(View.GONE);
+				isLoaded = true; // Set loaded flag.
+				mPbLoadingImage.setVisibility(View.GONE); // Hide progress bar.
 			}
 		});
 
+		/* Finish this activity when click on image. */
 		mImgSaveImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -131,16 +165,22 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
+		EasyTracker.getInstance(this).activityStop(this); // Stop google analytics for this activity.
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (adView != null) adView.destroy();
+		if (adView != null) adView.destroy(); // Destroy AdView.
 		super.onDestroy();
 	}
 
-	public void usingSimpleImage(ImageView imageView) {
+	/**
+	 * Set zoomable on ImageView.
+	 * 
+	 * @param imageView
+	 *            image view to zoom.
+	 */
+	private void usingSimpleImage(ImageView imageView) {
 		mAttacher = new ImageAttacher(imageView);
 		ImageAttacher.MAX_ZOOM = 2.0f; // Double the current Size
 		ImageAttacher.MIN_ZOOM = 0.5f; // Half the current Size
@@ -156,12 +196,19 @@ public class ImageViewDetailActivity extends SherlockActivity {
 		}
 	}
 
+	/**
+	 * Listener when image scaling.
+	 */
 	private class MatrixChangeListener implements OnMatrixChangedListener {
-
 		@Override
 		public void onMatrixChanged(RectF rect) {
-			if (!isLoaded) return;
-			if (!isScale) {
+			/* Scale image fill screen. */
+			if (!isLoaded) return; // Has not loaded image yet, do nothing.
+			if (!isScale) { // Only scale image fill screen one time.
+				/*
+				 * If image not fill screen, scale it.
+				 * Else set scale flag and MAX_ZOOM value.
+				 */
 				if ((mScreenWidth - (int) rect.width()) > 10) {
 					float scale = mAttacher.getScale();
 					scale = (float) (scale + 0.3);

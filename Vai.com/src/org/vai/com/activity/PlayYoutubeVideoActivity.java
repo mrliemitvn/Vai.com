@@ -19,14 +19,26 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
 
+/**
+ * This class play youtube video.
+ */
 public class PlayYoutubeVideoActivity extends Activity {
 
+	/* Display AdView (Google admob). */
 	private AdView adView;
 
+	/* Display progress bar when WebView is loading. */
 	private ProgressBar mPrgLoading;
-	private WebView mWebView;
-	private String linkLoadComment;
 
+	/* WebView play youtube video. */
+	private WebView mWebView;
+
+	/* Youtube video url. */
+	private String linkYoutubeVideo;
+
+	/**
+	 * Initialize view.
+	 */
 	private void initialize() {
 		// For admob.
 		adView = (AdView) this.findViewById(R.id.adView);
@@ -40,10 +52,13 @@ public class PlayYoutubeVideoActivity extends Activity {
 		mWebView.getSettings().setDomStorageEnabled(true);
 
 		mWebView.setWebChromeClient(new WebChromeClient() {
-
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {
 				super.onProgressChanged(view, newProgress);
+				/*
+				 * Show progress bar when WebView is loading.
+				 * Hide it when complete.
+				 */
 				if (newProgress < 100 && mPrgLoading.getVisibility() == View.GONE) {
 					mPrgLoading.setVisibility(View.VISIBLE);
 				}
@@ -54,11 +69,12 @@ public class PlayYoutubeVideoActivity extends Activity {
 		// Set webview client, web page will not call browser to show.
 		mWebView.setWebViewClient(new WebViewClient());
 
+		/* Get youtube video id and set youtube video url. */
 		String id = "";
 		if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Consts.JSON_ID)) {
 			id = getIntent().getExtras().getString(Consts.JSON_ID);
 		}
-		linkLoadComment = "http://www.youtube.com/embed/" + id + "?autoplay=1&vq=small";
+		linkYoutubeVideo = "http://www.youtube.com/embed/" + id + "?autoplay=1&vq=small";
 
 	}
 
@@ -67,13 +83,13 @@ public class PlayYoutubeVideoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play_youtube_video);
 
-		initialize();
+		initialize(); // Initialize view.
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mWebView.loadUrl(linkLoadComment);
+		mWebView.loadUrl(linkYoutubeVideo); // Load youtube video.
 	}
 
 	@Override
@@ -84,22 +100,22 @@ public class PlayYoutubeVideoActivity extends Activity {
 		VaiApplication.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getName());
 		VaiApplication.getGaTracker().send(MapBuilder.createAppView().build());
 	}
-	
+
 	@Override
 	protected void onPause() {
-		mWebView.loadUrl("");
+		mWebView.loadUrl(""); // Load blank page when finish this activity.
 		super.onPause();
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
+		EasyTracker.getInstance(this).activityStop(this); // Stop google analytics for this activity.
 	}
 
 	@Override
 	public void onDestroy() {
-		if (adView != null) adView.destroy();
+		if (adView != null) adView.destroy(); // Destroy AdView.
 		super.onDestroy();
 	}
 }

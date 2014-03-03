@@ -15,12 +15,23 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+/**
+ * This class is a base of other fragment.<br>
+ * This class include some common methods, other fragment which extends it, can use or override.
+ */
 public class BaseFragment extends SherlockFragment {
 	private static final String TAG = BaseFragment.class.getSimpleName();
 
+	/* Layout and TextView show notice of network */
 	private RelativeLayout mRlMessageBar;
 	private TextView mTvMessageBar;
 
+	/**
+	 * Show message bar on a top screen.
+	 * 
+	 * @param requestCode
+	 *            request code received from rest client when call server api.
+	 */
 	public void showMessageBar(int requestCode) {
 		if (requestCode == HttpStatus.SC_BAD_REQUEST) { // Data send incorrectly.
 			showMessageBar(getResources().getString(R.string.msg_err_bad_request));
@@ -31,9 +42,16 @@ public class BaseFragment extends SherlockFragment {
 		}
 	}
 
+	/**
+	 * Show message bar on a top screen.
+	 * 
+	 * @param message
+	 *            message to show.
+	 */
 	public void showMessageBar(String message) {
 		if (getActivity() == null) return;
-		if (mRlMessageBar == null) {
+		if (mRlMessageBar == null) { // Not initialize message bar.
+			/* Initialize message bar with animation */
 			try {
 				FrameLayout vRoot = (FrameLayout) getActivity().findViewById(android.R.id.content);
 				LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -55,11 +73,12 @@ public class BaseFragment extends SherlockFragment {
 				ex.printStackTrace();
 				Logger.error(TAG, ex.getMessage());
 			}
-		} else if (mRlMessageBar.getVisibility() != View.VISIBLE) {
+		} else if (mRlMessageBar.getVisibility() != View.VISIBLE) { // Message bar is initialized but not showing.
+			// Define message and show it with animation.
 			mTvMessageBar.setText(message);
 			mRlMessageBar.setVisibility(View.VISIBLE);
 			mRlMessageBar.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.top_to_bottom_in));
-		} else if (!message.equals(mTvMessageBar.getText())) {
+		} else if (!message.equals(mTvMessageBar.getText())) { // Message bar is showing, just define message.
 			mTvMessageBar.setText(message);
 		}
 	}

@@ -1571,14 +1571,14 @@ containing a value of this type.
  Google api key release 
          */
         public static final int common_google_map_api_key=0x7f08002a;
-        public static final int empty=0x7f08003a;
+        public static final int empty=0x7f08003b;
         /**  Tracking ID Google analytics official 
          */
         public static final int ga_trackingId=0x7f080026;
-        public static final int loading_more=0x7f08003e;
-        public static final int login_failed=0x7f08003f;
-        public static final int menu_more=0x7f08003c;
-        public static final int menu_options=0x7f08003b;
+        public static final int loading_more=0x7f08003f;
+        public static final int login_failed=0x7f080040;
+        public static final int menu_more=0x7f08003d;
+        public static final int menu_options=0x7f08003c;
         public static final int msg_err_bad_request=0x7f08002d;
         public static final int msg_err_cannot_like_now=0x7f08002b;
         public static final int msg_err_conflict=0x7f080031;
@@ -1592,25 +1592,26 @@ containing a value of this type.
         public static final int msg_err_share_failed=0x7f080036;
         public static final int msg_err_something_wrong=0x7f080035;
         public static final int msg_info_download_complete=0x7f080039;
+        public static final int msg_info_loading=0x7f08003a;
         public static final int msg_info_no_data_result=0x7f080038;
         public static final int msg_info_share_successfully=0x7f080037;
-        public static final int options_clear_cache=0x7f080046;
-        public static final int options_connect_facebook=0x7f080041;
-        public static final int options_horizontal_style=0x7f080049;
-        public static final int options_login=0x7f080043;
-        public static final int options_login_facebook=0x7f080042;
-        public static final int options_logout=0x7f080044;
-        public static final int options_rate=0x7f080047;
-        public static final int options_title=0x7f080045;
+        public static final int options_clear_cache=0x7f080047;
+        public static final int options_connect_facebook=0x7f080042;
+        public static final int options_horizontal_style=0x7f08004a;
+        public static final int options_login=0x7f080044;
+        public static final int options_login_facebook=0x7f080043;
+        public static final int options_logout=0x7f080045;
+        public static final int options_rate=0x7f080048;
+        public static final int options_title=0x7f080046;
         /**  Options screen 
          */
-        public static final int options_vai_description=0x7f080040;
-        public static final int options_vertical_style=0x7f08004a;
-        public static final int options_view_style=0x7f080048;
-        public static final int refresh=0x7f08003d;
+        public static final int options_vai_description=0x7f080041;
+        public static final int options_vertical_style=0x7f08004b;
+        public static final int options_view_style=0x7f080049;
+        public static final int refresh=0x7f08003e;
         /**  Youtube player 
          */
-        public static final int youtube_error_player=0x7f08004b;
+        public static final int youtube_error_player=0x7f08004c;
     }
     public static final class style {
         /** 

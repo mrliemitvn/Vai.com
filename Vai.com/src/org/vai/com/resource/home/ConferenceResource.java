@@ -18,91 +18,161 @@ import android.text.TextUtils;
 
 public class ConferenceResource implements BaseResource, Resource {
 
+	/* Pattern string to get youtube video id. */
 	private static final String strPatternVideoId = "\\[youtube\\](.*?)\\[/youtube\\]";
+
+	/* Pattern string to get image url, image width and image height. */
 	private static final String strPatternImageInfo = "img=(.*?);width=(.*?);height=(.*?);";
 
+	/* Conference id. */
 	public String id;
+
+	/* Post id of conference. */
 	public String postId;
+
+	/* Category id of conference. */
 	public String categoryId;
+
+	/* Conference title. */
 	public String title;
+
+	/* Conference title in ASCII encode. */
 	public String titleAscii;
+
+	/* Conference alias. */
 	public String alias;
+
+	/* Conference intro. */
 	public String intro;
+
+	/* Conference content. */
 	public String content;
+
+	/* Conference video id (youtube video id). */
 	public String videoId;
+
+	/* Conference image (image url). */
 	public String image;
+
+	/* Conference status. */
 	public String status;
+
+	/* Conference author. */
 	public int author;
+
+	/* Image width. */
 	public int imgWidth;
+
+	/* Image height. */
 	public int imgHeight;
+
+	/* Conference like state. */
 	public int likeState;
+
+	/* Conference time created. */
 	public long timeCreated;
+
+	/* Conference time modified. */
 	public long timeModified;
+
+	/* View number of conference. */
 	public long viewed;
+
+	/* Like number of conference. */
 	public long like;
+
+	/* Comment number of conference. */
 	public long comment;
 
+	/**
+	 * Create {@link ConferenceResource} object from json data received from server.
+	 * 
+	 * @param json
+	 *            json data received from server.
+	 */
 	public ConferenceResource(JSONObject json) {
 		if (json != null) {
 			try {
+				/* Parse conference id data. */
 				if (!json.isNull(Consts.JSON_ID)) {
 					id = json.getString(Consts.JSON_ID);
 				}
+				/* Parse post id of conference data. */
 				if (!json.isNull(Consts.JSON_POST_ID)) {
 					postId = json.getString(Consts.JSON_POST_ID);
 				}
+				/* Parse category id of conference data. */
 				if (!json.isNull(Consts.JSON_CATEGORY_ID)) {
 					categoryId = json.getString(Consts.JSON_CATEGORY_ID);
 				}
+				/* Parse category title. */
 				if (!json.isNull(Consts.JSON_TITLE)) {
-					title = json.getString(Consts.JSON_TITLE).replace("\\", "");
+					title = json.getString(Consts.JSON_TITLE).replace("\\", ""); // Remove "\" character.
 				}
+				/* Parse category title in ASCII encode. */
 				if (!json.isNull(Consts.JSON_TITLE_ASCII)) {
-					titleAscii = json.getString(Consts.JSON_TITLE_ASCII).replace("\\", "");
+					titleAscii = json.getString(Consts.JSON_TITLE_ASCII).replace("\\", ""); // Remove "\" character.
 				}
+				/* Parse category alias. */
 				if (!json.isNull(Consts.JSON_ALIAS)) {
 					alias = json.getString(Consts.JSON_ALIAS);
 				}
+				/* Parse category intro. */
 				if (!json.isNull(Consts.JSON_INTRO)) {
 					intro = json.getString(Consts.JSON_INTRO);
 				}
+				/* Parse category content or youtube video id. */
 				if (!json.isNull(Consts.JSON_CONTENT)) {
+					/* Parse category content. */
 					String content = json.getString(Consts.JSON_CONTENT);
+					/* Use pattern to get youtube video id. */
 					Pattern pattern = Pattern.compile(strPatternVideoId, Pattern.CASE_INSENSITIVE);
 					Matcher matcher = pattern.matcher(content);
 					while (matcher.find()) {
 						videoId = matcher.group(1);
 					}
-					if (TextUtils.isEmpty(videoId)) this.content = content.replace("\\", "");
+					/* If not got youtube video id, save conference content. */
+					if (TextUtils.isEmpty(videoId)) this.content = content.replace("\\", ""); // Remove "\" character.
 				}
+				/* Parse image url, image width and image height. */
 				if (!json.isNull(Consts.JSON_OPTIONS)) {
 					String imgInfo = json.getString(Consts.JSON_OPTIONS) + ";";
 					Pattern pattern = Pattern.compile(strPatternImageInfo, Pattern.CASE_INSENSITIVE);
 					Matcher matcher = pattern.matcher(imgInfo);
 					while (matcher.find()) {
+						/* Parse image url. */
 						if (!TextUtils.isEmpty(matcher.group(1))) image = matcher.group(1);
+						/* Parse image width. */
 						if (!TextUtils.isEmpty(matcher.group(2))) imgWidth = Integer.parseInt(matcher.group(2));
+						/* Parse image height. */
 						if (!TextUtils.isEmpty(matcher.group(3))) imgHeight = Integer.parseInt(matcher.group(3));
 					}
 				}
+				/* Parse conference status. */
 				if (!json.isNull(Consts.JSON_STATUS)) {
 					status = json.getString(Consts.JSON_STATUS);
 				}
+				/* Parse conference author. */
 				if (!json.isNull(Consts.JSON_AUTHOR)) {
 					author = json.getInt(Consts.JSON_AUTHOR);
 				}
+				/* Parse conference time created. */
 				if (!json.isNull(Consts.JSON_TIME_CREATED)) {
 					timeCreated = json.getLong(Consts.JSON_TIME_CREATED);
 				}
+				/* Parse conference time modified. */
 				if (!json.isNull(Consts.JSON_TIME_MODIFIED)) {
 					timeModified = json.getLong(Consts.JSON_TIME_MODIFIED);
 				}
+				/* Parse view number of conference. */
 				if (!json.isNull(Consts.JSON_VIEWED)) {
 					viewed = json.getLong(Consts.JSON_VIEWED);
 				}
+				/* Parse like number of conference. */
 				if (!json.isNull(Consts.JSON_LIKE)) {
 					like = json.getLong(Consts.JSON_LIKE);
 				}
+				/* Parse comment number of conference. */
 				if (!json.isNull(Consts.JSON_COMMENT)) {
 					comment = json.getLong(Consts.JSON_COMMENT);
 				}
@@ -112,6 +182,12 @@ public class ConferenceResource implements BaseResource, Resource {
 		}
 	}
 
+	/**
+	 * Create {@link ConferenceResource} from database.
+	 * 
+	 * @param cursor
+	 *            cursor from database.
+	 */
 	public ConferenceResource(Cursor cursor) {
 		int idIndex = cursor.getColumnIndex(Conference._ID);
 		int postIdIndex = cursor.getColumnIndex(DbContract.getAlias(Tables.CONFERENCE, Conference.POST_ID));
@@ -154,6 +230,9 @@ public class ConferenceResource implements BaseResource, Resource {
 		if (likeStateIndex > -1) likeState = cursor.getInt(likeStateIndex);
 	}
 
+	/**
+	 * Prepare {@link ContentValues} to insert to database.
+	 */
 	@Override
 	public ContentValues prepareContentValues() {
 		ContentValues values = new ContentValues();

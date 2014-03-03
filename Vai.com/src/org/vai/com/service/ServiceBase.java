@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 
+/**
+ * Service is used to call api.
+ */
 public class ServiceBase extends IntentService {
 	private static final String TAG = ServiceBase.class.getName();
 	public static final String ORIGINAL_INTENT_EXTRA = "org.vai.com.service.ORIGINAL_INTENT_EXTRA";

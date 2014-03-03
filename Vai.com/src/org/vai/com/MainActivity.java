@@ -25,24 +25,34 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
 
+/**
+ * This class is a first activity of application.<br>
+ * It will call api to server to request category and some information of application.
+ */
 public class MainActivity extends SherlockActivity {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 
+	/* Layout and TextView show notice of network */
 	private RelativeLayout mRlMessageBar;
 	private TextView mTvMessageBar;
 
+	/* Id to call api <get category> to server */
 	private Long mRequestId;
 	private RestBroadcastReceiver mRequestReceiver = new RestBroadcastReceiver(TAG, new BroadcastReceiverCallback() {
 
+		/**
+		 * Call api successfully, go to {@link HomeActivity} and finish this activity.
+		 */
 		@Override
 		public void onSuccess() {
-			startActivity(new Intent(MainActivity.this, HomeActivity.class));
-			finish();
+			startActivity(new Intent(MainActivity.this, HomeActivity.class)); // Go to {@link HomeActivity}.
+			finish(); // Finish this activity.
 		}
 
 		@Override
-		public void onError(int requestCode, String message) {
+		public void onError(int requestCode, String message) { // Call api unsuccessfully.
+			// Show error message.
 			if (requestCode == HttpStatus.SC_BAD_REQUEST) { // Data send incorrectly.
 				showMessageBar(getResources().getString(R.string.msg_err_bad_request));
 			} else if (requestCode == RestMethodResult.ERROR_CODE_NETWORK_ISSUE) {
@@ -71,6 +81,8 @@ public class MainActivity extends SherlockActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		// Register receiver.
 		IntentFilter filter = new IntentFilter(ServiceHelper.ACTION_REQUEST_RESULT);
 		registerReceiver(mRequestReceiver, filter);
 
@@ -83,6 +95,7 @@ public class MainActivity extends SherlockActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		// Unregister receiver.
 		try {
 			unregisterReceiver(mRequestReceiver);
 		} catch (Exception e) {
@@ -93,7 +106,7 @@ public class MainActivity extends SherlockActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		// For google anlytics.
+		// For google analytics.
 		EasyTracker.getInstance(this).activityStart(this);
 		VaiApplication.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getName());
 		VaiApplication.getGaTracker().send(MapBuilder.createAppView().build());
@@ -102,11 +115,18 @@ public class MainActivity extends SherlockActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
+		EasyTracker.getInstance(this).activityStop(this); // Stop google analytics for this activity.
 	}
 
+	/**
+	 * Show message bar on a top screen.
+	 * 
+	 * @param message
+	 *            message to show.
+	 */
 	private void showMessageBar(String message) {
-		if (mRlMessageBar == null) {
+		if (mRlMessageBar == null) { // Not initialize message bar.
+			/* Initialize message bar with animation */
 			try {
 				FrameLayout vRoot = (FrameLayout) findViewById(android.R.id.content);
 				LayoutInflater inflater = LayoutInflater.from(this);
@@ -114,7 +134,6 @@ public class MainActivity extends SherlockActivity {
 				mTvMessageBar = (TextView) mRlMessageBar.findViewById(R.id.tvMessageBar);
 				mTvMessageBar.setText(message);
 				mTvMessageBar.setOnClickListener(new OnClickListener() {
-
 					@Override
 					public void onClick(View arg0) {
 						mRlMessageBar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,
@@ -128,11 +147,12 @@ public class MainActivity extends SherlockActivity {
 				ex.printStackTrace();
 				Logger.error(TAG, ex.getMessage());
 			}
-		} else if (mRlMessageBar.getVisibility() != View.VISIBLE) {
+		} else if (mRlMessageBar.getVisibility() != View.VISIBLE) { // Message bar is initialized but not showing.
+			// Define message and show it with animation.
 			mTvMessageBar.setText(message);
 			mRlMessageBar.setVisibility(View.VISIBLE);
 			mRlMessageBar.startAnimation(AnimationUtils.loadAnimation(this, R.anim.top_to_bottom_in));
-		} else if (!message.equals(mTvMessageBar.getText())) {
+		} else if (!message.equals(mTvMessageBar.getText())) { // Message bar is showing, just define message.
 			mTvMessageBar.setText(message);
 		}
 	}

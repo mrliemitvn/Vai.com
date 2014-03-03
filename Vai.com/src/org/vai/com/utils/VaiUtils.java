@@ -4,12 +4,16 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+/**
+ * This class declare utilities will be used in application.
+ */
 public class VaiUtils {
 
-	/*
+	/**
 	 * Get screen size
 	 * 
 	 * @param context
+	 *            to get screen size.
 	 * 
 	 * @return array size 2. index 0 is screen width, index 1 is screen height
 	 */

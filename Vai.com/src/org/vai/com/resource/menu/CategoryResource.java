@@ -13,9 +13,18 @@ import android.database.Cursor;
 public class CategoryResource implements BaseResource, Resource {
 	private static final String TAG = CategoryResource.class.getSimpleName();
 
+	/* Category id. */
 	public String id;
+
+	/* Category name. */
 	public String name;
 
+	/**
+	 * Create {@link CategoryResource} object from json data.
+	 * 
+	 * @param json
+	 *            json data received from server.
+	 */
 	public CategoryResource(JSONObject json) {
 		if (json != null) {
 			try {
@@ -32,6 +41,12 @@ public class CategoryResource implements BaseResource, Resource {
 		}
 	}
 
+	/**
+	 * Create {@link CategoryResource} from database.
+	 * 
+	 * @param cursor
+	 *            cursor from database.
+	 */
 	public CategoryResource(Cursor cursor) {
 		if (cursor != null) {
 			int idIndex = cursor.getColumnIndex(Category._ID);
@@ -42,6 +57,9 @@ public class CategoryResource implements BaseResource, Resource {
 		}
 	}
 
+	/**
+	 * Prepare {@link ContentValues} to insert to database.
+	 */
 	@Override
 	public ContentValues prepareContentValues() {
 		ContentValues values = new ContentValues();

@@ -27,11 +27,18 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
 
+/**
+ * This class display list other websites.
+ */
 public class MoreWebActivity extends SherlockFragmentActivity implements LoaderCallbacks<Cursor> {
 
+	/* Display AdView (Google admob). */
 	private AdView adView;
 
+	/* Loader to get more website data from database. */
 	private static final int LOADER_MORE_WEB = 1;
+
+	/* ListView and adapter display list websites. */
 	private ListView mListView;
 	private MoreWebAdapter mAdapter;
 
@@ -40,12 +47,14 @@ public class MoreWebActivity extends SherlockFragmentActivity implements LoaderC
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_more);
 
+		/* Show back button on action bar and set its icon. */
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setIcon(R.drawable.icon_back);
 
-		// Init cursor loader.
+		// Initialize cursor loader.
 		getSupportLoaderManager().initLoader(LOADER_MORE_WEB, null, this);
 
+		// Initialize view.
 		mListView = (ListView) findViewById(R.id.listView);
 		mAdapter = new MoreWebAdapter(this, null);
 		mListView.setAdapter(mAdapter);
@@ -56,6 +65,7 @@ public class MoreWebActivity extends SherlockFragmentActivity implements LoaderC
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 				Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 				if (cursor != null) {
+					/* Go to website by browser. */
 					MoreWebResource moreWebResource = new MoreWebResource(cursor);
 					String link = moreWebResource.link;
 					if (!TextUtils.isEmpty(link) && !link.startsWith("http://") && !link.startsWith("https://")) {
@@ -75,7 +85,7 @@ public class MoreWebActivity extends SherlockFragmentActivity implements LoaderC
 
 	@Override
 	public void onDestroy() {
-		if (adView != null) adView.destroy();
+		if (adView != null) adView.destroy(); // Destroy AdView.
 		super.onDestroy();
 	}
 
@@ -91,12 +101,12 @@ public class MoreWebActivity extends SherlockFragmentActivity implements LoaderC
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
+		EasyTracker.getInstance(this).activityStop(this); // Stop google analytics for this activity.
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		switch (item.getItemId()) { // Finish activity when click on back button.
 		case android.R.id.home:
 			finish();
 		}
@@ -107,7 +117,7 @@ public class MoreWebActivity extends SherlockFragmentActivity implements LoaderC
 	public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
 		switch (id) {
 		case LOADER_MORE_WEB:
-			return new CursorLoader(this, MoreWeb.CONTENT_URI, null, null, null, null);
+			return new CursorLoader(this, MoreWeb.CONTENT_URI, null, null, null, null); // Load more website data.
 		default:
 			return null;
 		}
@@ -118,7 +128,7 @@ public class MoreWebActivity extends SherlockFragmentActivity implements LoaderC
 		int id = loader.getId();
 		switch (id) {
 		case LOADER_MORE_WEB:
-			mAdapter.swapCursor(cursor);
+			mAdapter.swapCursor(cursor); // Update adapter data.
 			break;
 
 		default:
@@ -128,6 +138,6 @@ public class MoreWebActivity extends SherlockFragmentActivity implements LoaderC
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		mAdapter.swapCursor(null);
+		mAdapter.swapCursor(null); // Reset data.
 	}
 }

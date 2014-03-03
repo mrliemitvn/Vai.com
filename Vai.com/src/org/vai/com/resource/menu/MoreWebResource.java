@@ -8,9 +8,18 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 public class MoreWebResource implements BaseResource {
+	/* Website name. */
 	public String name;
+
+	/* Website link. */
 	public String link;
 
+	/**
+	 * Create {@link MoreWebResource} object from json array data received from server.
+	 * 
+	 * @param jsonArray
+	 *            json array data received from server.
+	 */
 	public MoreWebResource(JSONArray jsonArray) {
 		if (jsonArray != null) {
 			try {
@@ -24,6 +33,12 @@ public class MoreWebResource implements BaseResource {
 		}
 	}
 
+	/**
+	 * Create {@link MoreWebResource} object from database.
+	 * 
+	 * @param cursor
+	 *            cursor from database.
+	 */
 	public MoreWebResource(Cursor cursor) {
 		if (cursor != null) {
 			int nameIndex = cursor.getColumnIndex(MoreWeb.NAME);
@@ -33,6 +48,9 @@ public class MoreWebResource implements BaseResource {
 		}
 	}
 
+	/**
+	 * Prepare {@link ContentValues} to insert to database.
+	 */
 	@Override
 	public ContentValues prepareContentValues() {
 		ContentValues values = new ContentValues();
