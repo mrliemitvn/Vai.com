@@ -53,8 +53,8 @@
         </activity>
         <activity
             android:name="org.vai.com.activity.PlayYoutubeVideoActivity"
-            android:theme="@style/Theme.Sherlock.Light.NoActionBar"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
         </activity>
         <activity
             android:name="org.vai.com.activity.CommentPageActivity"
@@ -67,12 +67,6 @@
         <activity
             android:name="org.vai.com.activity.MoreWebActivity"
             android:label="@string/menu_more" >
-        </activity>
-        <activity
-            android:name="org.vai.com.activity.YouTubePlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="sensor"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
 
         <!-- PROVIDER -->
