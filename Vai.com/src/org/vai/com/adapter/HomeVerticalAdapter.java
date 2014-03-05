@@ -244,6 +244,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 			viewHolder.imgContent2 = (ImageView) convertView.findViewById(R.id.imgContent2);
 			viewHolder.imgContent3 = (ImageView) convertView.findViewById(R.id.imgContent3);
 			viewHolder.imgPlayYoutube = (ImageView) convertView.findViewById(R.id.imgPlayYoutube);
+			viewHolder.imgPlayGif = (ImageView) convertView.findViewById(R.id.imgPlayGif);
 			viewHolder.imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
 			viewHolder.imgShare = (ImageView) convertView.findViewById(R.id.imgShare);
 
@@ -378,6 +379,18 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 				viewHolder.tvContent.setVisibility(View.VISIBLE);
 			}
 		}
+
+		/*
+		 * If image is a gif image, show play gif button.
+		 * else, hide it.
+		 */
+		if (!TextUtils.isEmpty(conferenceResource.image)
+				&& conferenceResource.image.endsWith(Consts.IMAGE_FILE_GIF_TYPE)) {
+			viewHolder.imgPlayGif.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.imgPlayGif.setVisibility(View.GONE);
+		}
+
 		/* If user liked conference, turn on like state, else turn it off. */
 		if (Consts.STATE_ON == conferenceResource.likeState) {
 			viewHolder.tvLike.setSelected(true);
@@ -425,6 +438,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 		ImageView imgContent2;
 		ImageView imgContent3;
 		ImageView imgPlayYoutube;
+		ImageView imgPlayGif;
 		ImageView imgDownload;
 		ImageView imgShare;
 	}

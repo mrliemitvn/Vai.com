@@ -14,6 +14,7 @@ public class Consts {
 	public static final String APP_FOLDER = "Vai.com";
 	public static final String IMAGE_FILE_NAME = "vai_com_";
 	public static final String IMAGE_FILE_JPG_TYPE = ".jpg";
+	public static final String IMAGE_FILE_GIF_TYPE = ".gif";
 	public static final String IMAGE_URL = "image_url";
 	public static final String SHARE_CONFERENCE = "share_conference";
 	public static final int STATE_ON = 1;

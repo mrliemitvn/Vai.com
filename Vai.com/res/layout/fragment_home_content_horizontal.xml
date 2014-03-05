@@ -136,6 +136,15 @@
                     android:scaleType="centerCrop" />
 
                 <ImageView
+                    android:id="@+id/imgPlayGif"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/img_btn_play_gif"
+                    android:visibility="gone" />
+
+                <ImageView
                     android:id="@+id/imgPlayYoutube"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

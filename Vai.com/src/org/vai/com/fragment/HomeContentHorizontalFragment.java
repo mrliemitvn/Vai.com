@@ -51,6 +51,9 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 	/* ImageView display play button if conference include youtube video. */
 	private ImageView mImgPlayYoutube;
 
+	/* ImageView display play gif button if conference image is gif image. */
+	private ImageView mImgPlayGif;
+
 	/* For download image. */
 	private ImageView mImgDownload;
 
@@ -111,6 +114,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 		mImgContent2 = (ImageView) mParentView.findViewById(R.id.imgContent2);
 		mImgContent3 = (ImageView) mParentView.findViewById(R.id.imgContent3);
 		mImgPlayYoutube = (ImageView) mParentView.findViewById(R.id.imgPlayYoutube);
+		mImgPlayGif = (ImageView) mParentView.findViewById(R.id.imgPlayGif);
 		mImgDownload = (ImageView) mParentView.findViewById(R.id.imgDownload);
 		mImgShare = (ImageView) mParentView.findViewById(R.id.imgShare);
 		mTvTitle = (TextView) mParentView.findViewById(R.id.tvTitle);
@@ -177,6 +181,17 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 						mImgPlayYoutube.setVisibility(View.VISIBLE);
 					} else {
 						mImgPlayYoutube.setVisibility(View.GONE);
+					}
+
+					/*
+					 * If image is a gif image, show play gif button.
+					 * else, hide it.
+					 */
+					if (!TextUtils.isEmpty(mConferenceResource.image)
+							&& mConferenceResource.image.endsWith(Consts.IMAGE_FILE_GIF_TYPE)) {
+						mImgPlayGif.setVisibility(View.VISIBLE);
+					} else {
+						mImgPlayGif.setVisibility(View.GONE);
 					}
 				}
 

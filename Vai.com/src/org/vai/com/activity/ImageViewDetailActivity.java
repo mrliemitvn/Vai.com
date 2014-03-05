@@ -7,6 +7,7 @@ import org.vai.com.utils.Consts;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -21,6 +22,8 @@ import com.google.analytics.tracking.android.MapBuilder;
 import com.imagezoom.ImageAttacher;
 import com.imagezoom.ImageAttacher.OnMatrixChangedListener;
 import com.imagezoom.ImageAttacher.OnPhotoTapListener;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -83,55 +86,66 @@ public class ImageViewDetailActivity extends SherlockActivity {
 		/* Get image url. */
 		urlImage = getIntent().getExtras().getString(Consts.IMAGE_URL);
 
-		/* Display image with listener. */
-		imageLoader.displayImage(urlImage, mImgSaveImage, imgSquareOptions, new ImageLoadingListener() {
-			@Override
-			public void onLoadingStarted(String imageUri, View view) {
-				/* Display progress bar. */
-				mPbLoadingImage.setVisibility(View.VISIBLE);
-			}
-
-			@Override
-			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-				isLoaded = true; // Set loaded flag.
-				mPbLoadingImage.setVisibility(View.GONE); // Hide progress bar.
-			}
-
-			@Override
-			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-				isLoaded = true; // Set loaded flag.
-				mPbLoadingImage.setVisibility(View.GONE); // Hide progress bar.
-
-				/* Calculate full image height when display on device. */
-				int imgHeight = mScreenWidth;
-				if (loadedImage.getWidth() > 0) {
-					imgHeight = mScreenWidth * loadedImage.getHeight() / loadedImage.getWidth();
+		/* If image is gif image, show and play it. */
+		if (!TextUtils.isEmpty(urlImage) && urlImage.endsWith(Consts.IMAGE_FILE_GIF_TYPE)) {
+			mPbLoadingImage.setVisibility(View.VISIBLE);
+			Ion.with(mImgSaveImage).load(urlImage).setCallback(new FutureCallback<ImageView>() {
+				@Override
+				public void onCompleted(Exception arg0, ImageView arg1) {
+					mPbLoadingImage.setVisibility(View.GONE);
+				}
+			});
+		} else {
+			/* Display image with listener. */
+			imageLoader.displayImage(urlImage, mImgSaveImage, imgSquareOptions, new ImageLoadingListener() {
+				@Override
+				public void onLoadingStarted(String imageUri, View view) {
+					/* Display progress bar. */
+					mPbLoadingImage.setVisibility(View.VISIBLE);
 				}
 
-				/*
-				 * After complete loading image, split image in 2 pieces then display on 2 ImageView.
-				 * Because some device with some operating system do not display large image, so use this handler
-				 * when display it.
-				 */
-				/* Split image in 2 pieces. */
-				Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
-						loadedImage.getHeight() / 2);
-				Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
-						loadedImage.getWidth(), loadedImage.getHeight() / 2);
+				@Override
+				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+					isLoaded = true; // Set loaded flag.
+					mPbLoadingImage.setVisibility(View.GONE); // Hide progress bar.
+				}
 
-				/* Set each image height and display each pieces. */
-				mImgSaveImage.getLayoutParams().height = imgHeight / 2;
-				mImgSaveImage.setImageBitmap(bitmap1);
-				mImgSaveImage1.getLayoutParams().height = imgHeight / 2;
-				mImgSaveImage1.setImageBitmap(bitmap2);
-			}
+				@Override
+				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+					isLoaded = true; // Set loaded flag.
+					mPbLoadingImage.setVisibility(View.GONE); // Hide progress bar.
 
-			@Override
-			public void onLoadingCancelled(String imageUri, View view) {
-				isLoaded = true; // Set loaded flag.
-				mPbLoadingImage.setVisibility(View.GONE); // Hide progress bar.
-			}
-		});
+					/* Calculate full image height when display on device. */
+					int imgHeight = mScreenWidth;
+					if (loadedImage.getWidth() > 0) {
+						imgHeight = mScreenWidth * loadedImage.getHeight() / loadedImage.getWidth();
+					}
+
+					/*
+					 * After complete loading image, split image in 2 pieces then display on 2 ImageView.
+					 * Because some device with some operating system do not display large image, so use this handler
+					 * when display it.
+					 */
+					/* Split image in 2 pieces. */
+					Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
+							loadedImage.getHeight() / 2);
+					Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
+							loadedImage.getWidth(), loadedImage.getHeight() / 2);
+
+					/* Set each image height and display each pieces. */
+					mImgSaveImage.getLayoutParams().height = imgHeight / 2;
+					mImgSaveImage.setImageBitmap(bitmap1);
+					mImgSaveImage1.getLayoutParams().height = imgHeight / 2;
+					mImgSaveImage1.setImageBitmap(bitmap2);
+				}
+
+				@Override
+				public void onLoadingCancelled(String imageUri, View view) {
+					isLoaded = true; // Set loaded flag.
+					mPbLoadingImage.setVisibility(View.GONE); // Hide progress bar.
+				}
+			});
+		}
 
 		/* Finish this activity when click on image. */
 		mImgSaveImage.setOnClickListener(new OnClickListener() {
