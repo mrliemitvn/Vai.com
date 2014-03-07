@@ -7,11 +7,16 @@ import org.vai.com.broadcastreceiver.RestBroadcastReceiver;
 import org.vai.com.rest.RestMethodResult;
 import org.vai.com.service.Actions;
 import org.vai.com.service.ServiceHelper;
+import org.vai.com.utils.Consts;
 import org.vai.com.utils.Logger;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +29,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
+import com.google.android.gcm.GCMRegistrar;
 
 /**
  * This class is a first activity of application.<br>
@@ -36,6 +42,15 @@ public class MainActivity extends SherlockActivity {
 	/* Layout and TextView show notice of network */
 	private RelativeLayout mRlMessageBar;
 	private TextView mTvMessageBar;
+
+	/* For GCM, push notification. */
+	private AsyncTask<Void, Void, Void> mRegisterTask = null;
+	private BroadcastReceiver mBackgroundServiceNotification = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			postNotificationRegisterIdToServer(intent.getStringExtra(Consts.GCM_INTENT_REGISTER_ID));
+		}
+	};
 
 	/* Id to call api <get category> to server */
 	private Long mRequestId;
@@ -72,10 +87,40 @@ public class MainActivity extends SherlockActivity {
 		}
 	});
 
+	/* For post device GCM token to server. */
+	private Long requestIdPushNotification;
+	private RestBroadcastReceiver mPostGCMRegisterID = new RestBroadcastReceiver(TAG, new BroadcastReceiverCallback() {
+		@Override
+		public void onSuccess() {
+			Logger.debug(TAG, "onSuccess post GCM Register Id");
+		}
+
+		@Override
+		public void onError(int requestCode, String message) {
+			Logger.debug(TAG, "onError  post GCM Register Id. Request code " + requestCode + " . Message:" + message);
+		}
+
+		@Override
+		public void onDifferenceId() {
+			Logger.debug(TAG, "onDifferenceId post GCM Register Id");
+		}
+
+		@Override
+		public void onComplete() {
+			requestIdPushNotification = null;
+		}
+	});
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		// GCM, push notification.
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		registerReceiver(mBackgroundServiceNotification, new IntentFilter(Consts.GCM_BROADCAST_RECEIVER));
+		registerPushNotification();
 	}
 
 	@Override
@@ -85,11 +130,10 @@ public class MainActivity extends SherlockActivity {
 		// Register receiver.
 		IntentFilter filter = new IntentFilter(ServiceHelper.ACTION_REQUEST_RESULT);
 		registerReceiver(mRequestReceiver, filter);
+		registerReceiver(mPostGCMRegisterID, filter);
 
 		// Call api get category.
-		ServiceHelper serviceHelper = ServiceHelper.getInstance(this);
-		mRequestId = serviceHelper.sendRequest(Actions.GET_CATEGORY_ACTION, new Bundle());
-		mRequestReceiver.setRequestId(mRequestId);
+		getCategory();
 	}
 
 	@Override
@@ -98,6 +142,7 @@ public class MainActivity extends SherlockActivity {
 		// Unregister receiver.
 		try {
 			unregisterReceiver(mRequestReceiver);
+			unregisterReceiver(mPostGCMRegisterID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -116,6 +161,82 @@ public class MainActivity extends SherlockActivity {
 	protected void onStop() {
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this); // Stop google analytics for this activity.
+	}
+
+	@Override
+	protected void onDestroy() {
+		/* Cancel all task. */
+		if (mRegisterTask != null) {
+			mRegisterTask.cancel(true);
+		}
+
+		try {
+			unregisterReceiver(mBackgroundServiceNotification); // Unregister receiver.
+			GCMRegistrar.onDestroy(getApplicationContext());
+		} catch (Exception e) {
+			Logger.error(TAG, "onDestroy(). Exception:" + e.getMessage());
+			e.printStackTrace();
+		}
+		super.onDestroy();
+	}
+
+	/**
+	 * Register push notification.
+	 */
+	private void registerPushNotification() {
+		final String regId = GCMRegistrar.getRegistrationId(getApplicationContext());
+		Logger.debug(TAG, "GCM REGISTER ID:" + regId);
+		if (TextUtils.isEmpty(regId)) {
+			GCMRegistrar.register(getApplicationContext(), Consts.PUSH_NOTIFICATION_SENDER_ID);
+		} else {
+			if (GCMRegistrar.isRegisteredOnServer(getApplicationContext())) {
+				Logger.debug(TAG, "Device has already registered on server");
+				postNotificationRegisterIdToServer(regId);
+			} else {
+				Logger.debug(TAG, "Not registered on server");
+				mRegisterTask = new AsyncTask<Void, Void, Void>() {
+					@Override
+					protected Void doInBackground(Void... params) {
+						boolean registered = GCMIntentService.register(getApplicationContext(), regId);
+						if (!registered) {
+							GCMRegistrar.unregister(getApplicationContext());
+						}
+						return null;
+					}
+
+					@Override
+					protected void onPostExecute(Void result) {
+						mRegisterTask = null;
+					}
+				};
+				mRegisterTask.execute();
+			}
+		}
+	}
+
+	/**
+	 * Post notification register id to server.
+	 * 
+	 * @param reqId
+	 */
+	private void postNotificationRegisterIdToServer(String reqId) {
+		if (TextUtils.isEmpty(reqId)) return;
+		Bundle bundle = new Bundle();
+		bundle.putString(Consts.JSON_DEVICE, reqId);
+		bundle.putString(Consts.JSON_NAME, android.os.Build.MODEL);
+		bundle.putString(Consts.JSON_OS, android.os.Build.VERSION.RELEASE);
+
+		requestIdPushNotification = ServiceHelper.getInstance(this).sendRequest(Actions.POST_GCM_TOKEN, bundle);
+		mPostGCMRegisterID.setRequestId(requestIdPushNotification);
+	}
+
+	/**
+	 * Get list categories from server.
+	 */
+	private void getCategory() {
+		ServiceHelper serviceHelper = ServiceHelper.getInstance(this);
+		mRequestId = serviceHelper.sendRequest(Actions.GET_CATEGORY_ACTION, new Bundle());
+		mRequestReceiver.setRequestId(mRequestId);
 	}
 
 	/**
@@ -139,6 +260,8 @@ public class MainActivity extends SherlockActivity {
 						mRlMessageBar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,
 								R.anim.bottom_to_top_out));
 						mRlMessageBar.setVisibility(View.GONE);
+						// Get list categories again.
+						getCategory();
 					}
 				});
 				vRoot.addView(mRlMessageBar);

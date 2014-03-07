@@ -2,6 +2,7 @@ package org.vai.com.rest;
 
 import org.vai.com.rest.home.GetCategoryRestMethod;
 import org.vai.com.rest.home.GetConferenceRestMethod;
+import org.vai.com.rest.home.PostGCMTokenRestMethod;
 import org.vai.com.utils.Consts.UriConsts;
 
 import android.content.Context;
@@ -27,6 +28,9 @@ public class RestMethodFactory {
 		/* Get conference */
 		uriMatcher.addURI(UriConsts.AUTHORITY, UriConsts.PATH_GET_CONFERENCE_API,
 				UriConsts.RESOURCE_TYPE_GET_CONFERENCE_API);
+		/* Post GCM token */
+		uriMatcher.addURI(UriConsts.AUTHORITY, UriConsts.PATH_POST_GCM_TOKEN_API,
+				UriConsts.RESOURCE_TYPE_POST_GCM_TOKEN__API);
 	}
 
 	public static RestMethodFactory getInstance(Context context) {
@@ -59,6 +63,12 @@ public class RestMethodFactory {
 		case UriConsts.RESOURCE_TYPE_GET_CONFERENCE_API:
 			if (method == Method.GET) {
 				abstractRestMethod = new GetConferenceRestMethod(mContext);
+			}
+			break;
+		/* Post GCM token */
+		case UriConsts.RESOURCE_TYPE_POST_GCM_TOKEN__API:
+			if (method == Method.POST) {
+				abstractRestMethod = new PostGCMTokenRestMethod(mContext);
 			}
 			break;
 		default:
