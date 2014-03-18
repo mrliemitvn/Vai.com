@@ -41,6 +41,22 @@
                     android:contentDescription="@string/empty"
                     android:scaleType="centerCrop" />
 
+                <ImageView
+                    android:id="@+id/imgSaveImage2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imgSaveImage1"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/imgSaveImage3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imgSaveImage2"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="centerCrop" />
+
                 <ProgressBar
                     android:id="@+id/pbLoadingImage"
                     android:layout_width="wrap_content"

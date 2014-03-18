@@ -33,7 +33,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 /**
  * This class display full image detail.
  */
-public class ImageViewDetailActivity extends SherlockActivity {
+public class ImageViewDetailActivity extends SherlockActivity implements OnClickListener {
 
 	/* Display AdView (Google admob). */
 	private AdView adView;
@@ -56,6 +56,8 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	/* ImageView to display image. */
 	private ImageView mImgSaveImage;
 	private ImageView mImgSaveImage1;
+	private ImageView mImgSaveImage2;
+	private ImageView mImgSaveImage3;
 
 	/* Show progress bar when loading image. */
 	private ProgressBar mPbLoadingImage;
@@ -78,6 +80,8 @@ public class ImageViewDetailActivity extends SherlockActivity {
 		/* Initialize view. */
 		mImgSaveImage = (ImageView) findViewById(R.id.imgSaveImage);
 		mImgSaveImage1 = (ImageView) findViewById(R.id.imgSaveImage1);
+		mImgSaveImage2 = (ImageView) findViewById(R.id.imgSaveImage2);
+		mImgSaveImage3 = (ImageView) findViewById(R.id.imgSaveImage3);
 		mPbLoadingImage = (ProgressBar) findViewById(R.id.pbLoadingImage);
 
 		// TODO: working with zoom image.
@@ -122,21 +126,29 @@ public class ImageViewDetailActivity extends SherlockActivity {
 					}
 
 					/*
-					 * After complete loading image, split image in 2 pieces then display on 2 ImageView.
+					 * After complete loading image, split image in 4 pieces then display on 4 ImageView.
 					 * Because some device with some operating system do not display large image, so use this handler
 					 * when display it.
 					 */
-					/* Split image in 2 pieces. */
+					/* Split image in 4 pieces. */
 					Bitmap bitmap1 = Bitmap.createBitmap(loadedImage, 0, 0, loadedImage.getWidth(),
-							loadedImage.getHeight() / 2);
-					Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
-							loadedImage.getWidth(), loadedImage.getHeight() / 2);
+							loadedImage.getHeight() / 4);
+					Bitmap bitmap2 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 4,
+							loadedImage.getWidth(), loadedImage.getHeight() / 4);
+					Bitmap bitmap3 = Bitmap.createBitmap(loadedImage, 0, loadedImage.getHeight() / 2,
+							loadedImage.getWidth(), loadedImage.getHeight() / 4);
+					Bitmap bitmap4 = Bitmap.createBitmap(loadedImage, 0, 3 * loadedImage.getHeight() / 4,
+							loadedImage.getWidth(), loadedImage.getHeight() / 4);
 
 					/* Set each image height and display each pieces. */
-					mImgSaveImage.getLayoutParams().height = imgHeight / 2;
+					mImgSaveImage.getLayoutParams().height = imgHeight / 4;
 					mImgSaveImage.setImageBitmap(bitmap1);
-					mImgSaveImage1.getLayoutParams().height = imgHeight / 2;
+					mImgSaveImage1.getLayoutParams().height = imgHeight / 4;
 					mImgSaveImage1.setImageBitmap(bitmap2);
+					mImgSaveImage2.getLayoutParams().height = imgHeight / 4;
+					mImgSaveImage2.setImageBitmap(bitmap3);
+					mImgSaveImage3.getLayoutParams().height = imgHeight / 4;
+					mImgSaveImage3.setImageBitmap(bitmap4);
 				}
 
 				@Override
@@ -148,18 +160,10 @@ public class ImageViewDetailActivity extends SherlockActivity {
 		}
 
 		/* Finish this activity when click on image. */
-		mImgSaveImage.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
-		mImgSaveImage1.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
+		mImgSaveImage.setOnClickListener(this);
+		mImgSaveImage1.setOnClickListener(this);
+		mImgSaveImage2.setOnClickListener(this);
+		mImgSaveImage3.setOnClickListener(this);
 
 		// For admob.
 		adView = (AdView) this.findViewById(R.id.adView);
@@ -186,6 +190,14 @@ public class ImageViewDetailActivity extends SherlockActivity {
 	protected void onDestroy() {
 		if (adView != null) adView.destroy(); // Destroy AdView.
 		super.onDestroy();
+	}
+
+	@Override
+	public void onClick(View v) {
+		/* Finish this activity when click on image. */
+		if (v == mImgSaveImage || v == mImgSaveImage1 || v == mImgSaveImage2 || v == mImgSaveImage3) {
+			finish();
+		}
 	}
 
 	/**
