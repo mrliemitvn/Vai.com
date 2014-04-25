@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Vãi.com</string>
+    <!-- Facebook app id -->
+    <string name="app_id">578437172192441</string>
+    <string name="admob_id">a152bef79f598c2</string>
+    <!-- Google api key debug -->
+    <!-- <string name="common_google_map_api_key">AIzaSyBdh4XPUavbP-kTT7i02tBBv9vai7x9_oY</string> -->
+
+
+    <!-- Google api key release -->
+    <string name="common_google_map_api_key">AIzaSyAshwfRl4tYwcoRKm4fRRb1LzAvOsoFDO4</string>
+    <string name="msg_err_cannot_like_now">Hiện tại không thể Like nội dung!</string>
+    <string name="msg_err_move_temporarily">Đã gửi</string>
+    <string name="msg_err_bad_request">Dữ liệu gửi không đúng, xin vui lòng thử lại.</string>
+    <string name="msg_err_invalid_token">Có thể người khác đang dùng tài khoản này</string>
+    <string name="msg_err_forbidden">Nghiêm cấm! Bạn không có quyền truy cập vào các nguồn tài nguyên.</string>
+    <string name="msg_err_not_found">Không tìm thấy</string>
+    <string name="msg_err_conflict">Xung đột</string>
+    <string name="msg_err_server_error">Có lỗi từ máy chủ</string>
+    <string name="msg_err_connecting_error">Không có kết nối mạng, xin hãy kiểm tra và thử lại sau.</string>
+    <string name="msg_err_data_error">Dữ liệu phản hồi không như mong đợi</string>
+    <string name="msg_err_something_wrong">Xảy ra lỗi. Xin vui lòng thử lại!</string>
+    <string name="msg_err_share_failed">Không thể chia sẻ lên facebook</string>
+    <string name="msg_info_share_successfully">Chia sẻ lên facebook thành công</string>
+    <string name="msg_info_no_data_result">Không có dữ liệu</string>
+    <string name="msg_info_download_complete">Tải xuống hoàn tất.</string>
+    <string name="msg_info_loading">Đang tải</string>
+    <string name="empty"></string>
+    <string name="menu_options">Tùy chọn</string>
+    <string name="menu_more">Thêm</string>
+    <string name="refresh">Làm mới</string>
+    <string name="loading_more">Đang tải thêm &#8230;</string>
+    <string name="login_failed">Đăng nhập lỗi</string>
+
+    <!-- Options screen -->
+    <string name="options_vai_description">Vãi App: Ai là thánh bá đạo nhất :)</string>
+    <string name="options_connect_facebook">KẾT NỐI VỚI FACEBOOK</string>
+    <string name="options_login_facebook">Đăng nhập Facebook</string>
+    <string name="options_login">Đăng nhập</string>
+    <string name="options_logout">Đăng xuất</string>
+    <string name="options_title">TÙY CHỌN</string>
+    <string name="options_clear_cache">Xóa bộ nhớ tạm</string>
+    <string name="options_rate">Bình chọn Vãi App trên Google Play ^^</string>
+    <string name="options_view_style">Cách hiển thị nội dung</string>
+    <string name="options_horizontal_style">Ngang</string>
+    <string name="options_vertical_style">Dọc</string>
+
+    <!-- Youtube player -->
+    <string name="youtube_error_player">Xảy ra lỗi khi khởi tạo YouTubePlayer (%1$s)</string>
+
+</resources>

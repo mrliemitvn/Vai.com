@@ -1,5 +1,7 @@
 package org.vai.com;
 
+import java.util.Locale;
+
 import org.apache.http.HttpStatus;
 import org.vai.com.activity.HomeActivity;
 import org.vai.com.broadcastreceiver.BroadcastReceiverCallback;
@@ -14,9 +16,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -115,6 +120,9 @@ public class MainActivity extends SherlockActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// Set language.
+		setLanguage();
 
 		// GCM, push notification.
 		GCMRegistrar.checkDevice(this);
@@ -179,6 +187,20 @@ public class MainActivity extends SherlockActivity {
 		}
 		super.onDestroy();
 	}
+	
+	/**
+     * Set language.
+     */
+    private void setLanguage() {
+        // Get device language.
+        String language = Locale.getDefault().getISO3Language();
+        Resources res = this.getResources();
+        // Change locale settings in the app.
+        DisplayMetrics displayMetrics = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = new Locale(language.toLowerCase());
+        res.updateConfiguration(conf, displayMetrics);
+    }
 
 	/**
 	 * Register push notification.

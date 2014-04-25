@@ -1543,6 +1543,7 @@ containing a value of this type.
         public static final int abs__shareactionprovider_share_with_application=0x7f080020;
         public static final int admob_id=0x7f080029;
         /**  Facebook app id 
+ Facebook app id 
          */
         public static final int app_id=0x7f080028;
         public static final int app_name=0x7f080027;
@@ -1572,6 +1573,9 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f080009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f08000a;
         /**  Google api key debug 
+ <string name="common_google_map_api_key">AIzaSyBdh4XPUavbP-kTT7i02tBBv9vai7x9_oY</string> 
+ Google api key release 
+ Google api key debug 
  <string name="common_google_map_api_key">AIzaSyBdh4XPUavbP-kTT7i02tBBv9vai7x9_oY</string> 
  Google api key release 
          */
@@ -1609,12 +1613,14 @@ containing a value of this type.
         public static final int options_rate=0x7f080048;
         public static final int options_title=0x7f080046;
         /**  Options screen 
+ Options screen 
          */
         public static final int options_vai_description=0x7f080041;
         public static final int options_vertical_style=0x7f08004b;
         public static final int options_view_style=0x7f080049;
         public static final int refresh=0x7f08003e;
         /**  Youtube player 
+ Youtube player 
          */
         public static final int youtube_error_player=0x7f08004c;
     }
