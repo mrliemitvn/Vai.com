@@ -4,18 +4,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.vai.com.R;
 import org.vai.com.appinterface.IFacebookCallBack;
 import org.vai.com.provider.SharePrefs;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.FacebookException;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.Session.OpenRequest;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.WebDialog.OnCompleteListener;
 
 /**
  * This class is used to working with facebook.
@@ -124,5 +131,40 @@ public class FacebookUtils {
 				}
 			});
 		}
+	}
+
+	/**
+	 * Share to facebook.
+	 * 
+	 * @param urlShare
+	 *            the url to share.
+	 * @param title
+	 *            the title.
+	 */
+	public void shareToFacebook(String urlShare, String title) {
+		Bundle params = new Bundle();
+		params.putString("name", title);
+		params.putString("link", urlShare);
+		params.putString("caption", activity.getResources().getString(R.string.app_name));
+
+		WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(activity, Session.getActiveSession(), params))
+				.setOnCompleteListener(new OnCompleteListener() {
+					@Override
+					public void onComplete(Bundle values, FacebookException error) {
+						if (error != null) {
+							/* Share unsuccessfully, show error message. */
+							Toast toast = Toast.makeText(activity, R.string.msg_err_share_failed, Toast.LENGTH_SHORT);
+							toast.setGravity(Gravity.CENTER, 0, 0);
+							toast.show();
+						} else {
+							/* Share successfully, show message. */
+							Toast toast = Toast.makeText(activity, R.string.msg_info_share_successfully,
+									Toast.LENGTH_SHORT);
+							toast.setGravity(Gravity.CENTER, 0, 0);
+							toast.show();
+						}
+					}
+				}).build();
+		feedDialog.show();
 	}
 }

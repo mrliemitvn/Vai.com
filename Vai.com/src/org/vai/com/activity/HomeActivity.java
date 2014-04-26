@@ -240,41 +240,42 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 
 		/* Create object link to share. */
 		String urlShare = Consts.URLConstants.BASE_URL + mConferenceId;
-		/* Check if already installed facebook application or not. */
-		if (FacebookDialog.canPresentShareDialog(this, FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
-			/* Already installed facebook application, use it to share to facebook. */
-			FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
-					.setApplicationName(getResources().getString(R.string.app_name)).setName(mTitle)
-					.setPicture(mImgUrl).setLink(urlShare).setDescription("")
-					.setRequestCode(FacebookUtils.FACEBOOK_SHARE_REQUEST_CODE).build();
-			mUiHelper.trackPendingDialogCall(shareDialog.present());
-		} else { // Not installed facebook application, use facebook share api.
-			/* Prepare data. */
-			Bundle postParams = new Bundle();
-			postParams.putString("name", getResources().getString(R.string.app_name));
-			postParams.putString("caption", mTitle);
-			postParams.putString("link", urlShare);
-			postParams.putString("picture", mImgUrl);
-			/* Make request. */
-			Request.Callback callback = new Request.Callback() {
-				public void onCompleted(Response response) {
-					/* Handle the result */
-					FacebookRequestError error = response.getError();
-					Toast toast;
-					if (error != null) { // Share unsuccessfully.
-						toast = Toast.makeText(HomeActivity.this, R.string.msg_err_share_failed, Toast.LENGTH_SHORT);
-					} else { // Share successfully.
-						toast = Toast.makeText(HomeActivity.this, R.string.msg_info_share_successfully,
-								Toast.LENGTH_SHORT);
-					}
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.show();
-				}
-			};
-			Request request = new Request(Session.getActiveSession(), "me/feed", postParams, HttpMethod.POST, callback);
-			RequestAsyncTask task = new RequestAsyncTask(request);
-			task.execute();
-		}
+		mFacebookUtils.shareToFacebook(urlShare, mTitle);
+		// /* Check if already installed facebook application or not. */
+		// if (FacebookDialog.canPresentShareDialog(this, FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
+		// /* Already installed facebook application, use it to share to facebook. */
+		// FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+		// .setApplicationName(getResources().getString(R.string.app_name)).setName(mTitle)
+		// .setPicture(mImgUrl).setLink(urlShare).setDescription("")
+		// .setRequestCode(FacebookUtils.FACEBOOK_SHARE_REQUEST_CODE).build();
+		// mUiHelper.trackPendingDialogCall(shareDialog.present());
+		// } else { // Not installed facebook application, use facebook share api.
+		// /* Prepare data. */
+		// Bundle postParams = new Bundle();
+		// postParams.putString("name", getResources().getString(R.string.app_name));
+		// postParams.putString("caption", mTitle);
+		// postParams.putString("link", urlShare);
+		// postParams.putString("picture", mImgUrl);
+		// /* Make request. */
+		// Request.Callback callback = new Request.Callback() {
+		// public void onCompleted(Response response) {
+		// /* Handle the result */
+		// FacebookRequestError error = response.getError();
+		// Toast toast;
+		// if (error != null) { // Share unsuccessfully.
+		// toast = Toast.makeText(HomeActivity.this, R.string.msg_err_share_failed, Toast.LENGTH_SHORT);
+		// } else { // Share successfully.
+		// toast = Toast.makeText(HomeActivity.this, R.string.msg_info_share_successfully,
+		// Toast.LENGTH_SHORT);
+		// }
+		// toast.setGravity(Gravity.CENTER, 0, 0);
+		// toast.show();
+		// }
+		// };
+		// Request request = new Request(Session.getActiveSession(), "me/feed", postParams, HttpMethod.POST, callback);
+		// RequestAsyncTask task = new RequestAsyncTask(request);
+		// task.execute();
+		// }
 	}
 
 	@Override
