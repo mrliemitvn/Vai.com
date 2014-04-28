@@ -58,6 +58,7 @@ public class ImageViewDetailActivity extends SherlockActivity implements OnClick
 	private ImageView mImgSaveImage1;
 	private ImageView mImgSaveImage2;
 	private ImageView mImgSaveImage3;
+	private ImageView mImgGif;
 
 	/* Show progress bar when loading image. */
 	private ProgressBar mPbLoadingImage;
@@ -82,6 +83,7 @@ public class ImageViewDetailActivity extends SherlockActivity implements OnClick
 		mImgSaveImage1 = (ImageView) findViewById(R.id.imgSaveImage1);
 		mImgSaveImage2 = (ImageView) findViewById(R.id.imgSaveImage2);
 		mImgSaveImage3 = (ImageView) findViewById(R.id.imgSaveImage3);
+		mImgGif = (ImageView) findViewById(R.id.imgGif);
 		mPbLoadingImage = (ProgressBar) findViewById(R.id.pbLoadingImage);
 
 		// TODO: working with zoom image.
@@ -93,7 +95,7 @@ public class ImageViewDetailActivity extends SherlockActivity implements OnClick
 		/* If image is gif image, show and play it. */
 		if (!TextUtils.isEmpty(urlImage) && urlImage.endsWith(Consts.IMAGE_FILE_GIF_TYPE)) {
 			mPbLoadingImage.setVisibility(View.VISIBLE);
-			Ion.with(mImgSaveImage).load(urlImage).setCallback(new FutureCallback<ImageView>() {
+			Ion.with(mImgGif).load(urlImage).setCallback(new FutureCallback<ImageView>() {
 				@Override
 				public void onCompleted(Exception arg0, ImageView arg1) {
 					mPbLoadingImage.setVisibility(View.GONE);
@@ -164,6 +166,7 @@ public class ImageViewDetailActivity extends SherlockActivity implements OnClick
 		mImgSaveImage1.setOnClickListener(this);
 		mImgSaveImage2.setOnClickListener(this);
 		mImgSaveImage3.setOnClickListener(this);
+		mImgGif.setOnClickListener(this);
 
 		// For admob.
 		adView = (AdView) this.findViewById(R.id.adView);
@@ -195,7 +198,7 @@ public class ImageViewDetailActivity extends SherlockActivity implements OnClick
 	@Override
 	public void onClick(View v) {
 		/* Finish this activity when click on image. */
-		if (v == mImgSaveImage || v == mImgSaveImage1 || v == mImgSaveImage2 || v == mImgSaveImage3) {
+		if (v == mImgSaveImage || v == mImgSaveImage1 || v == mImgSaveImage2 || v == mImgSaveImage3 || v == mImgGif) {
 			finish();
 		}
 	}

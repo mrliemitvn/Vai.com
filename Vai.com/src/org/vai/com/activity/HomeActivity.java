@@ -240,7 +240,9 @@ public class HomeActivity extends SlidingFragmentActivity implements IAdapterCal
 
 		/* Create object link to share. */
 		String urlShare = Consts.URLConstants.BASE_URL + mConferenceId;
-		mFacebookUtils.shareToFacebook(urlShare, mTitle);
+		mFacebookUtils.shareToFacebook(urlShare, mTitle); // Use WebDialog.
+		
+		// TODO: Use ShareDialogFeature or share api.
 		// /* Check if already installed facebook application or not. */
 		// if (FacebookDialog.canPresentShareDialog(this, FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
 		// /* Already installed facebook application, use it to share to facebook. */

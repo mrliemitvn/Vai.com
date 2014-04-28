@@ -73,7 +73,8 @@ public class HomeHorizontalFragment extends HomeFragment {
 					break;
 				}
 				/* Catch load more event. */
-				if (position == (mListFragments.size() - 1) && mListFragments.size() > mTotalItems) callApiGetConference(mCurrentPage + 1);
+				if (position == (mListFragments.size() - 1) && mListFragments.size() > mTotalItems)
+					callApiGetConference(mCurrentPage + 1);
 			}
 
 		});
@@ -112,8 +113,10 @@ public class HomeHorizontalFragment extends HomeFragment {
 				.append("='").append(mCategoryId).append("' and ")
 				.append(DbContract.getAlias(Tables.LIKE_STATE, LikeState.FACEBOOK_USER_ID)).append("='")
 				.append(SharePrefs.getInstance().getFacebookUserId()).append("'").toString();
+		String order = new StringBuilder().append(DbContract.getQualifiedColumnName(Tables.CONFERENCE, Conference._ID))
+				.append(" DESC").toString();
 		Cursor cursor = getActivity().getContentResolver().query(Conference.CONTENT_URI_CONFERENCE_JOIN_LIKE_STATE,
-				null, where, null, null);
+				null, where, null, order);
 
 		/* Get conference data and update adapter. */
 		if (cursor != null && cursor.moveToFirst()) {
