@@ -267,7 +267,7 @@ public class HomeVerticalAdapter extends ArrayAdapter<ConferenceResource> {
 					/* Hide progress bar loading. */
 					viewHolder.pbLoadingImage.setVisibility(View.GONE);
 					if (loadedImage == null) return;
-					if (!viewHolder.conference.image.equals(imageUri)) return;
+					if (TextUtils.isEmpty(imageUri) || !imageUri.equals(viewHolder.conference.image)) return;
 					/*
 					 * Calculate content width and height.
 					 * Set layout content height.

@@ -142,7 +142,7 @@ public class HomeContentHorizontalFragment extends BaseFragment implements OnCli
 				@Override
 				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 					if (loadedImage == null) return;
-					if (!mConferenceResource.image.equals(imageUri)) return;
+					if (TextUtils.isEmpty(imageUri) || !imageUri.equals(mConferenceResource.image)) return;
 					/*
 					 * After complete loading image, split image in 4 pieces then display on 4 ImageView.
 					 * Because some device with some operating system do not display large image, so use this handler
